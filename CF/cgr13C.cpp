@@ -21,9 +21,7 @@ int main() {
       for (int i = h + 2; i <= h + s[h]; i++) {
         v[i]++;
       }
-      if (v[h] > s[h] - 1) {
-        v[h + 1] += v[h] - s[h] + 1;
-      }
+      v[h + 1] += max(v[h] - s[h] + 1, 0);
       ans += max(s[h] - v[h] - 1, 0);
     }
     cout << ans << endl;
