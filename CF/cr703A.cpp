@@ -12,11 +12,14 @@ int main() {
   cin >> t;
   while (t--) {
     cin >> n;
-    tot = flag = 0;
+    tot = 0, flag = true;
     for (int i = 1; i <= n; i++) {
       cin >> h;
       tot += h;
-      flag = (tot >= i * (i - 1) / 2);
+      if(tot < i * (i - 1) / 2) {
+        flag = false;
+        break;
+      }
     }
     cout << (flag ? "YES" : "NO") << endl;
   }
