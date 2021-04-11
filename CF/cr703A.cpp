@@ -4,6 +4,7 @@
 using namespace std;
 
 LL t, n, h, tot;
+bool flag;
 
 int main() {
   cin.tie(0), cout.tie(0);
@@ -11,12 +12,13 @@ int main() {
   cin >> t;
   while (t--) {
     cin >> n;
-    tot = 0;
+    tot = flag = 0;
     for (int i = 1; i <= n; i++) {
       cin >> h;
       tot += h;
+      flag = (tot >= i * (i - 1) / 2);
     }
-    cout << (tot >= n * (n - 1) / 2 ? "YES" : "NO") << endl;
+    cout << (flag ? "YES" : "NO") << endl;
   }
   return 0;
 }
