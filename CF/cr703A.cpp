@@ -7,7 +7,7 @@ LL t, n, h, tot;
 
 int main() {
   cin.tie(0), cout.tie(0);
-  std::ios::sync_with_stdio(false);
+  ios::sync_with_stdio(false);
   cin >> t;
   while (t--) {
     cin >> n;
