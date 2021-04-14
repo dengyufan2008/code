@@ -13,11 +13,14 @@ struct B {
 
 int n, m;
 
-void T(int f, int x) {
+void T(int f, int x, int d) {
+  if(!d) {
+    return;
+  }
   cout << x << " ";
   for(int i = v[x].et; i; i = e[i].p) {
     if(e[i].d != f) {
-      T(x, e[i].d);
+      T(x, e[i].d, d - 1);
       break;
     }
   }
@@ -32,6 +35,6 @@ int main() {
     e[++m * 2] = {v[x].et, y}, v[x].et = m * 2;
     e[m * 2 + 1] = {v[y].et, x}, v[y].et = m * 2 + 1;
   }
-  T(1, e[v[1].et].d);
+  T(1, e[v[1].et].d, n);
   return 0;
 }
