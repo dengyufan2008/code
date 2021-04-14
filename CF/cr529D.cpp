@@ -5,7 +5,7 @@ using namespace std;
 
 struct A {
   int p, d;
-} e[200001];
+} e[400002];
 
 struct B {
   int et;
