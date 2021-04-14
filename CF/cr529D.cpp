@@ -24,11 +24,10 @@ int main() {
   }
   for(int f = 1, x = e[v[1].et].d; n; n--) {
     cout << x << " ";
-    for(int i = v[x].et; i; i = e[i].p) {
-      if(e[i].d != f) {
-        f = x, x = e[i].d;
-        break;
-      }
+    if(e[v[x].et].d != f) {
+      f = x, x = e[v[x].et].d;
+    } else {
+      f = x, x = e[e[v[x].et].p].d;
     }
   }
   return 0;
