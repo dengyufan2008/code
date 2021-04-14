@@ -3,9 +3,35 @@
 
 using namespace std;
 
+struct A {
+  int p, d;
+} e[200001];
+
+struct B {
+  int et;
+} v[200001];
+
+int n, m;
+
+void T(int f, int x) {
+  cout << x << " ";
+  for(int i = v[x].et; i; i = e[i].p) {
+    if(e[i].d != f) {
+      T(x, e[i].d);
+      break;
+    }
+  }
+}
+
 int main() {
   cin.tie(0), cout.tie(0);
   ios::sync_with_stdio(false);
-  
+  cin >> n;
+  for (int i = 1, x, y; i <= n; i++) {
+    cin >> x >> y;
+    e[++m * 2] = {v[x].et, y}, v[x].et = m * 2;
+    e[m * 2 + 1] = {v[y].et, x}, v[y].et = m * 2 + 1;
+  }
+  T(1, e[v[1].et].d);
   return 0;
 }
