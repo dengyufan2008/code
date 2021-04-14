@@ -5,7 +5,7 @@ using namespace std;
 
 int n, sum, m1, m2, m[4];
 
-int m2in() {
+int main() {
   cin >> n;
   if (n % 1111 == 0) {
     cout << 0;
