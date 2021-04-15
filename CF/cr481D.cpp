@@ -3,9 +3,20 @@
 
 using namespace std;
 
+int n, a[100001], d[100001];
+
 int main() {
   cin.tie(0), cout.tie(0);
   ios::sync_with_stdio(false);
-  
+  cin >> n;
+  for (int i = 1; i <= n; i++) {
+    cin >> a[i];
+    d[i] = a[i] - a[i - 1];
+  }
+  for (int i = -1; i <= 1; i++) {  //枚举第1,2项
+    for (int j = -1; j <= 1; j++) {
+      
+    }
+  }
   return 0;
 }
