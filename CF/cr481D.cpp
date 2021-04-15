@@ -3,7 +3,7 @@
 
 using namespace std;
 
-int n, a[100001], d[100001];
+int n, a[100001];
 
 int main() {
   cin.tie(0), cout.tie(0);
@@ -11,9 +11,8 @@ int main() {
   cin >> n;
   for (int i = 1; i <= n; i++) {
     cin >> a[i];
-    d[i] = a[i] - a[i - 1];
   }
-  for (int i = -1; i <= 1; i++) {  //枚举第1,2项
+  for (int i = -1; i <= 1; i++) {  //枚举a[1],a[2]
     for (int j = -1; j <= 1; j++) {
       
     }
