@@ -29,7 +29,8 @@ int main() {
   }
   for (int i = -1; i <= 1; i++) {  //枚举a[1],a[2]
     for (int j = -1; j <= 1; j++) {
-      if (P(a[2] - a[1] + j - i)) {
+      b[1] = a[1] + i, b[2] = a[2] + j;
+      if (P(b[2] - b[1])) {
         cout << ans << endl;
         return 0;
       }
