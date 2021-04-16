@@ -16,9 +16,8 @@ int main() {
     for (LL i = 1; i <= n; i++) {
       cin >> h;
       tot += h;
-      if (tot < (i * (i - 1) / 2)) {
+      if (((i - 1) * i / 2) > tot) {
         flag = true;
-        break;
       }
     }
     cout << (flag ? "NO" : "YES") << endl;
