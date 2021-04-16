@@ -3,14 +3,7 @@
 
 using namespace std;
 
-struct A {
-  int d;
-  bool operator<(const A &a) const {
-    return d % 2 > a.d % 2 || d < a.d;
-  }
-} a[2001];
-
-int t, n;
+int t, n, a[2001];
 
 int main() {
   cin.tie(0), cout.tie(0);
@@ -19,13 +12,9 @@ int main() {
   while (t--) {
     cin >> n;
     for (int i = 1; i <= n; i++) {
-      cin >> a[i].d;
+      cin >> a[i];
     }
-    sort(a + 1, a + n + 1);
-    for (int i = 1; i <= n; i++) {
-      cout << a[i].d << " ";
-    }
-    cout << endl;
+    
   }
   return 0;
 }
