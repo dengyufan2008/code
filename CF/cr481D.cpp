@@ -7,7 +7,7 @@ int n, ans, a[100001], b[100001];
 
 bool P(int d) {
   ans = 0;
-  copy(&a[1], &a[n] + 1, &b[1]);
+  copy(&a[3], &a[n] + 1, &b[3]);
   for (int i = 2, s = 0; i <= n; i++) {
     s = b[i + 1] - b[i] - d;
     if (s >= -1 && s <= 1) {
