@@ -3,7 +3,7 @@
 
 using namespace std;
 
-int t, n, x[1001], y[1001];
+LL t, n, x[1001], y[1001];
 
 int main() {
   cin.tie(0), cout.tie(0);
@@ -11,13 +11,13 @@ int main() {
   cin >> t;
   while (t--) {
     cin >> n;
-    for (int i = 1; i <= n; i++) {
+    for (LL i = 1; i <= n; i++) {
       cin >> x[i] >> y[i];
     }
     if (n % 2) {
       cout << 1 << endl;
     } else {
-      sort(&x[1], &x[n] + 1), sort(&y[1], &y[n] + 1);
+      sort(x + 1, x + n + 1), sort(y + 1, y + n + 1);
       cout << (x[n / 2 + 1] - x[n / 2] + 1) * (y[n / 2 + 1] - y[n / 2] + 1) << endl;
     }
   }
