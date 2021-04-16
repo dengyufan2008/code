@@ -3,7 +3,22 @@
 
 using namespace std;
 
-int n, a[100001];
+int n, ans, a[100001], b[100001];
+
+bool P(int d) {
+  ans = 0;
+  copy(&a[1], &a[n] + 1, &b[1]);
+  for (int i = 2, s = 0; i <= n; i++) {
+    s = b[i + 1] - b[i] - d;
+    if (s >= -1 && s <= 1) {
+      ans++;
+      b[i + 1] += s;
+    } else {
+      return false;
+    }
+  }
+  return true;
+}
 
 int main() {
   cin.tie(0), cout.tie(0);
@@ -14,8 +29,12 @@ int main() {
   }
   for (int i = -1; i <= 1; i++) {  //枚举a[1],a[2]
     for (int j = -1; j <= 1; j++) {
-      
+      if (P(a[2] - a[1] + j - i)) {
+        cout << ans << endl;
+        return 0;
+      }
     }
   }
+  cout << -1;
   return 0;
 }
