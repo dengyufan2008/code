@@ -19,11 +19,11 @@ int Q(int l, int r) {
 }
 
 void F(int l, int r) {
-  if (l == r || l + 1 == r && r == Q(l, r)) {
+  if (l == r) {
     A(l);
     return;
   } else if (l + 1 == r) {
-    A(r);
+    A(l == Q(l, r) ? r : l);
     return;
   }
   int s = Q(l, r), mid = (l + r) / 2;
