@@ -7,12 +7,11 @@ int n;
 char a, b, c;
 
 void T(char l, char r, char mid, int n) {
-  if(n == 0) {
-    return;
+  if (n) {
+    T(l, mid, r, n - 1);
+    cout << l << "->" << n << "->" << r << endl;
+    T(mid, r, l, n - 1);
   }
-  T(l, mid, r, n - 1);
-  cout << l << "->" << n << "->" << r << endl;
-  T(mid, r, l, n - 1);
 }
 
 int main() {
