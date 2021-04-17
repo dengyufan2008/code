@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-long long int ans[31] = {};  //ȫ��ֵΪ0
+long long int ans[31] = {};
 long long int my_floor(long long int n) {
   if (n == 1) {
     return 1;

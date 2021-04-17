@@ -5,7 +5,7 @@ using namespace std;
 
 int n, a[100001], ans;
 
-void Sort(int l, int r) {  //�鲢����
+void Sort(int l, int r) {
   if (l >= r) {
     return;
   }
