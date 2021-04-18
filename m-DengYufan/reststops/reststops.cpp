@@ -6,7 +6,7 @@ using namespace std;
 struct A {
   int x, c;
   bool operator<(const A &a) const {
-    return c > a.c;
+    return c > a.c || c == a.c && x < a.x;
   }
 } v[100001];
 
