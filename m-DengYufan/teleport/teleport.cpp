@@ -13,17 +13,23 @@ struct A {
 int n, l1, l2;
 LL d;
 
-LL C(int x) {  //以x点为传送终点,求节省距离
+LL C(int x) {
+  LL ans = 0;
   if (x >= 0) {
-    return x * l1;
+    for (int i = 1; i <= l1; i++) {
+      ans += abs(v1[i].b - v1[i].a) + (v1[i].a - abs(v1[i].b - x));
+    }
   } else {
-    return -x * l2;
+    for (int i = 1; i <= l2; i++) {
+      ans += abs(v2[i].b - v2[i].a) - (v2[i].a + abs(v2[i].b - x));
+    }
   }
+  return ans;
 }
 
 int main() {
-  freopen("teleport.in", "r", stdin);
-  freopen("teleport.out", "w", stdout);
+  // freopen("teleport.in", "r", stdin);
+  // freopen("teleport.out", "w", stdout);
   cin.tie(0), cout.tie(0);
   ios::sync_with_stdio(false);
   cin >> n;
@@ -37,6 +43,6 @@ int main() {
     d += abs(a - b);
   }
   sort(v1 + 1, v1 + 1 + l1), sort(v2 + 1, v2 + 1 + l2);
-  cout << d - max(C(v1[l1 / 2].b), C(v2[l2 / 2].b));
+  cout << d - max(C(v1[l1 / 2 + 1].b), C(v2[l2 / 2 + 1].b));
   return 0;
 }
