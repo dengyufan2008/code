@@ -3,16 +3,16 @@
 
 using namespace std;
 
-int n, k, l, r, mid, ans, a[200001];
+int n, k, l, r, mid, ans, a[200002], b[200002];
 
 bool C(int x) {
-  int b[200001] = {-2};  //后缀最大值
-  for (int i = 1, tmp = 0; i <= n; i++) {
-    tmp += (a[i] >= x ? 1 : -1);
-    b[i] = max(b[i - 1], tmp);
+  b[0] = 0;
+  for (int i = 1; i <= n; i++) {
+    b[i] = b[i - 1] + (a[i] >= x ? 1 : -1);
   }
-  for (int i = n; i >= k; i--) {
-    if (b[i - k + 1] > 0) {
+  for (int i = k, tmp = 0; i <= n; i++) {
+    tmp = min(tmp, b[i - k]);
+    if (b[i] > tmp) {
       return true;
     }
   }
