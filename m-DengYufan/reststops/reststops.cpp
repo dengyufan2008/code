@@ -10,8 +10,7 @@ struct A {
   }
 } v[100001];
 
-int l, n, f, b;
-LL ans;
+int l, n, f, b, ans;
 
 int main() {
   freopen("reststops.in", "r", stdin);
