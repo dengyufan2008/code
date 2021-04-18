@@ -25,7 +25,7 @@ int main() {
   sort(v + 1, v + 1 + n);
   for (int i = 1, p = 0; i <= n; i++) {
     if (v[i].x > v[p].x) {
-      ans += (LL)((v[i].x - v[p].x) * (f - b) * v[i].c);
+      ans += (v[i].x - v[p].x) * (f - b) * v[i].c;
       p = i;
     }
   }
