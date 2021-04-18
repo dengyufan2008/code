@@ -11,7 +11,7 @@ struct A {
 } v1[100001], v2[100001];
 
 int n, l1, l2;
-LL d, d1, d2;
+LL d;
 
 LL C(int x) {  //以x点为传送终点,求节省距离
   if (x >= 0) {
@@ -37,7 +37,6 @@ int main() {
     d += abs(a - b);
   }
   sort(v1 + 1, v1 + 1 + l1), sort(v2 + 1, v2 + 1 + l2);
-  d1 = C(v1[l1 / 2].b), d2 = C(v2[l2 / 2].b);
-  cout << d - max(d1, d2);
+  cout << d - max(C(v1[l1 / 2].b), C(v2[l2 / 2].b));
   return 0;
 }
