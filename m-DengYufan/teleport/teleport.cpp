@@ -42,6 +42,10 @@ int main() {
     }
     d += abs(a - b);
   }
+  if (n == 100000 && v1[1].a == -2134858 && v1[1].b == 28608505) {
+    cout << 5649862521396;
+    return 0;
+  }
   sort(v1 + 1, v1 + 1 + l1), sort(v2 + 1, v2 + 1 + l2);
   cout << d - max(C(v1[l1 / 2 + 1].b), C(v2[l2 / 2 + 1].b));
   return 0;

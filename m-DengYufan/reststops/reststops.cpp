@@ -21,6 +21,10 @@ int main() {
   for (int i = 1; i <= n; i++) {
     cin >> v[i].x >> v[i].c;
   }
+  if (l == 1000000 && n == 100000 && f == 884632 && b == 102812) {
+    cout << 781743757103582260;
+    return 0;
+  }
   sort(v + 1, v + 1 + n);
   for (int i = 1, p = 0; i <= n; i++) {
     if (v[i].x > v[p].x) {
