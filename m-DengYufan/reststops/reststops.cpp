@@ -23,10 +23,12 @@ int main() {
     cin >> v[i].x >> v[i].c;
   }
   sort(v + 1, v + 1 + n);
-  for (int i = 1; i <= n; i++) {
-    if (v[i].x > v[i - 1].x) {
-      ans += (v[i].x - v[i - 1].x) * (f - b) * v[i].c;
+  for (int i = 1, p = 0; i <= n; i++) {
+    if (v[i].x > v[p].x) {
+      ans += (LL)((v[i].x - v[p].x) * (f - b) * v[i].c);
+      p = i;
     }
   }
+  cout << ans;
   return 0;
 }
