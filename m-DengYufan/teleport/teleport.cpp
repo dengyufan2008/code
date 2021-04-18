@@ -17,19 +17,19 @@ LL C(int x) {
   LL ans = 0;
   if (x >= 0) {
     for (int i = 1; i <= l1; i++) {
-      ans += abs(v1[i].b - v1[i].a) + (v1[i].a - abs(v1[i].b - x));
+      ans += max(abs(v1[i].b - v1[i].a) - (abs(v1[i].b - x) - v1[i].a), 0);
     }
   } else {
     for (int i = 1; i <= l2; i++) {
-      ans += abs(v2[i].b - v2[i].a) - (v2[i].a + abs(v2[i].b - x));
+      ans += max(abs(v2[i].b - v2[i].a) - (abs(v2[i].b - x) + v2[i].a), 0);
     }
   }
   return ans;
 }
 
 int main() {
-  // freopen("teleport.in", "r", stdin);
-  // freopen("teleport.out", "w", stdout);
+  freopen("teleport.in", "r", stdin);
+  freopen("teleport.out", "w", stdout);
   cin.tie(0), cout.tie(0);
   ios::sync_with_stdio(false);
   cin >> n;
