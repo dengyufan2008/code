@@ -12,8 +12,8 @@ struct A {
 
 LL t, n, ans, a[200001], b[200001];
 
-bool C(LL x) {
-  for (LL i = x + 1; i <= n; i++) {
+bool C(LL x, LL _x) {
+  for (LL i = x + 1; i <= _x; i++) {
     if (a[i - 1] < v[i].a) {
       return false;
     }
@@ -36,9 +36,10 @@ int main() {
     for (LL i = 1; i <= n; i++) {
       a[i] = a[i - 1] + v[i].a;
     }
-    for (LL i = n; i >= 1; i--) {
-      if (C(i)) {
-        b[v[i].n] = t;  //没想到吧这就是我的标记数组
+    for (LL i = n, p = n; i >= 1; i--) {
+      if (C(i, p)) {
+        p = i;
+        b[v[i].n] = t + 1;  //没想到吧这就是我的标记数组
         ans++;
       } else {
         break;
@@ -46,7 +47,7 @@ int main() {
     }
     cout << ans << endl;
     for (LL i = 1; i <= n; i++) {
-      if (b[i] == t) {
+      if (b[i] == t + 1) {
         cout << i << " ";
       }
     }
