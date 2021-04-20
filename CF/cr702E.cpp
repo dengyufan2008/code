@@ -10,8 +10,7 @@ struct A {
   }
 } v[200001];
 
-LL t, n, ans, a[200001];
-bool b[200001];
+LL t, n, ans, a[200001], b[200001];
 
 bool C(LL x) {
   for (LL i = x + 1; i <= n; i++) {
@@ -33,20 +32,21 @@ int main() {
       v[i].n = i;
     }
     ans = 0;
-    fill(&b[1], &b[n] + 1, false);
     sort(v + 1, v + 1 + n);
     for (LL i = 1; i <= n; i++) {
       a[i] = a[i - 1] + v[i].a;
     }
-    for (LL i = 1; i <= n; i++) {
+    for (LL i = n; i >= 1; i--) {
       if (C(i)) {
-        b[v[i].n] = true;
+        b[v[i].n] = t;  //没想到吧这就是我的标记数组
         ans++;
+      } else {
+        break;
       }
     }
     cout << ans << endl;
     for (LL i = 1; i <= n; i++) {
-      if (b[i]) {
+      if (b[i] == t) {
         cout << i << " ";
       }
     }
