@@ -11,7 +11,7 @@ int main() {
   cin >> t;
   while (t--) {
     cin >> n;
-    for (i = 1; i <= n; i <<= 1) {
+    for (i = 1; i < n; i <<= 1) {
     }
     cout << (i == n ? "NO" : "YES") << endl;
   }
