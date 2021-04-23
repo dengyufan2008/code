@@ -3,15 +3,12 @@
 
 using namespace std;
 
-LL t, d, l, r, mid, ans;
+LL t, d, a1, a2;
 
 bool C(int x) {
-  for (int i = 1, p = 0; i <= sqrt(x); i++) {
+  for (int i = 2; i <= sqrt(x); i++) {
     if (!(x % i)) {
-      if (i - p > d) {
-        return false;
-      }
-      p = i;
+      return false;
     }
   }
   return true;
@@ -23,17 +20,11 @@ int main() {
   cin >> t;
   while (t--) {
     cin >> d;
-    l = 6, r = 1e9;
-    while (l <= r) {
-      mid = (l + r) >> 1;
-      if (C(mid)) {
-        ans = min(ans, mid);
-        r = mid - 1;
-      } else {
-        l = mid + 1;
-      }
+    for (a1 = d + 1; !C(a1); a1++) {
     }
-    cout << ans << endl;
+    for (a2 = a1 + d; !C(a2); a2++) {
+    }
+    cout << a1 * a2 << endl;
   }
   return 0;
 }
