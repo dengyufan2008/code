@@ -17,7 +17,8 @@ int main() {
       if (s[i] == s[i + 2] && b[i] != t + 1) {
         ans++;
         b[i + 2] = t + 1;
-      } else if (s[i] == s[i + 1] && b[i] != t + 1) {
+      }
+      if (s[i] == s[i + 1] && b[i] != t + 1) {
         ans++;
         b[i + 1] = t + 1;
       }
