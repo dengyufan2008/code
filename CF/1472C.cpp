@@ -20,6 +20,8 @@ int main() {
       if (a[i] <= (n - i)) {
         f[i] += f[i + a[i]];
       }
+    }
+    for (int i = 1; i <= n; i++) {
       ans = max(ans, f[i]);
     }
     cout << ans << endl;
