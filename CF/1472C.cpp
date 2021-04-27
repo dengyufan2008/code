@@ -14,13 +14,13 @@ int main() {
     for (int i = 1; i <= n; i++) {
       cin >> a[i];
     }
-    ans = 0;
-    for (int i = 1; i <= n; i++) {
-      fill(&f[1], &f[n] + 1, 0);
-      for (int j = i; j <= n;) {
-        f[j + a[j]] = max(f[j] + a[j], f[j + a[j]]);
+    ans = 0, f[n] = a[n];
+    for (int i = n - 1; i >= 1; i--) {
+      f[i] = a[i];
+      if (a[i] <= (n - i)) {
+        f[i] += f[i + a[i]];
       }
-      ans = max(ans, f[n]);
+      ans = max(ans, f[i]);
     }
     cout << ans << endl;
   }
