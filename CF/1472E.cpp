@@ -10,7 +10,7 @@ struct A {
   }
 } v[200001];
 
-int t, n, mn, num, ans[200001];
+int t, n, ans[200001];
 
 int main() {
   cin.tie(0), cout.tie(0);
