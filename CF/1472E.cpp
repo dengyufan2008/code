@@ -15,20 +15,26 @@ int main() {
   cin >> t;
   while (t--) {
     cin >> n;
-    for (int i = 1, tmp1, tmp2; i <= n; i++) {
-      cin >> tmp1 >> tmp2;
-      v[i].a = max(tmp1, tmp2), v[i].b = max(tmp1, tmp2), d[i] = i;
+    for (int i = 1; i <= n; i++) {
+      cin >> v[i].a >> v[i].b;
+      d[i] = i;
+      if (v[i].a < v[i].b) {
+        swap(v[i].a, v[i].b);
+      }
     }
     sort(d + 1, d + n + 1, [](int i, int j) {
       return v[i].b < v[j].b || v[i].b == v[j].b && v[i].a > v[j].a;
     });
-    for (int i = 1, x = 1, q = d[1]; i <= n; i++) {
+    for (int i = 1, x = 1, q = d[1]; i <= n; q = d[++i]) {
       ans[q] = v[q].a > v[d[x]].a ? d[x] : -1;
-      x = ans[q] == -1 ? i : x;
+      if (ans[q] == -1) {
+        x = i;
+      }
     }
     for (int i = 1; i <= n; i++) {
       cout << ans[i] << " ";
     }
+    cout << endl;
   }
   return 0;
 }
