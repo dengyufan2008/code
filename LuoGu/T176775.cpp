@@ -1,77 +1,74 @@
-#include <iostream>
+#include <bits/stdc++.h>
 #define LL long long
 
 using namespace std;
 
+const int kMaxN = 5e5 + 1;
+
 struct A {
-  int p, v;  //p:堆中编号の实际编号
-} d[500001];
+  int v, p;  // v:值 p:堆中位置
+} e[kMaxN];
 
 struct B {
-  int n, a[500001];  //a:堆中编号
+  int n, a[kMaxN];
 
-  void Swap(int x, int y) {
-    swap(a[x], a[y]), swap(d[a[x]], d[a[y]]);
+  void Swap(int i, int j) {        // 交换堆中位置i和j
+    swap(a[i], a[j]);              // 交换元素
+    e[a[i]].p = i, e[a[j]].p = j;  // 更新位置
   }
 
-  int Son(int x) {
-    return x + (x < n && d[a[x + 1]].v < d[a[x]].v);
+  int Son(int j) {
+    return j + (j < n && e[a[j + 1]].v < e[a[j]].v);
   }
 
-  void Up(int s) {
-    for (int i = s, j = i / 2; j && d[a[i]].v < d[a[j]].v; i = j, j = i / 2) {
+  void Up(int i) {
+    for (int j = i / 2; j && e[a[i]].v < e[a[j]].v; i = j, j = i / 2) {
       Swap(i, j);
     }
   }
 
-  void Down(int s) {
-    for (int i = s, j = Son(i * 2); j <= n && d[a[i]].v > d[a[j]].v; i = j, j = Son(i * 2)) {
+  void Down(int i) {
+    for (int j = Son(i * 2); j <= n && e[a[i]].v > e[a[j]].v; i = j, j = Son(i * 2)) {
       Swap(i, j);
     }
-  }
-
-  void Push(int v) {
-    a[++n] = n, d[n] = {n, v};
-    Up(n);
   }
 
   int Top() {
     return a[1];
   }
 
-  void Delete(int v) {
-    Swap(d[a[v]].p, n--);
-    Up(d[a[v]].p);
-    Down(d[a[v]].p);
+  void Push(int i) {
+    a[++n] = i, e[i].p = n;  // 存储元素，初始化位置
+    Up(n);
   }
 
-  void Update(int x, int v) {
-    d[a[x]].v = v;
-    Up(d[a[x]].p);
-    Down(d[a[x]].p);
+  void Delete(int i) {
+    Swap(i, n--);
+    Up(i), Down(i);
   }
-} e;
+} h;
 
-int q, x, v;
+int q, m, x, v;
 string s;
 
 int main() {
-  cin.tie(0), cout.tie();
+  cin.tie(0), cout.tie(0);
   ios::sync_with_stdio(false);
   cin >> q;
-  for (int i = 1; i <= q; i++) {
+  while (q--) {
     cin >> s;
     if (s == "push") {
-      cin >> v;
-      e.Push(v);
-    } else if (s == "top") {
-      cout << e.Top() << endl;
-    } else if (s == "delete") {
-      cin >> v;
-      e.Delete(v);
-    } else {
+      cin >> e[++m].v;
+      h.Push(m);
+    } else if (s == "update") {
       cin >> x >> v;
-      e.Update(x, v);
+      e[x].v = v;                    // 修改
+      h.Up(e[x].p), h.Down(e[x].p);  // 调整元素所在位置
+    } else if (s == "delete") {
+      cin >> x;
+      h.Delete(e[x].p);
+    } else if (s == "top") {
+      cout << e[h.Top()].v << endl;
     }
   }
   return 0;
