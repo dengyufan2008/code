@@ -1,123 +1,164 @@
 /*
 ID: dengyuf1
-TASK: test
+TASK: transform
 LANG: C++
 */
 #include <bits/stdc++.h>
+#define LL long long
+
 using namespace std;
+
 int n;
 char a[15][15], b[15][15], c[15][15], d[15][15];
-bool work1() {
+
+bool Work1() {
   for (int i = 1; i <= n; i++) {
-    for (int j = 1; j <= n; j++)
+    for (int j = 1; j <= n; j++) {
       b[j][n - i + 1] = a[i][j];
+    }
   }
-  for (int i = 1; i <= n; i++)
-    for (int j = 1; j <= n; j++)
-      if (b[i][j] != c[i][j])
+  for (int i = 1; i <= n; i++) {
+    for (int j = 1; j <= n; j++) {
+      if (b[i][j] != c[i][j]) {
         return 0;
+      }
+    }
+  }
   return 1;
 }
-bool work2() {
+
+bool Work2() {
   for (int i = 1; i <= n; i++) {
-    for (int j = 1; j <= n; j++)
+    for (int j = 1; j <= n; j++) {
       b[n - i + 1][n - j + 1] = a[i][j];
+    }
   }
-  for (int i = 1; i <= n; i++)
-    for (int j = 1; j <= n; j++)
-      if (b[i][j] != c[i][j])
+  for (int i = 1; i <= n; i++) {
+    for (int j = 1; j <= n; j++) {
+      if (b[i][j] != c[i][j]) {
         return 0;
+      }
+    }
+  }
   return 1;
 }
-bool work3() {
+
+bool Work3() {
   for (int i = 1; i <= n; i++) {
-    for (int j = 1; j <= n; j++)
+    for (int j = 1; j <= n; j++) {
       b[n - j + 1][i] = a[i][j];
+    }
   }
-  for (int i = 1; i <= n; i++)
-    for (int j = 1; j <= n; j++)
-      if (b[i][j] != c[i][j])
-        return 0;
-  return 1;
-}
-bool work4() {
   for (int i = 1; i <= n; i++) {
-    for (int j = 1; j <= n; j++)
-      b[i][n - j + 1] = a[i][j];
-  }
-  for (int i = 1; i <= n; i++)
-    for (int j = 1; j <= n; j++)
-      if (b[i][j] != c[i][j])
+    for (int j = 1; j <= n; j++) {
+      if (b[i][j] != c[i][j]) {
         return 0;
+      }
+    }
+  }
   return 1;
 }
-bool work5() {
-  work4();
-  for (int i = 1; i <= n; i++)
-    for (int j = 1; j <= n; j++)
+
+bool Work4() {
+  for (int i = 1; i <= n; i++) {
+    for (int j = 1; j <= n; j++) {
+      b[i][n - j + 1] = a[i][j];
+    }
+  }
+  for (int i = 1; i <= n; i++) {
+    for (int j = 1; j <= n; j++) {
+      if (b[i][j] != c[i][j]) {
+        return 0;
+      }
+    }
+  }
+  return 1;
+}
+
+bool Work5() {
+  Work4();
+  for (int i = 1; i <= n; i++) {
+    for (int j = 1; j <= n; j++) {
       a[i][j] = b[i][j];
-  if (work1())
+    }
+  }
+  if (Work1()) {
     return 1;
-  for (int i = 1; i <= n; i++)
-    for (int j = 1; j <= n; j++)
+  }
+  for (int i = 1; i <= n; i++) {
+    for (int j = 1; j <= n; j++) {
       a[i][j] = b[i][j];
-  if (work2())
+    }
+  }
+  if (Work2()) {
     return 1;
-  for (int i = 1; i <= n; i++)
-    for (int j = 1; j <= n; j++)
+  }
+  for (int i = 1; i <= n; i++) {
+    for (int j = 1; j <= n; j++) {
       a[i][j] = b[i][j];
-  if (work3())
+    }
+  }
+  if (Work3()) {
     return 1;
+  }
   return 0;
 }
-bool work6() {
-  for (int i = 1; i <= n; i++)
-    for (int j = 1; j <= n; j++)
-      if (b[i][j] != c[i][j])
+
+bool Work6() {
+  for (int i = 1; i <= n; i++) {
+    for (int j = 1; j <= n; j++) {
+      if (b[i][j] != c[i][j]) {
         return 0;
+      }
+    }
+  }
   return 1;
 }
-void work() {
-  if (work1()) {
-    cout << 1;
+
+void Work() {
+  if (Work1()) {
+    cout << 1 << endl;
     return;
   }
-  if (work2()) {
-    cout << 2;
+  if (Work2()) {
+    cout << 2 << endl;
     return;
   }
-  if (work3()) {
-    cout << 3;
+  if (Work3()) {
+    cout << 3 << endl;
     return;
   }
-  if (work4()) {
-    cout << 4;
+  if (Work4()) {
+    cout << 4 << endl;
     return;
   }
-  if (work5()) {
-    cout << 5;
+  if (Work5()) {
+    cout << 5 << endl;
     return;
   }
-  if (work6()) {
-    cout << 6;
+  if (Work6()) {
+    cout << 6 << endl;
     return;
   }
-  cout << 7;
+  cout << 7 << endl;
 }
 int main() {
-  // freopen(".in", "r", stdin);
-  // freopen(".out", "w", stdout);
+  freopen("transform.in", "r", stdin);
+  freopen("transform.out", "w", stdout);
   cin.tie(0), cout.tie(0);
   ios::sync_with_stdio(false);
   cin >> n;
-  for (int i = 1; i <= n; i++)
+  for (int i = 1; i <= n; i++) {
     for (int j = 1; j <= n; j++) {
       cin >> a[i][j];
       d[i][j] = a[i][j];
     }
-  for (int i = 1; i <= n; i++)
-    for (int j = 1; j <= n; j++)
+  }
+  for (int i = 1; i <= n; i++) {
+    for (int j = 1; j <= n; j++) {
       cin >> c[i][j];
-  work();
+    }
+  }
+  Work();
   return 0;
 }
