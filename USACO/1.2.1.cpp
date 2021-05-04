@@ -1,6 +1,6 @@
 /*
 ID: dengyuf1
-TASK: milk2
+TASK: ride
 LANG: C++
 */
 #include <bits/stdc++.h>
@@ -8,35 +8,22 @@ LANG: C++
 
 using namespace std;
 
-struct A {
-  int l, r;
-  bool operator<(const A &a) const {
-    return l < a.l;
-  }
-} v[5001];
-
-int n, s, t, a1, a2;
+int al, bl, an = 1, bn = 1;
+char a[7], b[7];
 
 int main() {
-  freopen("milk2.in", "r", stdin);
-  freopen("milk2.out", "w", stdout);
+  freopen("ride.in", "r", stdin);
+  freopen("ride.out", "w", stdout);
   cin.tie(0), cout.tie(0);
   ios::sync_with_stdio(false);
-  cin >> n;
-  for (int i = 1; i <= n; i++) {
-    cin >> v[i].l >> v[i].r;
+  cin >> a >> b;
+  al = strlen(a), bl = strlen(b);
+  for (int i = 0; i < al; i++) {
+    an *= a[i] - 'A' + 1;
   }
-  sort(v + 1, v + n + 1);
-  s = v[1].l, t = v[1].r;
-  for (int i = 2; i <= n; i++) {
-    if (v[i].l <= t) {
-      t = max(t, v[i].r);
-    } else {
-      a1 = max(a1, t - s), a2 = max(a2, v[i].l - t);
-      s = v[i].l, t = v[i].r;
-    }
+  for (int i = 0; i < bl; i++) {
+    bn *= b[i] - 'A' + 1;
   }
-  a1 = max(a1, t - s);
-  cout << a1 << " " << a2 << endl;
+  cout << (an % 47 == bn % 47 ? "GO" : "STAY") << endl;
   return 0;
 }

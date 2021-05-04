@@ -1,6 +1,6 @@
 /*
 ID: dengyuf1
-TASK: milk
+TASK: milk2
 LANG: C++
 */
 #include <bits/stdc++.h>
@@ -9,33 +9,34 @@ LANG: C++
 using namespace std;
 
 struct A {
-  int a, p;
-  bool operator<(const A &x) const {
-    return p < x.p;
+  int l, r;
+  bool operator<(const A &a) const {
+    return l < a.l;
   }
 } v[5001];
 
-LL n, m, ans, num;
+int n, s, t, a1, a2;
 
 int main() {
-  freopen("milk.in", "r", stdin);
-  freopen("milk.out", "w", stdout);
+  freopen("milk2.in", "r", stdin);
+  freopen("milk2.out", "w", stdout);
   cin.tie(0), cout.tie(0);
   ios::sync_with_stdio(false);
-  cin >> n >> m;
-  for (LL i = 1; i <= m; i++) {
-    cin >> v[i].p >> v[i].a;
+  cin >> n;
+  for (int i = 1; i <= n; i++) {
+    cin >> v[i].l >> v[i].r;
   }
-  sort(v + 1, v + m + 1);
-  for (LL i = 1; i <= m; i++) {
-    if (num + v[i].a > n) {
-      ans += (n - num) * v[i].p;
-      break;
+  sort(v + 1, v + n + 1);
+  s = v[1].l, t = v[1].r;
+  for (int i = 2; i <= n; i++) {
+    if (v[i].l <= t) {
+      t = max(t, v[i].r);
     } else {
-      num += v[i].a;
-      ans += v[i].a * v[i].p;
+      a1 = max(a1, t - s), a2 = max(a2, v[i].l - t);
+      s = v[i].l, t = v[i].r;
     }
   }
-  cout << ans << endl;
+  a1 = max(a1, t - s);
+  cout << a1 << " " << a2 << endl;
   return 0;
 }
