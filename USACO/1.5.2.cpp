@@ -16,15 +16,31 @@ void Dfs(int _a, int _b) {
   if (ans[_c]) {
     return;
   }
-  if (!_a) {
-    ans[_c] = true;
+  ans[_c] = !_a;
+  if (_a) {
+    if (b > _b) {
+      Dfs(_a - min(b - _b, _a), _b + min(b - _b, _a));
+    }
+    if (c > _c) {
+      Dfs(_a - min(c - _c, _a), _b);
+    }
   }
-  Dfs(_a + min(a - _a, _b), _b - min(a - _a, _b));
-  Dfs(_a - min(b - _b, _a), _b + min(b - _b, _a));
-  Dfs(_a + min(a - _a, _c), _b);
-  Dfs(_a - min(c - _c, _a), _b);
-  Dfs(_a, _b + min(b - _b, _c));
-  Dfs(_a, _b - min(c - _c, _b));
+  if (_b) {
+    if (a > _a) {
+      Dfs(_a + min(a - _a, _b), _b - min(a - _a, _b));
+    }
+    if (c > _c) {
+      Dfs(_a, _b - min(c - _c, _b));
+    }
+  }
+  if (_c) {
+    if (a > _a) {
+      Dfs(_a + min(a - _a, _c), _b);
+    }
+    if (b > _b) {
+      Dfs(_a, _b + min(b - _b, _c));
+    }
+  }
 }
 
 int main() {
