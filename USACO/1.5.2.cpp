@@ -8,47 +8,40 @@ LANG: C++
 
 using namespace std;
 
-int a, b, c;
-bool ans[21];
+int a[3], tmp[3];
+bool ans[21], b[21][21][21];
 
-void Dfs(int _a, int _b) {
-  int _c = c - _a - _b;
-  if (ans[_c]) {
+void Dfs(int d[]) {
+  int tmp[3];
+  if (b[d[0]][d[1]][d[2]]) {
     return;
   }
-  ans[_c] = !_a;
-  if (_a && b > _b) {
-    Dfs(_a - min(b - _b, _a), _b + min(b - _b, _a));
+  b[d[0]][d[1]][d[2]] = true;
+  if (!d[0]) {
+    ans[d[2]] = true;
   }
-  if (_a && c > _c) {
-    Dfs(_a - min(c - _c, _a), _b);
-  }
-  if (_b && a > _a) {
-    Dfs(_a + min(a - _a, _b), _b - min(a - _a, _b));
-  }
-  if (_b && c > _c) {
-    Dfs(_a, _b - min(c - _c, _b));
-  }
-  if (_c && a > _a) {
-    Dfs(_a + min(a - _a, _c), _b);
-  }
-  if (_c && b > _b) {
-    Dfs(_a, _b + min(b - _b, _c));
+  for (int i = 0; i <= 2; i++) {
+    for (int j = 0; j <= 2; j++) {
+      if (i != j && d[j] < a[j] && d[i] > 0) {
+        copy(&d[0], &d[2] + 1, &tmp[0]);
+        tmp[i] -= min(a[j] - d[j], d[i]), tmp[j] += min(a[j] - d[j], d[i]);
+        Dfs(tmp);
+      }
+    }
   }
 }
 
 int main() {
-  //	freopen("milk3.in", "r", stdin);
-  //	freopen("milk3.out", "w", stdout);
-  cin.tie(0), cout.tie(0);
-  ios::sync_with_stdio(false);
-  cin >> a >> b >> c;
-  Dfs(0, 0);
-  for (int i = 0; i < c; i++) {
+  freopen("milk3.in", "r", stdin);
+  freopen("milk3.out", "w", stdout);
+  cin >> a[0] >> a[1] >> a[2];
+  tmp[2] = a[2];
+  Dfs(tmp);
+  for (int i = 0; i < a[2]; ++i) {
     if (ans[i]) {
       cout << i << " ";
     }
   }
-  cout << c << endl;
+  cout << a[2] << endl;
   return 0;
 }
