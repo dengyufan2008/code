@@ -17,10 +17,7 @@ int main() {
     cin >> n;
     for (LL i = 1, tmp; i <= n; i++) {
       cin >> tmp;
-      a[tmp - i + kMaxN]++;
-    }
-    for (LL i = 0; i <= 2 * kMaxN; i++) {
-      ans += max(a[i] * (a[i] - 1) / 2, 0ll);
+      ans += a[tmp - i + kMaxN]++;
     }
     cout << ans << endl;
   }
