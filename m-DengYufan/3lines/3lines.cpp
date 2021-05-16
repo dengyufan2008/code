@@ -4,8 +4,8 @@
 using namespace std;
 
 int main() {
-  // freopen(".in", "r", stdin);
-  // freopen(".out", "w", stdout);
+  // freopen("3lines.in", "r", stdin);
+  // freopen("3lines.out", "w", stdout);
   cin.tie(0), cout.tie(0);
   ios::sync_with_stdio(false);
   
