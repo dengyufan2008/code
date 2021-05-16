@@ -6,7 +6,7 @@ using namespace std;
 struct A {
   int h, a;
 } v[100001];
-int n, l[100001];
+int n, a, ans, l[100001];
 
 int main() {
   // freopen("islands.in", "r", stdin);
@@ -23,7 +23,24 @@ int main() {
   });
   for (int i = 1; i <= n; i++) {
     v[l[i]].a = v[l[i - 1]].a + (v[l[i]].h != v[l[i - 1]].h);
+    a = max(a, v[l[i]].a);
   }
-  
+  for (int i = 1, num; i <= a; i++) {
+    num = 0;
+    for (int j = 1; j <= n; j++) {
+      if (v[j].a > a && v[j - 1].a <= a) {
+        num++;
+      }
+    }
+    ans = max(ans, num);
+    num = 0;
+    for (int j = 1; j <= n; j++) {
+      if (v[j].a >= a && v[j - 1].a < a) {
+        num++;
+      }
+    }
+    ans = max(ans, num);
+  }
+  cout << ans << endl;
   return 0;
 }
