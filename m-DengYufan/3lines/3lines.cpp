@@ -34,7 +34,6 @@ int main() {
   for (int i = 1; i <= n; i++) {
     a = max(a, v[i].a), b = max(b, v[i].b);
   }
-  
   return 0;
 }
 /*
