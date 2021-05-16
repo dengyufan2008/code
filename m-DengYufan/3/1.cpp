@@ -3,9 +3,9 @@
 
 using namespace std;
 
-int n, m, w;
-
 int main() {
+  // freopen(".in", "r", stdin);
+  // freopen(".out", "w", stdout);
   cin.tie(0), cout.tie(0);
   ios::sync_with_stdio(false);
   
