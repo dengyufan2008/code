@@ -9,8 +9,8 @@ struct A {
 int n, l[100001];
 
 int main() {
-  // freopen(".in", "r", stdin);
-  // freopen(".out", "w", stdout);
+  // freopen("islands.in", "r", stdin);
+  // freopen("islands.out", "w", stdout);
   cin.tie(0), cout.tie(0);
   ios::sync_with_stdio(false);
   cin >> n;
