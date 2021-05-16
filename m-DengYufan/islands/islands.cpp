@@ -3,7 +3,10 @@
 
 using namespace std;
 
-int n, h[100001];
+struct A {
+  int h, a;
+} v[100001];
+int n, l[100001];
 
 int main() {
   // freopen(".in", "r", stdin);
@@ -12,7 +15,15 @@ int main() {
   ios::sync_with_stdio(false);
   cin >> n;
   for (int i = 1; i <= n; i++) {
-    cin >> h[i];
+    cin >> v[i].h;
+    l[i] = i;
   }
+  sort(l + 1, l + n + 1, [](int i, int j) {
+    return v[i].h < v[j].h;
+  });
+  for (int i = 1; i <= n; i++) {
+    v[l[i]].a = v[l[i - 1]].a + (v[l[i]].h != v[l[i - 1]].h);
+  }
+  
   return 0;
 }
