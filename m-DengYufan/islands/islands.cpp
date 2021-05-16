@@ -5,12 +5,12 @@ using namespace std;
 
 struct A {
   int h, a;
-} v[101];
-int n, a, ans, l[101];
+} v[100001];
+int n, a, ans, l[100001];
 
 int main() {
-  // freopen("islands.in", "r", stdin);
-  // freopen("islands.out", "w", stdout);
+  freopen("islands.in", "r", stdin);
+  freopen("islands.out", "w", stdout);
   cin.tie(0), cout.tie(0);
   ios::sync_with_stdio(false);
   cin >> n;
