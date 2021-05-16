@@ -5,8 +5,8 @@ using namespace std;
 
 struct A {
   int h, a;
-} v[100001];
-int n, a, ans, l[100001];
+} v[101];
+int n, a, ans, l[101];
 
 int main() {
   // freopen("islands.in", "r", stdin);
@@ -28,14 +28,14 @@ int main() {
   for (int i = 1, num; i <= a; i++) {
     num = 0;
     for (int j = 1; j <= n; j++) {
-      if (v[j].a > a && v[j - 1].a <= a) {
+      if (v[j].a > i && v[j - 1].a <= i) {
         num++;
       }
     }
     ans = max(ans, num);
     num = 0;
     for (int j = 1; j <= n; j++) {
-      if (v[j].a >= a && v[j - 1].a < a) {
+      if (v[j].a >= i && v[j - 1].a < i) {
         num++;
       }
     }
