@@ -3,28 +3,29 @@
 
 using namespace std;
 
-int t, n, ans, a[51], l[51];
+int t, n, a[51];
+bool flag;
 
 int main() {
   cin.tie(0), cout.tie(0);
   ios::sync_with_stdio(false);
   cin >> t;
   while (t--) {
+    flag = true;
     cin >> n;
     for (int i = 1; i <= n; i++) {
       cin >> a[i];
-      l[i] = i;
+      flag = flag && a[i] == i;
     }
-    sort(l + 1, l + n + 1, [](int i, int j) {
-      return a[i] < a[j];
-    });
-    ans = 0;
-    for (int i = 1; i <= n; i++) {
-      if (l[i - 1] == i - 1 && l[i] != i) {
-        ans++;
-      }
+    if (flag) {
+      cout << 0 << endl;
+    } else if (a[1] == 1 || a[n] == n) {
+      cout << 1 << endl;
+    } else if (a[1] == n && a[n] == 1) {
+      cout << 3 << endl;
+    } else {
+      cout << 2 << endl;
     }
-    cout << ans << endl;
   }
   return 0;
 }
