@@ -3,7 +3,7 @@
 
 using namespace std;
 
-int n, k, l, s1, s2, a[10];
+int n, k, l, s1, s2, a[11];
 
 int main() {
   cin.tie(0), cout.tie(0);
@@ -15,11 +15,8 @@ int main() {
       a[++l] = n % 10, n /= 10;
     }
     sort(a + 1, a + l + 1);
-    for (int i = l; i >= 1; i--) {
-      s1 = s1 * 10 + a[i];
-    }
     for (int i = 1; i <= l; i++) {
-      s2 = s2 * 10 + a[i];
+      s1 = s1 * 10 + a[l - i + 1], s2 = s2 * 10 + a[i];
     }
     n = s1 - s2;
   }
