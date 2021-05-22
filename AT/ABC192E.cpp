@@ -11,11 +11,11 @@ struct B {
 } v[100001];
 LL n, m, x, y;
 
-void T(int f, int x) {
+void T(int x) {
   for (int i = v[x].et; i; i = e[i].p) {
-    if (e[i].d != f && v[e[i].d].d > v[x].d + e[i].t + v[x].d % e[i].k) {
+    if (v[e[i].d].d > v[x].d + e[i].t + v[x].d % e[i].k) {
       v[e[i].d].d = v[x].d + e[i].t + v[x].d % e[i].k;
-      T(x, e[i].d);
+      T(e[i].d);
     }
   }
 }
@@ -30,7 +30,7 @@ int main() {
     e[i * 2 + 1] = {v[b].et, a, c, d}, v[b].et = i * 2 + 1;
   }
   v[x].d = 0;
-  T(0, x);
+  T(x);
   cout << (v[y].d == 1e18 ? -1 : v[y].d) << endl;
   return 0;
 }
