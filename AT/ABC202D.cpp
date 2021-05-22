@@ -9,7 +9,7 @@ int main() {
   cin.tie(0), cout.tie(0);
   ios::sync_with_stdio(false);
   cin >> a >> b >> k;
-  for (int i = 0; i <= 30; i++) {
+  for (int i = 1; i <= 30; i++) {
     d[i][0] = d[0][i] = 1;
   }
   for (int i = 1; i <= 30; i++) {
@@ -17,13 +17,13 @@ int main() {
       d[i][j] = d[i - 1][j] + d[i][j - 1];
     }
   }
-  while (k) {
-    if (d[a][b] / 2 <= k) {
+  while (a || b) {
+    if (a && (d[a - 1][b] >= k || !b)) {
       cout << 'a';
       a--;
     } else {
       cout << 'b';
-      b--, k -= d[a][b] / 2;
+      k -= d[a][b-- - 1];
     }
   }
   return 0;
