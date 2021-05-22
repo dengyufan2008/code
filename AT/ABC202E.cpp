@@ -37,10 +37,10 @@ int main() {
   cin.tie(0), cout.tie(0);
   ios::sync_with_stdio(false);
   cin >> n;
-  for (int i = 1; i < n; i++) {
+  for (int i = 2; i <= n; i++) {
     cin >> p[i];
-    e[i * 2] = {v[i].et, p[i]}, v[i].et = i * 2;
-    e[i * 2 + 1] = {v[p[i]].et, i}, v[p[i]].et = i * 2 + 1;
+    e[i * 2 - 2] = {v[i].et, p[i]}, v[i].et = i * 2 - 2;
+    e[i * 2 - 1] = {v[p[i]].et, i}, v[p[i]].et = i * 2 - 1;
   }
   T(0, 1);
   cin >> q;
