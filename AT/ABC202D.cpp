@@ -18,12 +18,12 @@ int main() {
     }
   }
   while (a || b) {
-    if (a && (d[a - 1][b] >= k || !b)) {
+    if (a && (!b || d[a - 1][b] >= k)) {
       cout << 'a';
       a--;
     } else {
       cout << 'b';
-      k -= d[a][b-- - 1];
+      k -= d[a][--b];
     }
   }
   return 0;
