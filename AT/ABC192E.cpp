@@ -13,8 +13,8 @@ LL n, m, x, y;
 
 void T(int f, int x) {
   for (int i = v[x].et; i; i = e[i].p) {
-    if (e[i].d != f) {
-      v[e[i].d].d = min(v[e[i].d].d, v[x].d + e[i].t + v[x].d % e[i].k);
+    if (e[i].d != f && v[e[i].d].d > v[x].d + e[i].t + v[x].d % e[i].k) {
+      v[e[i].d].d = v[x].d + e[i].t + v[x].d % e[i].k;
       T(x, e[i].d);
     }
   }
