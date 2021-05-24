@@ -3,14 +3,15 @@
 
 using namespace std;
 
-LL x, y, r;
-double _x, _y, _r;
+LL ans;
+long double a, b, c;
 
 int main() {
-  cin.tie(0), cout.tie(0);
-  ios::sync_with_stdio(false);
-  cin >> _x >> _y >> _r;
-  x = _x * 10000, y = _y * 10000, r = _r * 10000;
-  
+  cin >> a >> b >> c;
+  c += 1e-14;
+  for (LL i = ceil(a - c); i <= floor(a + c); i++) {
+    ans += floor(b + sqrt(c * c - (a - i) * (a - i))) - ceil(b - sqrt(c * c - (a - i) * (a - i))) + 1;
+  }
+  cout << ans << endl;
   return 0;
 }
