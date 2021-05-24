@@ -11,6 +11,6 @@ int main() {
   ios::sync_with_stdio(false);
   cin >> _x >> _y >> _r;
   x = _x * 10000, y = _y * 10000, r = _r * 10000;
-  cout << x << " " << y << " " << r << " " << r * r << endl;
+  
   return 0;
 }
