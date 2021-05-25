@@ -7,20 +7,9 @@ struct A {
   int p, d, x;
 } e[2001];
 struct B {
-  int et, d = 1073741823, k;
+  int et, d = 2147483647;
 } v[2001];
 int n, m;
-
-int M(int x, int y, int s) {
-  if (x == y) {
-    return s ? s : v[x].k ? v[x].k : 1073741823;
-  }
-  int ans = 1073741823;
-  for (int i = v[x].et; i; i = e[i].p) {
-    ans = min(ans, M(e[i].d, y, s + e[i].x));
-  }
-  return ans;
-}
 
 int main() {
   cin.tie(0), cout.tie(0);
@@ -28,13 +17,11 @@ int main() {
   cin >> n >> m;
   for (int i = 1, a, b, c; i <= m; i++) {
     cin >> a >> b >> c;
-    e[i] = {v[a].et, b, c}, v[a].et = i, v[a].k = (v[a].k || a == b) * c;
+    e[i] = {v[a].et, b, c}, v[a].et = i;
   }
   for (int i = 1; i <= n; i++) {
-    for (int j = 1; j <= n; j++) {
-      v[i].d = min(v[i].d, M(i, j, 0) + M(j, i, 0));
-    }
-    cout << (v[i].d == 1073741823 ? -1 : v[i].d) << endl;
+    
+    cout << (v[i].d == 2147483647 ? -1 : v[i].d) << endl;
   }
   return 0;
 }
