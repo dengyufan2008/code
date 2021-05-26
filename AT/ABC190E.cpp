@@ -33,8 +33,7 @@ int main() {
   cin.tie(0), cout.tie(0);
   ios::sync_with_stdio(false);
   cin >> n >> m;
-  fill(v[0].d, v[0].d + kMaxK, kInf);  // 初始化
-  fill(v + 1, v + 1 + n, v[0]);
+  fill(v[0].d, v[0].d + kMaxK, kInf), fill(v + 1, v + 1 + n, v[0]);
   for (int i = 1; i <= m; i++) {
     cin >> x >> y;
     v[x].p.push_back(y);
