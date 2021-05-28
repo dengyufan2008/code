@@ -5,10 +5,10 @@ using namespace std;
 
 struct A {
   LL p, d;
-} e[201];
+} e[200001];
 struct B {
-  LL et, d, f = 1e18;
-} v[201];
+  LL et, d, f;
+} v[200001];
 LL n, m, ans = -1e18;
 
 int main() {
