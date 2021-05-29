@@ -7,7 +7,7 @@ struct A {
   LL p, d;
 } e[200001];
 struct B {
-  LL et, d, f;
+  LL et, d, f, i;
 } v[200001];
 LL n, m, ans = -1e18;
 
@@ -21,13 +21,13 @@ int main() {
   }
   for (int i = 1, x, y; i <= m; i++) {
     cin >> x >> y;
-    e[i] = {v[x].et, y}, v[x].et = i;
+    e[i] = {v[x].et, y}, v[x].et = i, v[y].i++;
   }
   for (int i = 1; i <= n; i++) {
     for (int j = v[i].et; j; j = e[j].p) {
-      v[e[j].d].f = min(v[e[j].d].f, v[i].f);
+      v[e[j].d].f = max(v[i].f, v[e[j].d].f);
     }
-    ans = max(ans, v[i].et ? v[i].d - v[i].f : (LL)(-1e18));
+    ans = max(ans, v[i].d - v[i].f);
   }
   cout << ans << endl;
   return 0;
