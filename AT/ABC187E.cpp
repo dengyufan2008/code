@@ -5,10 +5,10 @@ using namespace std;
 
 struct E {
   int p, d;
-} e[402];
+} e[400002];
 struct V {
   int et, d;
-} v[201];
+} v[200001];
 int n, q, x, y, z;
 
 void T(int f, int x) {
@@ -24,7 +24,7 @@ int main() {
   cin.tie(0), cout.tie(0);
   ios::sync_with_stdio(false);
   cin >> n;
-  for (int i = 1, a, b; i <= n; i++) {
+  for (int i = 1, a, b; i < n; i++) {
     cin >> a >> b;
     e[i * 2] = {v[a].et, b}, v[a].et = i * 2;
     e[i * 2 + 1] = {v[b].et, a}, v[b].et = i * 2 + 1;
