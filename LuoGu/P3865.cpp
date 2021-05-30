@@ -3,12 +3,9 @@
 
 using namespace std;
 
-char a[3], b[3];
-
 int main() {
   cin.tie(0), cout.tie(0);
   ios::sync_with_stdio(false);
-  cin >> a >> b;
-  cout << max(a[0] + a[1] + a[2], b[0] + b[1] + b[2]) - 144 << endl;
+  
   return 0;
 }
