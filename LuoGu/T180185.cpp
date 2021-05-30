@@ -3,7 +3,7 @@
 
 using namespace std;
 
-int n, m, d[100001][21];
+int n, m, x, k, num, ans, d[100001][21];
 
 int main() {
   cin.tie(0), cout.tie(0);
@@ -17,7 +17,7 @@ int main() {
       d[j][i] = d[d[j][i - 1]][i - 1];
     }
   }
-  for (int i = 1, x, k, num, ans; i <= m; i++) {
+  for (int i = 1; i <= m; i++) {
     cin >> x >> k;
     ans = x, num = 0;
     for (int j = 20; j >= 0; j--) {
