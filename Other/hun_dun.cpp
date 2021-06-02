@@ -1,18 +1,23 @@
 #include <bits/stdc++.h>
+#define LL long long
+
 using namespace std;
+
+LL n;
+long double u, f;
+
 int main() {
-  double u, f;
-  printf("Please input u(0<u<1):");
+  cin.tie(0), cout.tie(0);
+  ios::sync_with_stdio(false);
+  cout << "Please input u(0<u<1)." << endl;
   cin >> u;
-  printf("Please input f(f>0):");
+  cout << "Please input f(f>0)." << endl;
   cin >> f;
-  printf("%lf", u);
-  for (int i = 2;; i++) {
+  cout << "Please input n(n>0)." << endl;
+  cin >> n;
+  for (int i = 1; i <= n; i++) {
+    cout << "[" << i << "]:" << u << endl;
     u = u * (1 - u) * f;
-    printf("->%lf", u);
-    if (i % 10 == 0) {
-      printf("\n");
-    }
   }
-  exit(0);
+  return 0;
 }

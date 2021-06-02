@@ -6,9 +6,9 @@ using namespace std;
 struct V {
   int d;
   string s;
-} v[101];
+} v[100001];
 struct H {
-  int n, a[101];
+  int n, a[100001];
 
   int Son(int x) {
     return x + (x < n && v[a[x]].d > v[a[x + 1]].d);
@@ -26,7 +26,7 @@ struct H {
     }
   }
 
-  void Push(int x, string s) {
+  void Push() {
     a[++n] = n;
     Up();
   }
@@ -50,7 +50,7 @@ int main() {
   cin >> n;
   for (int i = 1; i <= n; i++) {
     cin >> v[i].d >> v[i].s;
-    h.Push(v[i].d, v[i].s);
+    h.Push();
   }
   for (int i = 1; i <= n; i++) {
     cout << v[h.Top()].d << " " << v[h.Top()].s << endl;
