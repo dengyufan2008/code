@@ -3,55 +3,58 @@
 
 using namespace std;
 
-const int kMaxN = 1e5 + 1;
-
-struct A {
-  int n, _n, a[kMaxN];
+struct V {
+  int d;
+  string s;
+} v[101];
+struct H {
+  int n, a[101];
 
   int Son(int x) {
-    return x + (x < n && a[x] < a[x + 1]);
+    return x + (x < n && v[a[x]].d > v[a[x + 1]].d);
   }
 
   void Up() {
-    for (int i = n, j = i / 2; j && a[i] > a[j]; i = j, j = i / 2) {
+    for (int i = n, j = i >> 1; j && v[a[i]].d < v[a[j]].d; i = j, j = i >> 1) {
       swap(a[i], a[j]);
     }
   }
 
   void Down() {
-    for (int i = 1, j = Son(i * 2); j <= n && a[i] < a[j]; i = j, j = Son(i * 2)) {
+    for (int i = 1, j = Son(i << 1); j <= n && v[a[i]].d > v[a[j]].d; i = j, j = Son(i << 1)) {
       swap(a[i], a[j]);
     }
   }
 
-  void Push(int v) {
-    a[++n] = v;
+  void Push(int x, string s) {
+    a[++n] = n;
     Up();
   }
 
   void Pop() {
     swap(a[1], a[n--]);
-    Down();
-  }
-
-  void Sort() {
-    for (int i = 1; i <= _n; i++) {
-      Pop();
+    if (n) {
+      Down();
     }
   }
+
+  int Top() {
+    return a[1];
+  }
 } h;
+int n;
 
 int main() {
   cin.tie(0), cout.tie(0);
   ios::sync_with_stdio(false);
-  cin >> h._n;
-  for (int i = 1, tmp; i <= h._n; i++) {
-    cin >> tmp;
-    h.Push(tmp);
+  cin >> n;
+  for (int i = 1; i <= n; i++) {
+    cin >> v[i].d >> v[i].s;
+    h.Push(v[i].d, v[i].s);
   }
-  h.Sort();
-  for (int i = 1; i <= h._n; i++) {
-    cout << h.a[i] << " ";
+  for (int i = 1; i <= n; i++) {
+    cout << v[h.Top()].d << " " << v[h.Top()].s << endl;
+    h.Pop();
   }
   return 0;
 }
