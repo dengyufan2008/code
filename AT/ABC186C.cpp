@@ -6,15 +6,11 @@ using namespace std;
 int n, num;
 
 bool C(int x, int d) {
-  int k = 0, a[7];
   while (x) {
-    a[++k] = x % d;
-    x /= d;
-  }
-  for (int i = 1; i <= k; i++) {
-    if (a[i] == 7) {
+    if (x % d == 7) {
       return true;
     }
+    x /= d;
   }
   return false;
 }
