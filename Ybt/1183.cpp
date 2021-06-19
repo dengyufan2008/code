@@ -13,6 +13,7 @@ string tmp;
 
 int main() {
   cin.tie(0), cout.tie(0);
+  ios::sync_with_stdio(false);
   cin >> n;
   for (int i = 1, age; i <= n; i++) {
     cin >> tmp >> age;
@@ -30,10 +31,10 @@ int main() {
     }
   }
   for (int i = 1; i <= e1l; i++) {
-    cout << e1[i].id << "\n";
+    cout << e1[i].id << endl;
   }
   for (int i = 1; i <= e2l; i++) {
-    cout << e2[i].id << "\n";
+    cout << e2[i].id << endl;
   }
   return 0;
 }

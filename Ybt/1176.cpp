@@ -4,8 +4,11 @@
 using namespace std;
 
 struct A {
-  LL e;
+  string e;
   double v;
+  bool operator<(const A a) const {
+    return v > a.v;
+  }
 } a[101];
 
 int n, k;
@@ -16,13 +19,7 @@ int main() {
   for (int i = 1; i <= n; i++) {
     cin >> a[i].e >> a[i].v;
   }
-  for (int i = 1; i < n; i++) {
-    for (int j = i; j < n; j++) {
-      if (a[j].v > a[j + 1].v) {
-        swap(a[j].v, a[j + 1].v), swap(a[j].e, a[j + 1].e);
-      }
-    }
-  }
-  cout << a[k].e << " " << a[k].v;
+  sort(a + 1, a + n + 1);
+  cout << a[k].e << " " << a[k].v << endl;
   return 0;
 }
