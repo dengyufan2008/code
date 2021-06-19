@@ -13,10 +13,7 @@ struct H {
   }
 
   int Father(int x) {
-    if (f[x] != x) {
-      f[x] = Father(f[x]);
-    }
-    return f[x];
+    return f[x] = (f[x] != x ? Father(f[x]) : f[x]);
   }
 
   void Push(int x, int y) {
