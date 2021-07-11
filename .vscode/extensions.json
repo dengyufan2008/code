@@ -4,6 +4,7 @@
     "ms-vscode.cpptools",
     "ms-ceintl.vscode-language-pack-zh-hans",
     "formulahendry.code-runner",
-    "octref.vetur"
+    "octref.vetur",
+    "yzhang.markdown-all-in-one"
   ]
 }
