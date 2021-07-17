@@ -4,7 +4,7 @@
 
 using namespace std;
 
-const int kMove[4][2] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+const int kMove[5][2] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
 struct A {
   int x, y, d, s;
 };
@@ -15,8 +15,8 @@ queue<A> q;
 
 int main() {
   cin >> w >> h;
-  for (int i = 1; i <= w; i++) {
-    for (int j = 1; j <= h; j++) {
+  for (int i = 1; i <= h; i++) {
+    for (int j = 1; j <= w; j++) {
       cin >> ch[i][j];
       if (ch[i][j] == 'C') {
         m = i, n = j;
@@ -27,16 +27,19 @@ int main() {
   while (!q.empty()) {
     A c = q.front();
     q.pop();
-    if (c.x < 1 || c.y < 1 || c.x > w || c.y > h || b[c.x][c.y] || ch[c.x][c.y] == '*') {
+    if (c.x < 1 || c.y < 1 || c.x > h || c.y > w || b[c.x][c.y] || ch[c.x][c.y] == '*' || c.s >= ans) {
       continue;
     }
-    b[c.x][c.y] = 1;
     if (ch[c.x][c.y] == 'C' && (c.x != m || c.y != n)) {
       ans = min(ans, c.s);
       continue;
     }
+    b[c.x][c.y] = 1;
+    q.push({c.x + kMove[c.d][0], c.y + kMove[c.d][1], c.d, c.s});
     for (int i = 0; i <= 3; i++) {
-      q.push({c.x + kMove[i][0], c.y + kMove[i][1], i, c.s + (i != c.d)});
+      if (i != c.d) {
+        q.push({c.x + kMove[i][0], c.y + kMove[i][1], i, c.s + 1});
+      }
     }
   }
   cout << ans - 1 << endl;
