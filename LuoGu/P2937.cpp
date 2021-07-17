@@ -8,7 +8,7 @@ const int kMove[5][2] = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
 struct A {
   int x, y, d, s;
 };
-int w, h, m1, n1, m2, n2, b[101][101];
+int w, h, m1, n1, m2, n2, b[101][101][5];
 char ch[101][101];
 queue<A> q;
 
@@ -27,14 +27,14 @@ int main() {
     }
   }
   q.push({m1, n1, 4, 0});
-  fill(&b[0][0], &b[100][100] + 1, 114514);
+  fill(&b[0][0][0], &b[100][100][4] + 1, 114514);
   while (!q.empty()) {
     A c = q.front();
     q.pop();
-    if (c.x < 1 || c.y < 1 || c.x > h || c.y > w || b[c.x][c.y] <= c.s || ch[c.x][c.y] == '*') {
+    if (c.x < 1 || c.y < 1 || c.x > h || c.y > w || b[c.x][c.y][c.d] <= c.s || ch[c.x][c.y] == '*') {
       continue;
     }
-    b[c.x][c.y] = min(b[c.x][c.y], c.s);
+    b[c.x][c.y][c.d] = min(b[c.x][c.y][c.d], c.s);
     if (c.x == m2 && c.y == n2) {
       continue;
     }
@@ -45,6 +45,6 @@ int main() {
       }
     }
   }
-  cout << b[m2][n2] - 1 << endl;
+  cout << min(min(b[m2][n2][0], b[m2][n2][1]), min(b[m2][n2][2], b[m2][n2][3])) - 1 << endl;
   return 0;
 }
