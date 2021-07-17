@@ -4,7 +4,7 @@
 
 using namespace std;
 
-const int kMove[5][2] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+const int kMove[5][2] = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
 struct A {
   int x, y, d, s;
 };
