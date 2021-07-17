@@ -8,8 +8,7 @@ const int kMove[5][2] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
 struct A {
   int x, y, d, s;
 };
-int w, h, m, n, ans = 114514;
-bool b[101][101];
+int w, h, m1, n1, m2, n2, b[101][101];
 char ch[101][101];
 queue<A> q;
 
@@ -19,22 +18,26 @@ int main() {
     for (int j = 1; j <= w; j++) {
       cin >> ch[i][j];
       if (ch[i][j] == 'C') {
-        m = i, n = j;
+        if (!m1) {
+          m1 = i, n1 = j;
+        } else {
+          m2 = i, n2 = j;
+        }
       }
     }
   }
-  q.push({m, n, 4, 0});
+  q.push({m1, n1, 4, 0});
+  fill(&b[0][0], &b[100][100] + 1, 114514);
   while (!q.empty()) {
     A c = q.front();
     q.pop();
-    if (c.x < 1 || c.y < 1 || c.x > h || c.y > w || b[c.x][c.y] || ch[c.x][c.y] == '*' || c.s >= ans) {
+    if (c.x < 1 || c.y < 1 || c.x > h || c.y > w || b[c.x][c.y] <= c.s || ch[c.x][c.y] == '*') {
       continue;
     }
-    if (ch[c.x][c.y] == 'C' && (c.x != m || c.y != n)) {
-      ans = min(ans, c.s);
+    b[c.x][c.y] = min(b[c.x][c.y], c.s);
+    if (c.x == m2 && c.y == n2) {
       continue;
     }
-    b[c.x][c.y] = 1;
     q.push({c.x + kMove[c.d][0], c.y + kMove[c.d][1], c.d, c.s});
     for (int i = 0; i <= 3; i++) {
       if (i != c.d) {
@@ -42,6 +45,6 @@ int main() {
       }
     }
   }
-  cout << ans - 1 << endl;
+  cout << b[m2][n2] - 1 << endl;
   return 0;
 }
