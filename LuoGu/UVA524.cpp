@@ -40,8 +40,6 @@ void S(int x, int s) {
 }
 
 int main() {
-  cin.tie(0), cout.tie(0);
-  ios::sync_with_stdio(false);
   for (int i = 1; cin >> n; i++) {
     if (i != 1) {
       cout << endl << endl;
