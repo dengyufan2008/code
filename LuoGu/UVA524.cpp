@@ -12,13 +12,12 @@ void S(int x, int s) {
     return;
   }
   if (s == n) {
-    if (!kPrime[x + 1]) {
-      return;
+    if (kPrime[x + 1]) {
+      for (int i = 1; i < n; i++) {
+        cout << a[i] << " ";
+      }
+      cout << x << endl;
     }
-    for (int i = 1; i < n; i++) {
-      cout << a[i] << " ";
-    }
-    cout << x << endl;
     return;
   }
   b[x] = 1, a[s] = x;
