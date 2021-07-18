@@ -5,29 +5,20 @@ using namespace std;
 
 const int kPrime[32] = {0, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1};
 int n, a[17];
-bool flag, b[17];
+bool b[17];
 
 void S(int x, int s) {
   if (b[x]) {
     return;
   }
   if (s == n) {
-    for (int i = 1; i <= n; i++) {
-      if (!b[i] && !kPrime[i + 1]) {
-        return;
-      } else if (!b[i]) {
-        a[n] = i;
-      }
-    }
-    if (flag) {
-      cout << endl;
-    } else {
-      flag = 1;
+    if (!kPrime[x + 1]) {
+      return;
     }
     for (int i = 1; i < n; i++) {
       cout << a[i] << " ";
     }
-    cout << a[n];
+    cout << x << endl;
     return;
   }
   b[x] = 1, a[s] = x;
@@ -42,9 +33,8 @@ void S(int x, int s) {
 int main() {
   for (int i = 1; cin >> n; i++) {
     if (i != 1) {
-      cout << endl << endl;
+      cout << endl;
     }
-    flag = 0;
     cout << "Case " << i << ":" << endl;
     S(1, 1);
   }
