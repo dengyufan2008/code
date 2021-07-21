@@ -10,7 +10,7 @@
 using namespace std;
 
 const int kMove[8][2] = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
-int n, x, y, a[101][101];
+int n, x, y, k, a[101][101];
 bool b[101][101], _b[101][101];
 
 void SetColor(int ForgC, int BackC) {
@@ -39,7 +39,7 @@ void Bfs(int _x, int _y) {
     if (c.x < 1 || c.y < 1 || c.x > x || c.y > y || b[c.x][c.y] || _b[c.x][c.y]) {
       continue;
     }
-    b[c.x][c.y] = 1;
+    b[c.x][c.y] = 1, k--;
     if (!a[c.x][c.y]) {
       for (int i = 0; i <= 7; i++) {
         q.push({c.x + kMove[i][0], c.y + kMove[i][1]});
@@ -110,9 +110,10 @@ void Prepare() {
 }
 
 void Playing() {
-  int k = 0, _x, _y, c;
+  int _x, _y, c;
+  k = x * y;
   bool flag = 0;
-  while (k != n) {
+  while (k) {
     if (Print(0)) {
       PrintS("You have found some mines!\nGame over!\n");
       return;
@@ -125,7 +126,7 @@ void Playing() {
     if (!c) {
       Bfs(_x, _y);
     } else if (c == 1 && !b[_x][_y]) {
-      _b[_x][_y] ^= 1, k += _b[_x][_y] ? 1 : -1;
+      _b[_x][_y] ^= 1, k -= _b[_x][_y] ? 1 : -1;
     } else if (c == 2) {
       int d = 0;
       for (int i = 0; i <= 7; i++) {
@@ -147,7 +148,7 @@ void Playing() {
       }
       for (int i = 0; i <= 7; i++) {
         if (d == a[_x][_y] && b[_x][_y] && !b[_x + kMove[i][0]][_y + kMove[i][1]] && _x + kMove[i][0] && _y + kMove[i][1] && _x + kMove[i][0] <= x && _y + kMove[i][1] <= y) {
-          _b[_x + kMove[i][0]][_y + kMove[i][1]] = 1, k++;
+          _b[_x + kMove[i][0]][_y + kMove[i][1]] = 1, k--;
         }
       }
     }
@@ -156,7 +157,7 @@ void Playing() {
   SetColor(11, 0);
   for (int i = 1; i <= x; i++) {
     for (int j = 1; j <= y; j++) {
-      if (!b[_x][_y] && _b[_x][_y]) {
+      if (!_b[_x][_y] && a[_x][_y] == 9 || _b[_x][_y] && a[_x][_y] != 9) {
         PrintS("You have marked some wrong mines!\nGame over!\n");
         return;
       }
@@ -184,8 +185,8 @@ bool Ending() {
 }
 
 int main() {
-  system("title Mining");
   HideMouse();
+  system("title Mining");
   cin.tie(0), cout.tie(0);
   do {
     Prepare();
