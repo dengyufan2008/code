@@ -57,11 +57,14 @@ int main() {
     }
   }
   M(c);
-  if (!c) {
+  if (f) {
+    cout << "IMPOSSIBLE" << endl;
+  } else if (!c) {
     for (int i = 1; i <= n; i++) {
       cout << 1;
     }
-  } else if (f || !f2) {
+    cout << endl;
+  } else if (!f2) {
     cout << "IMPOSSIBLE" << endl;
   }
   return 0;
