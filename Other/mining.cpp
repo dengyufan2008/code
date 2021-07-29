@@ -24,7 +24,7 @@ void PrintS(string s) {
   }
 }
 
-void HideMouse(void) {
+void HideMouse() {
   CONSOLE_CURSOR_INFO cursor_info = {1, 0};
   SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursor_info);
 }
