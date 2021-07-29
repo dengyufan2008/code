@@ -62,9 +62,10 @@ void Prepare() {
 void Playing() {
   int mxh = -1;
   while (mxh < kR) {
-    int c = rand() % 7, d = 0;
-    Print();
-    
+    int c = rand() % 7, d = 0, x = 0, y = kC >> 1;
+    while (!b[x + kM[c][d & 1]][y] && (kM[c][!(d & 1)] < 2 || !b[x + kM[c][d & 1]][y + 1]) && (kM[c][!(d & 1)] < 3 || !b[x + kM[c][d & 1]][y + 2]) && (kM[c][!(d & 1)] < 4 || !b[x + kM[c][d & 1]][y + 3])) {
+      
+    }
   }
 }
 
