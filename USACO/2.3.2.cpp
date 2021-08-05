@@ -8,23 +8,21 @@ LANG: C++
 
 using namespace std;
 
-int n, k, f[201][101];
+const int kMod = 9901;
+int n, k, f[201][101];  //f[i][j]:i个点层数最多为j的方案数
 
 int main() {
-  // freopen("nocows.in", "r", stdin);
-  // freopen("nocows.out", "w", stdout);
+  freopen("nocows.in", "r", stdin);
+  freopen("nocows.out", "w", stdout);
   cin >> n >> k;
-  f[0][0] = f[1][1] = f[3][2] = 1;
-  for (int i = 4; i <= n; i++) {
-    for (int j = 3; j <= k; j++) {
-      for (int _i = 1; _i < i; _i++) {
-        for (int _j = 1; _j < k - 1; _j++) {
-          f[i][j] = (f[i][j] + f[_i][j - 1] * f[i - _i - 1][_j] * 2) % 9901;
-        }
-        f[i][j] = (f[i][j] + f[_i][k - 1] * f[i - _i - 1][k - 1]) % 9901;
+  fill(&f[1][1], &f[1][100] + 1, 1);
+  for (int i = 1; i <= k; i++) {
+    for (int j = 3; j <= n; j += 2) {
+      for (int l = 1; l < j; l += 2) {
+        f[j][i] = (f[j][i] + f[l][i - 1] * f[j - l - 1][i - 1]) % kMod;
       }
     }
   }
-  cout << f[n][k] << endl;
+  cout << (f[n][k] - f[n][k - 1] + kMod) % kMod << endl;
   return 0;
 }
