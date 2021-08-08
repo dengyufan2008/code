@@ -14,7 +14,9 @@ int main() {
   for (LL i = 1; i <= n; i++) {
     for (LL j = 0; j <= k; j++) {
       f[i][j] = (f[i][j] + f[i - 1][j]) % kMod;
-      f[i][j + a[i] + 1] = (f[i][j + a[i] + 1] - f[i - 1][j] + kMod) % kMod;
+      if (j + a[i] <= k) {
+        f[i][j + a[i] + 1] = (f[i][j + a[i] + 1] - f[i - 1][j] + kMod) % kMod;
+      }
     }
     for (LL j = 1; j <= k; j++) {
       f[i][j] = (f[i][j] + f[i][j - 1]) % kMod;
