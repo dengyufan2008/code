@@ -22,11 +22,11 @@ int main() {
     for (LL j = n; j >= i; j--) {
       for (LL k = n + 1; k > j; k--) {
         if (t[k] < t[j]) {
-          f[j] = max(f[j], f[k] + 1);
+          _f[j] = max(_f[j], _f[k] + 1);
         }
       }
     }
-    ans = max(ans, f[i] + _f[i]);
+    ans = max(ans, f[i] + _f[i] - 1);
   }
   cout << n - ans << endl;
   return 0;
