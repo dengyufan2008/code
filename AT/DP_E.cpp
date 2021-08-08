@@ -6,24 +6,24 @@ using namespace std;
 struct E {
   LL w, v;
 } e[101];
-LL n, w, ans, f[101][100001];
+LL n, w, f[100001];  //f[i]:v值为i时w的值
 
 int main() {
   cin >> n >> w;
   for (LL i = 1; i <= n; i++) {
     cin >> e[i].w >> e[i].v;
   }
-  for (LL i = 0; i < n; i++) {
-    for (LL j = 0; j <= w; j++) {
-      f[i + 1][j] = max(f[i + 1][j], f[i][j]);
-      if (j + e[i + 1].w <= w) {
-        f[i + 1][j + e[i + 1].w] = max(f[i + 1][j + e[i + 1].w], f[i][j] + e[i + 1].v);
-      }
+  fill(&f[1], &f[100000] + 1, 1145141919810);
+  for (LL i = 1; i <= n; i++) {
+    for (LL j = 100000; j >= e[i].v; j--) {
+      f[j] = min(f[j], f[j - e[i].v] + e[i].w);
     }
   }
-  for (LL i = 0; i <= w; i++) {
-    ans = max(ans, f[n][i]);
+  for (LL i = 100000; i; i--) {
+    if (f[i] <= w) {
+      cout << i << endl;
+      break;
+    }
   }
-  cout << ans << endl;
   return 0;
 }
