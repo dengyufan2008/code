@@ -21,7 +21,7 @@ int main() {
       }
     }
   }
-  for (LL x = s.length(), y = t.length(); x || y;) {
+  for (LL x = s.length(), y = t.length(); x && y;) {
     if (p[x][y] == 1) {
       ans = s[--x] + ans, y--;
     } else if (p[x][y] == 2) {
