@@ -1,25 +1,36 @@
-#include <algorithm>
 #include <iostream>
 #define LL long long
 
 using namespace std;
 
-int n, tmp[100001], p[100001], f[100001], l[100001];
+int n, ans, a[100001], b[100001], d[100001], f[100001];
 
 int main() {
   cin >> n;
   for (int i = 1; i <= n; i++) {
-    cin >> tmp[i];
+    cin >> a[i];
+    d[a[i]] = i;
   }
   for (int i = 1; i <= n; i++) {
-    cin >> p[i];
-    p[i] = tmp[p[i]];
+    cin >> b[i];
   }
+  fill(&f[1], &f[100000] + 1, 1919810);
   for (int i = 1; i <= n; i++) {
-    int c = lower_bound(l, l + f[i - 1], p[i]) - l;
-    f[i] = c + 1;
-    l[c] = p[i];
+    if (d[b[i]] > f[ans]) {
+      f[++ans] = d[b[i]];
+    } else {
+      int l = 0, r = ans, mid;
+      while (l <= r) {
+        mid = (l + r) >> 1;
+        if (f[mid] <= d[b[i]]) {
+          l = mid + 1;
+        } else {
+          r = mid - 1;
+        }
+      }
+      f[l] = min(d[b[i]], f[l]);
+    }
   }
-  cout << f[n] << endl;
+  cout << ans << endl;
   return 0;
 }
