@@ -3,22 +3,24 @@
 
 using namespace std;
 
-const int kMod = 998244353;
-int n, ans, h[1001], f[1001][40001];
+const LL kMod = 998244353;
+LL n, ans, h[1001], f[1001][40001];
 
 int main() {
   cin >> n;
-  for (int i = 1; i <= n; i++) {
+  for (LL i = 1; i <= n; i++) {
     cin >> h[i];
   }
-  for (int i = 1; i <= n; i++) {
-    for (int j = 1; j < i; j++) {
-      int d = h[i] - h[j];
+  for (LL i = 1; i <= n; i++) {
+    for (LL j = 1; j < i; j++) {
+      LL d = h[i] - h[j];
       f[i][d + 20000] = (f[i][d + 20000] + f[j][d + 20000] + 1) % kMod;
     }
   }
-  for (int i = 0; i <= 40000; i++) {
-    ans = (ans + f[n][i]) % kMod;
+  for (LL i = 1; i <= n; i++) {
+    for (LL j = 0; j <= 40000; j++) {
+      ans = (ans + f[i][j]) % kMod;
+    }
   }
   cout << (ans + n) % kMod << endl;
   return 0;
