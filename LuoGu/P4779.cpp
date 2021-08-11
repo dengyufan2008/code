@@ -24,7 +24,7 @@ int main() {
     if (-c.first < v[c.second].d) {
       v[c.second].d = -c.first;
       for (PLL i : v[c.second].e) {
-        h.push(make_pair(-v[c.second].d - i.second, i.first));
+        h.push(make_pair(c.first - i.second, i.first));
       }
     }
   }
