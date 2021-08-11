@@ -12,29 +12,33 @@ struct V {
 LL n, m, s;
 queue<LL> q;
 
+void Record(LL x, LL d) {
+  if (v[x].d > d) {
+    v[x].d = d;
+    if (!v[x].b) {
+      q.push(x);
+      v[x].b = 1;
+    }
+  }
+}
+
 int main() {
   cin >> n >> m >> s;
   for (LL i = 1, x, y, z; i <= m; i++) {
     cin >> x >> y >> z;
     v[x].e.push_back(make_pair(y, z));
   }
-  v[s].d = 0, v[s].b = 1;
-  for (q.push(s); !q.empty(); q.pop()) {
+  for (Record(s, 0); !q.empty(); q.pop()) {
     LL c = q.front();
-    if (++v[c].t >= n) {
-      v[c]._b = 1;
-      continue;
-    }
-    for (pair<LL, LL> i : v[c].e) {
-      if (v[i.first].d > v[c].d + i.second) {
-        v[i.first].d = v[c].d + i.second;
-        if (!v[i.first].b) {
-          q.push(i.first);
-          v[i.first].b = 1;
-        }
-      }
-    }
     v[c].b = 0;
+    // if (++v[c].t >= n) {
+    //   v[c]._b = 1;
+    //   continue;
+    // }
+    // 负环
+    for (pair<LL, LL> i : v[c].e) {
+      Record(i.first, v[c].d + i.second);
+    }
   }
   for (LL i = 1; i <= n; i++) {
     cout << (v[i]._b ? 1145141919810 : v[i].d) << " ";
