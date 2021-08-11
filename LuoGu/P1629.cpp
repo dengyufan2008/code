@@ -32,7 +32,7 @@ int main() {
   for (int i = 1, x, y, z; i <= m; i++) {
     cin >> x >> y >> z;
     v[x].e[0].push_back(make_pair(y, z));
-    v[x].e[1].push_back(make_pair(x, z));
+    v[y].e[1].push_back(make_pair(x, z));
   }
   M(0), M(1);
   for (int i = 2; i <= n; i++) {
