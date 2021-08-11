@@ -26,8 +26,8 @@ int main() {
       }
     }
     v[mn].b = 1;
-    for (pair<int, int> i : v[mn].e) {
-      v[i.first].d = min(v[i.first].d, v[mn].d + i.second);
+    for (pair<int, int> j : v[mn].e) {
+      v[j.first].d = min(v[j.first].d, v[mn].d + j.second);
     }
   }
   for (int i = 1; i <= n; i++) {
