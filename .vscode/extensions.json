@@ -2,7 +2,6 @@
   "recommendations": [
     "austin.code-gnu-global",
     "ms-vscode.cpptools",
-    "ms-ceintl.vscode-language-pack-zh-hans",
     "formulahendry.code-runner",
     "octref.vetur",
     "yzhang.markdown-all-in-one"
