@@ -10,7 +10,7 @@ int main() {
   cin >> n >> m;
   for (LL i = 1; i <= 100; i++) {
     for (LL j = 1; j <= 100; j++) {
-      f[i][j] = kInf * (i != j);
+      f[i][j] = a[i][j] = kInf * (i != j);
     }
   }
   for (LL i = 1, x, y, z; i <= m; i++) {
