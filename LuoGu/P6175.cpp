@@ -8,8 +8,8 @@ LL n, m, ans = kInf, a[101][101], f[101][101];
 
 int main() {
   cin >> n >> m;
-  for (int i = 1; i <= 100; i++) {
-    for (int j = 1; j <= 100; j++) {
+  for (LL i = 1; i <= 100; i++) {
+    for (LL j = 1; j <= 100; j++) {
       f[i][j] = kInf * (i != j);
     }
   }
