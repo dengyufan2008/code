@@ -1,4 +1,3 @@
-#include <cstring>
 #include <iostream>
 #define LL long long
 
@@ -12,6 +11,18 @@ struct E {
 } e[3001][3001];
 int t, n, m;
 string ans;
+
+int Cmp(string x, string y) {
+  if (x.length() != y.length()) {
+    return x.length() > y.length() ? 1 : -1;
+  }
+  for (int i = 0; i < x.length(); i++) {
+    if (x[i] != y[i]) {
+      return x[i] > y[i] ? 1 : -1;
+    }
+  }
+  return 0;
+}
 
 string M(int x, int y) {
   return (x || y ? M(e[x][y].px, e[x][y].py) + e[x][y].ch : "");
@@ -29,10 +40,10 @@ int main() {
           if (e[i][j].f && i + kN[k] <= n) {
             int _i = i + kN[k], _j = (j * 10 + k) % m;
             e[_i][_j].f = 1;
-            if (!e[_i][_j].d || e[_i][_j].d - 1 < e[i][j].d || e[_i][_j].d - 1 == e[i][j].d && strcmp(M(_i, _j).c_str(), M(i, j).c_str()) == -1 || e[_i][_j].d - 1 == e[i][j].d && strcmp(M(_i, _j).c_str(), M(i, j).c_str()) == -1 && (e[_i][_j].ch == ' ' || e[_i][_j].ch - '0' < k)) {
-              e[_i][_j].d = e[i][j].d + 1;
+            if (Cmp(M(_i, _j), M(i, j) + (char)(k + '0')) == -1) {
               e[_i][_j].px = i;
               e[_i][_j].py = j;
+              e[_i][_j].d = e[i][j].d + 1;
               e[_i][_j].ch = k + '0';
             }
           }
@@ -42,7 +53,7 @@ int main() {
     for (int i = 0; i <= n; i++) {
       if (e[i][0].f) {
         string _ans = M(i, 0);
-        if (ans.length() < _ans.length() || ans.length() == _ans.length() && strcmp(ans.c_str(), _ans.c_str()) == -1) {
+        if (Cmp(ans, _ans) == -1) {
           ans = _ans;
         }
       }
