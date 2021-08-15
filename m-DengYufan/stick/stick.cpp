@@ -12,11 +12,11 @@ struct E {
 int t, n, m;
 string ans;
 
-int Cmp(string x, string y) {
+inline int Cmp(register string x, register string y) {
   if (x.length() != y.length()) {
     return x.length() > y.length() ? 1 : -1;
   }
-  for (int i = 0; i < x.length(); i++) {
+  for (register int i(0); i < x.length(); ++i) {
     if (x[i] != y[i]) {
       return x[i] > y[i] ? 1 : -1;
     }
@@ -24,41 +24,45 @@ int Cmp(string x, string y) {
   return 0;
 }
 
-string M(int x, int y) {
+inline string M(register int x, register int y) {
   return (x || y ? M(e[x][y].px, e[x][y].py) + e[x][y].ch : "");
 }
 
 int main() {
+  // freopen("stick.in", "r", stdin);
+  // freopen("stick.out", "w", stdout);
   cin >> t;
   while (t--) {
     cin >> n >> m;
     fill(&e[0][0], &e[3000][3000] + 1, (E){0, 0, 0, 0, ' '});
     e[0][0].f = 1, ans = "";
-    for (int i = 0; i <= n; i++) {
-      for (int j = 0; j < m; j++) {
-        for (int k = 9; k >= 0; k--) {
-          if (e[i][j].f && i + kN[k] <= n) {
-            int _i = i + kN[k], _j = (j * 10 + k) % m;
-            e[_i][_j].f = 1;
-            if (Cmp(M(_i, _j), M(i, j) + (char)(k + '0')) == -1) {
-              e[_i][_j].px = i;
-              e[_i][_j].py = j;
-              e[_i][_j].d = e[i][j].d + 1;
-              e[_i][_j].ch = k + '0';
+    for (register int i(0); i <= n; ++i) {
+      for (register int j(0); j < m; ++j) {
+        if (e[i][j].f) {
+          for (register int k(9); k >= 0; --k) {
+            if (i + kN[k] <= n) {
+              register int _i = i + kN[k], _j = (j * 10 + k) % m;
+              e[_i][_j].f = 1;
+              if (Cmp(M(_i, _j), M(i, j) + (char)(k + '0')) == -1) {
+                e[_i][_j].px = i;
+                e[_i][_j].py = j;
+                e[_i][_j].d = e[i][j].d + 1;
+                e[_i][_j].ch = k + '0';
+              }
             }
           }
         }
       }
     }
-    for (int i = 0; i <= n; i++) {
+    for (register int i(0); i <= n; ++i) {
       if (e[i][0].f) {
-        string _ans = M(i, 0);
+        register string _ans = M(i, 0);
         if (Cmp(ans, _ans) == -1) {
           ans = _ans;
         }
       }
     }
-    cout << (ans == "" ? "-1" : ans) << endl;
+    cout << (ans == "" ? "-1" : ans) << '\n';
   }
   return 0;
 }
