@@ -32,8 +32,8 @@ inline void M(register int x, register int y) {
 }
 
 int main() {
-  // freopen("stick.in", "r", stdin);
-  // freopen("stick.out", "w", stdout);
+  freopen("stick.in", "r", stdin);
+  freopen("stick.out", "w", stdout);
   cin >> t;
   while (t--) {
     cin >> n >> m;
@@ -42,7 +42,7 @@ int main() {
     for (register int i(0); i <= n; ++i) {
       for (register int j(0); j < m; ++j) {
         if (e[i][j].f) {
-          for (register int k(9); k >= 0; --k) {
+          for (register int k(0); k <= 9; k++) {
             if (i + kN[k] <= n) {
               register int _i = i + kN[k], _j = (j * 10 + k) % m;
               e[_i][_j].f = 1;
