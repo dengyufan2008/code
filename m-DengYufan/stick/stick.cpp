@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstring>
 #define LL long long
 
 using namespace std;
@@ -60,7 +61,7 @@ int main() {
     }
     for (int i = 0; i <= n; i++) {
       string _ans = M(i, 0);
-      if (ans < _ans) {
+      if (e[i][0].d > ans.length() || e[i][0].d == ans.length() && strcmp(ans.c_str(), _ans.c_str()) == -1) {
         ans = _ans;
       }
     }
