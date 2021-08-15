@@ -10,15 +10,15 @@ struct E {
   char ch;
 } e[3001][3001];
 int t, n, m;
-string ans, tmp;
+string ans, tmp, a, b;
 
-inline int Cmp(string x, string y) {
-  if (x.length() != y.length()) {
-    return x.length() > y.length() ? 1 : -1;
+inline int Cmp() {
+  if (a.length() != b.length()) {
+    return a.length() > b.length() ? 1 : -1;
   }
-  for (register int i(0); i < x.length(); ++i) {
-    if (x[i] != y[i]) {
-      return x[i] > y[i] ? 1 : -1;
+  for (register int i(0); i < a.length(); ++i) {
+    if (a[i] != b[i]) {
+      return a[i] > b[i] ? 1 : -1;
     }
   }
   return 0;
@@ -45,11 +45,10 @@ int main() {
           for (register int k(9); k >= 0; --k) {
             if (i + kN[k] <= n) {
               register int _i = i + kN[k], _j = (j * 10 + k) % m;
-              string x, y;
               e[_i][_j].f = 1;
-              tmp = "", M(_i, _j), x = tmp;
-              tmp = "", M(i, j), y = tmp + (char)(k + '0');
-              if (Cmp(x, y) == -1) {
+              tmp = "", M(_i, _j), a = tmp;
+              tmp = "", M(i, j), b = tmp + (char)(k + '0');
+              if (Cmp() == -1) {
                 e[_i][_j].px = i;
                 e[_i][_j].py = j;
                 e[_i][_j].d = e[i][j].d + 1;
@@ -64,7 +63,8 @@ int main() {
       if (e[i][0].f) {
         string _ans;
         tmp = "", M(i, 0), _ans = tmp;
-        if (Cmp(ans, _ans) == -1) {
+        a = ans, b = _ans;
+        if (Cmp() == -1) {
           ans = _ans;
         }
       }
