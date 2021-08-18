@@ -10,8 +10,8 @@ struct E {
 LL n, g, b, d, f[2][1000001];
 
 int main() {
-  // freopen("fuel.in", "r", stdin);
-  // freopen("fuel.out", "w", stdout);
+  freopen("fuel.in", "r", stdin);
+  freopen("fuel.out", "w", stdout);
   cin >> n >> g >> b >> d;
   for (LL i = 1; i <= n; i++) {
     cin >> e[i].x >> e[i].v;
