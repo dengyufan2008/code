@@ -21,14 +21,11 @@ int main() {
   sort(e + 1, e + n + 1, [](E i, E j) {
     return i.x < j.x;
   });
-  e[0] = {0, 1145141919810};
-  e[++n] = {d, 0};
+  e[0].v = 1145141919810, e[++n].x = d;
   for (LL i = 1; i <= n; i++) {
-    for (LL j = 0; j <= g; j++) {
-      if (j + e[i].x - e[i - 1].x <= g) {
-        for (LL k = 0; k <= j + e[i].x - e[i - 1].x; k++) {
-          f[1][j] = min(f[1][j], f[0][k] + (j + e[i].x - e[i - 1].x - k) * e[i - 1].v);
-        }
+    for (LL j = 0; j + e[i].x - e[i - 1].x <= g; j++) {
+      for (LL k = 0; k <= j + e[i].x - e[i - 1].x; k++) {
+        f[1][j] = min(f[1][j], f[0][k] + (j + e[i].x - e[i - 1].x - k) * e[i - 1].v);
       }
     }
     copy(&f[1][0], &f[1][1000000] + 1, &f[0][0]);
