@@ -5,15 +5,15 @@
 
 using namespace std;
 
-int n, ans;
+LL n, ans;
 bool b[150];
 string s[3];
 unordered_set<string> q[3];
 
-void S(int x, int c) {
+void S(LL x, LL c) {
   if (x == n) {
     string tmp = "";
-    for (int i = 0; i < n; i++) {
+    for (LL i = 0; i < n; i++) {
       if (b[i]) {
         tmp += s[c][i];
       }

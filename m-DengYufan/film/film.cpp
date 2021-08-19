@@ -5,7 +5,7 @@
 
 using namespace std;
 
-int n, l, r, mid, ans;
+LL n, l, r, mid, ans;
 double x, y;
 
 int main() {
