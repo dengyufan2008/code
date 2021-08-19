@@ -1,3 +1,4 @@
+#include <cmath>
 #include <ctime>
 #include <iostream>
 #define LL long long
@@ -7,21 +8,15 @@ using namespace std;
 int n, l, r, mid, ans;
 double x, y;
 
-bool C(int d) {
-  double c = (x + d) / (double)(n + d);
-  int _c = c * 10.0 + 0.5;
-  return _c <= y * 10.0;
-}
-
 int main() {
-  // freopen("film.in", "r", stdin);
-  // freopen("film.out", "w", stdout);
+  freopen("film.in", "r", stdin);
+  freopen("film.out", "w", stdout);
   while (cin >> x >> y >> n) {
     l = 0, r = 1e9, ans = 1e9;
-    x = (x + 0.049999999999) * n;
+    x = min(x + 0.049999999999, 10.0) * (double)n, y += 0.0000001;
     while (l <= r) {
       mid = (l + r) >> 1;
-      if (C(mid)) {
+      if (round((x + mid) / (double)(n + mid) * 10.0) / 10.0 <= y) {
         r = mid - 1;
         ans = min(ans, mid);
       } else {
