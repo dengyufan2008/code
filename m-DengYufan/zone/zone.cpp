@@ -21,6 +21,7 @@ void _S(int x, int y, bool c) {
 void S(int x, int y) {
   if (x == n + 1 && y == 1) {
     bool flag = 0, _flag = 0, __flag = 0, ___flag = 0;
+    fill(&_b[0][0], &_b[n][m] + 1, 0);
     for (int i = 1; i <= n; i++) {
       for (int j = 1; j <= m; j++) {
         if (!b[i][j] && !flag) {
@@ -52,7 +53,7 @@ void S(int x, int y) {
 
 int main() {
   freopen("zone.in", "r", stdin);
-  // freopen("zone.out", "w", stdout);
+  freopen("zone.out", "w", stdout);
   cin >> n >> m;
   S(1, 1);
   cout << ans << endl;
