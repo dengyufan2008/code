@@ -9,7 +9,7 @@ struct V {
   int d;
   vector<int> e;
 } v[100001];
-int n, m, s, d[100001][21];
+int n, m, d[100001][21];
 
 void T(int f, int x) {
   for (int i : v[x].e) {
@@ -43,7 +43,7 @@ int main() {
     cin >> x >> y;
     v[x].e.push_back(y), v[y].e.push_back(x);
   }
-  T(0, s);
+  T(0, 1);
   for (int i = 1; i <= 20; i++) {
     for (int j = 1; j <= n; j++) {
       d[j][i] = d[d[j][i - 1]][i - 1];
