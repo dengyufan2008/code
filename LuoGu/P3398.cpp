@@ -1,8 +1,14 @@
 #include <ctime>
 #include <iostream>
+#include <vector>
 #define LL long long
 
 using namespace std;
+
+struct V {
+  vector<int> e;
+} v[100001];
+int n, q;
 
 int main() {
   
