@@ -17,9 +17,8 @@ int main() {
   for (LL i = 1; i <= n; i++) {
     for (LL j = h[i]; j <= 100; j++) {
       for (LL k = h[i - 1]; k <= 100; k++) {
-        f[i][j] = min(f[i][j], f[i - 1][k] + c * abs(j - k));
+        f[i][j] = min(f[i][j], f[i - 1][k] + c * abs(j - k) + (j - h[i]) * (j - h[i]));
       }
-      f[i][j] += (j - h[i]) * (j - h[i]);
     }
   }
   for (LL i = 1; i <= 100; i++) {
