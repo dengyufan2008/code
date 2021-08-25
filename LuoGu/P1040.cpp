@@ -20,6 +20,6 @@ int main() {
     }
   }
   cout << f[1][n] << endl;
-  // cout << endl << "Runtime:" << (double)clock() / 1000.0 << "s" << endl;
+  // cout << "Runtime:" << (double)clock() / 1000.0 << "s" << endl;
   return 0;
 }
