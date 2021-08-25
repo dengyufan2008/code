@@ -5,6 +5,8 @@
     "formulahendry.code-runner",
     "octref.vetur",
     "yzhang.markdown-all-in-one",
-    "yltx.vscode-luogu"
+    "yltx.vscode-luogu",
+    "auchenberg.vscode-browser-preview",
+    "yuichinukiyama.vscode-preview-server"
   ]
 }
