@@ -50,7 +50,7 @@ LL Lca(LL x, LL y) {
       _x = d[_x][i], _y = d[_y][i];
     }
   }
-  return _x == 1 ? 1 : d[_x][0];
+  return _x == _y ? _x : d[_x][0];
 }
 
 int main() {
