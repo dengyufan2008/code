@@ -24,10 +24,14 @@ __int128_t Input() {
 }
 
 void Output(__int128_t x) {
-  if (x / 10) {
+  if (x < 0) {
+    x = -x;
+    putchar('-');
+  }
+  if (x > 9) {
     Output(x / 10);
   }
-  cout << (char)(x % 10 + '0');
+  putchar(x % 10 + '0');
 }
 
 int main() {
