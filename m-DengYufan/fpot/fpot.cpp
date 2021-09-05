@@ -7,6 +7,20 @@ using namespace std;
 
 int n, m, p, l, r = 1e6, mid, ans = 1e7, d[2000001][21], _d[2000001][21];
 
+inline int Input() {
+  register int x(0), f;
+  register char ch = getchar();
+  f = ch == '-' ? -1 : 1;
+  while (ch < '0' || ch > '9') {
+    ch = getchar();
+  }
+  while (ch >= '0' && ch <= '9') {
+    x = (x << 1) + (x << 3) + (ch - '0');
+    ch = getchar();
+  }
+  return f * x;
+}
+
 inline bool C(register int x) {
   if (x >= p) {
     return 1;
@@ -28,12 +42,12 @@ inline bool C(register int x) {
 int main() {
   freopen("fpot.in", "r", stdin);
   freopen("fpot.out", "w", stdout);
-  cin >> n >> m;
+  n = Input(), m = Input();
   for (register int i(0); i <= 2000000; ++i) {
     _d[i][0] = 0x7fffffff;
   }
   for (register int i(1), x, y; i <= n; ++i) {
-    cin >> x >> y;
+    x = Input(), y = Input();
     p = max(p, y), d[x][0] = max(d[x][0], y), _d[x][0] = min(_d[x][0], y);
   }
   for (register int i(1); i <= 20; ++i) {
