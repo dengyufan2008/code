@@ -7,7 +7,7 @@
 using namespace std;
 
 int n;
-double ans = 10000000.0, f[16][16];
+double ans = 10000000.000001, f[16][16];
 pair<double, double> a[16];
 
 int main() {
