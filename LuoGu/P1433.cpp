@@ -7,15 +7,20 @@
 using namespace std;
 
 int n;
-double ans = 10000000.000001, f[16][15][1 << 15];
-pair<double, double> a[15];
+double ans = 10000000.000001, f[15][15][1 << 15];
+pair<double, double> a[16];
 
-bool C(int x, int y) {
+bool C(int x, int y, int z, int k) {
   int c = 0;
   for (int i = 0; i < n; i++) {
-    c += ((1 << i) & y) > 0;
+    c += ((1 << i) & k) > 0;
   }
-  return c == x;
+  return c == x && y != z && ((1 << y) & k) && (((1 << z) & k) || x == 1);
+}
+
+double M(int x, int y) {
+  double c;
+  return c = sqrt(double(a[x].first - a[y].first) * double(a[x].first - a[y].first) + double(a[x].second - a[y].second) * double(a[x].second - a[y].second));
 }
 
 int main() {
@@ -25,19 +30,21 @@ int main() {
   }
   fill(&f[0][0][0], &f[1][0][0], 0.000001);
   fill(&f[1][0][0], &f[15][0][0], 10000000.000001);
-  for (int i = 1; i <= n; i++) {
+  for (int i = 1; i < n; i++) {
     for (int j = 0; j < n; j++) {
-      for (int k = 0; k < (1 << n); k++) {
-        for (int l = 0; l < n; l++) {
-          if (j != l && C(i, k) && ((1 << j) & k) && ((1 << l) & k)) {
-            f[i][j][k] = min(f[i][j][k], f[i - 1][l][k - (1 << j)] + sqrt((a[j].first - a[l].first) * (a[j].first - a[l].first) + (a[j].second - a[l].second) * (a[j].second - a[l].second)));
+      for (int k = 0; k < n; k++) {
+        for (int l = 0; l < (1 << n); l++) {
+          if (C(i, j, k, l)) {
+            f[i][j][l] = min(f[i][j][l], f[i - 1][k][l - (1 << j)] + M(k, j));
           }
         }
       }
     }
   }
   for (int i = 0; i < n; i++) {
-    ans = min(ans, f[n][i][(1 << n) - 1]);
+    for (int j = 0; j < n; j++) {
+      ans = min(ans, f[n - 1][i][(1 << n) - (1 << j) - 1] + M(15, j));
+    }
   }
   cout << fixed << setprecision(2) << ans << endl;
   // cout << "Runtime:" << (double)clock() / 1000.0 << "s" << endl;
