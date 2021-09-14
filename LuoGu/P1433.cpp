@@ -19,8 +19,7 @@ bool C(int x, int y, int z, int k) {
 }
 
 double M(int x, int y) {
-  double c;
-  return c = sqrt(double(a[x].first - a[y].first) * double(a[x].first - a[y].first) + double(a[x].second - a[y].second) * double(a[x].second - a[y].second));
+  return sqrt(double(a[x].first - a[y].first) * double(a[x].first - a[y].first) + double(a[x].second - a[y].second) * double(a[x].second - a[y].second));
 }
 
 int main() {
