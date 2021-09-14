@@ -6,20 +6,33 @@
 
 using namespace std;
 
-int n;
+int n, i;
 double ans = 10000000.000001, f[15][15][1 << 15];
 pair<double, double> a[16];
 
 bool C(int x, int y, int z, int k) {
-  int c = 0;
-  for (int i = 0; i < n; i++) {
-    c += ((1 << i) & k) > 0;
-  }
-  return c == x && y != z && ((1 << y) & k) && (((1 << z) & k) || x == 1);
+  return y != z && ((1 << y) & k) && (((1 << z) & k) || x == 1);
 }
 
 double M(int x, int y) {
   return sqrt(double(a[x].first - a[y].first) * double(a[x].first - a[y].first) + double(a[x].second - a[y].second) * double(a[x].second - a[y].second));
+}
+
+void S(int d, int c, int s) {
+  if (c == n) {
+    return;
+  } else if (!s) {
+    for (int j = 0; j < n; j++) {
+      for (int k = 0; k < n; k++) {
+        if (C(i, j, k, d)) {
+          f[i][j][d] = min(f[i][j][d], f[i - 1][k][d - (1 << j)] + M(k, j));
+        }
+      }
+    }
+    return;
+  }
+  S(d, c + 1, s);
+  S(d + (1 << c), c + 1, s - 1);
 }
 
 int main() {
@@ -29,16 +42,8 @@ int main() {
   }
   fill(&f[0][0][0], &f[1][0][0], 0.000001);
   fill(&f[1][0][0], &f[15][0][0], 10000000.000001);
-  for (int i = 1; i < n; i++) {
-    for (int j = 0; j < n; j++) {
-      for (int k = 0; k < n; k++) {
-        for (int l = 0; l < (1 << n); l++) {
-          if (C(i, j, k, l)) {
-            f[i][j][l] = min(f[i][j][l], f[i - 1][k][l - (1 << j)] + M(k, j));
-          }
-        }
-      }
-    }
+  for (i = 1; i < n; i++) {
+    S(0, 0, i);
   }
   for (int i = 0; i < n; i++) {
     for (int j = 0; j < n; j++) {
