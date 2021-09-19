@@ -19,7 +19,9 @@ int main() {
   }
   for (int i = 1; i <= m; i++) {
     for (int j = 1; j <= n; j++) {
-      
+      for (int k = 0; k < (1 << 12); k++) {
+        d[M(i, j)][k] = d[!M(i, j)][k];
+      }
     }
   }
   // cout << "Runtime:" << (double)clock() / 1000.0 << "s" << endl;
