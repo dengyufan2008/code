@@ -4,7 +4,7 @@
 
 using namespace std;
 
-LL n, m, ans, three[10] = {1}, f[2][59049];
+LL n, m, ans, three[11] = {1}, f[2][59049];
 bool b;
 char a[100][10];
 
@@ -15,7 +15,7 @@ int main() {
       cin >> a[i][j];
     }
   }
-  for (int i = 1; i <= 9; i++) {
+  for (int i = 1; i <= 10; i++) {
     three[i] = three[i - 1] * 3;
   }
   for (LL i = 0; i < n; i++) {
@@ -23,7 +23,7 @@ int main() {
       fill(&f[b][0], &f[b][three[m]], 0);
       b ^= 1;
       for (LL k = 0; k < three[m]; k++) {
-        bool u = k / three[j] % 3, l1 = (j > 0) * k / three[j - 1] % 3, l2 = (j > 1) * k / three[j - 2];
+        bool u = k / three[j] % 3, l1 = j > 0 ? k / three[j - 1] % 3 : 0, l2 = j > 1 ? k / three[j - 2] % 3 : 0;
         f[b ^ 1][k + ((u + 1) % 3 - u) * three[j]] = max(f[b ^ 1][k + ((u + 1) % 3 - u) * three[j]], f[b][k]);
         if (!u && l1 != 1 && l2 != 1) {
           f[b ^ 1][k + three[j]] = max(f[b ^ 1][k + three[j]], f[b][k] + 1);
