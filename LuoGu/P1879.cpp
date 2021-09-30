@@ -17,7 +17,7 @@ int main() {
   }
   for (int i = 0; i < n; i++) {
     for (int j = 0; j < m; j++) {
-      fill(&d[b][0], &d[b][4096], 0);
+      fill(&d[b][0], &d[b][1 << m], 0);
       b ^= 1;
       for (int k = 0; k < (1 << m); k++) {
         bool l = (j > 0) * ((1 << m - 1) & k), u = (i > 0) * (1 & k);
