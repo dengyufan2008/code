@@ -6,33 +6,39 @@
 using namespace std;
 
 struct V {
-  int f[2];  // 0:该节点没有士兵  1:该节点有士兵
+  int r, f[2];
+  bool b;
   vector<int> e;
-} v[1500];
-int n;
+} v[6001];
+int n, s;
 
 void T(int f, int x) {
   for (int i : v[x].e) {
     if (f != i) {
       T(x, i);
-      v[x].f[0] += v[i].f[1];
-      v[x].f[1] += min(v[i].f[0], v[i].f[1]);
+      v[x].f[0] += max(v[i].f[0], v[i].f[1]);
+      v[x].f[1] += v[i].f[0];
     }
   }
-  v[x].f[1]++;
+  v[x].f[1] += v[x].r;
 }
 
 int main() {
   cin >> n;
-  for (int i = 0, x, y, z; i < n; i++) {
-    cin >> x >> y;
-    for (int j = 1; j <= y; j++) {
-      cin >> z;
-      v[i].e.push_back(z), v[z].e.push_back(i);
+  for (int i = 1; i <= n; i++) {
+    cin >> v[i].r;
+  }
+  for (int i = 1, x, y; i < n; i++) {
+    cin >> y >> x;
+    v[y].b = 1, v[x].e.push_back(y), v[y].e.push_back(x);
+  }
+  for (int i = 1; i <= n; i++) {
+    if (!v[i].b) {
+      s = i;
     }
   }
-  T(114514, 0);
-  cout << min(v[0].f[0], v[0].f[1]) << endl;
+  T(114514, s);
+  cout << max(v[s].f[0], v[s].f[1]) << endl;
   // cout << "Runtime:" << (double)clock() / 1000.0 << "s" << endl;
   return 0;
 }
