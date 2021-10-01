@@ -23,7 +23,7 @@ int main() {
       fill(&f[b][0], &f[b][three[m]], 0);
       b ^= 1;
       for (LL k = 0; k < three[m]; k++) {
-        LL x = (j > 1) * k / three[max(j - 3, 0LL)] % 3, y = (j > 0) * k / three[max(j - 2, 0LL)] % 3, z = k / three[max(j - 1, 0LL)] % 3;
+        LL x = (j > 1) * k / three[max(j - 2, 0LL)] % 3, y = (j > 0) * k / three[max(j - 1, 0LL)] % 3, z = k / three[j] % 3;
         f[b ^ 1][k - (z - (z == 1) * 2) * three[j]] = max(f[b ^ 1][k - (z - (z == 1) * 2) * three[j]], f[b][k]);
         if (x != 1 && y != 1 && !z && a[i][j] == 'P') {
           f[b ^ 1][k - (z - 1) * three[j]] = max(f[b ^ 1][k - (z - 1) * three[j]], f[b][k] + 1);
