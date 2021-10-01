@@ -13,17 +13,16 @@
       "stopAtEntry": true,
       "cwd": "${fileDirname}",
       "environment": [],
-      "preLaunchTask": "C++Debug",
       "externalConsole": false,
       "MIMode": "gdb",
       "miDebuggerPath": "C:\\Program Files (x86)\\mingw64\\bin\\gdb.exe",
       "setupCommands": [
         {
-          "description": "为 gdb 启用整齐打印",
+          "description": "Enable pretty-printing for gdb",
           "text": "-enable-pretty-printing",
           "ignoreFailures": true
-        },
-      ],
+        }
+      ]
     },
   ],
 }
