@@ -3,9 +3,10 @@
 	"tasks": [
 		{
 			"type": "cppbuild",
-			"label": "C/C++: cpp.exe 生成活动文件",
+			"label": "C++Debug",
 			"command": "C:\\Program Files (x86)\\mingw64\\bin\\cpp.exe",
 			"args": [
+				"-fdiagnostics-color=always",
 				"-g",
 				"${file}",
 				"-o",
