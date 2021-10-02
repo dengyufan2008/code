@@ -10,8 +10,8 @@ int n, k, m, tot, _ans, ans[100001], b[100001];
 vector<pair<int, int>> v[2];
 
 int main() {
-  freopen("t4.in", "r", stdin);
-  freopen("t4.out", "w", stdout);
+  // freopen("t4.in", "r", stdin);
+  // freopen("t4.out", "w", stdout);
   cin >> n >> k >> m;
   for (int i = 1, x, y, z; i <= m; i++) {
     cin >> x >> y >> z;
@@ -52,6 +52,9 @@ int main() {
   sort(ans + 1, ans + _ans + 1);
   for (int i = 1; i <= _ans; i++) {
     cout << ans[i] << endl;
+  }
+  if (!_ans) {
+    cout << -1 << endl;
   }
   // cout << "Runtime:" << (double)clock() / 1000.0 << "s" << endl;
   return 0;
