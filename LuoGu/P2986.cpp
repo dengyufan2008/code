@@ -9,7 +9,7 @@ struct V {
   LL c, n;  // 子孙总节点数
   vector<pair<LL, LL>> e;
 } v[100001];
-LL n, ans, d[100001];
+LL n, m, ans, d[100001];
 
 void T(LL f, LL x) {
   for (auto i : v[x].e) {
@@ -19,13 +19,15 @@ void T(LL f, LL x) {
       d[1] += v[i.first].n * i.second;
     }
   }
+  v[x].n += v[x].c;
 }
 
 void _T(LL f, LL x) {
   for (auto i : v[x].e) {
     if (f != i.first) {
-      d[i.first] = d[x] + (v[x].c - v[i.first].n) * i.second;
+      d[i.first] = d[x] + (m - 2 * v[i.first].n) * i.second;
       ans = min(ans, d[i.first]);
+      _T(x, i.first);
     }
   }
 }
@@ -34,7 +36,7 @@ int main() {
   cin >> n;
   for (LL i = 1; i <= n; i++) {
     cin >> v[i].c;
-    v[i].n = v[i].c;
+    m += v[i].c;
   }
   for (LL i = 1, x, y, z; i < n; i++) {
     cin >> x >> y >> z;
