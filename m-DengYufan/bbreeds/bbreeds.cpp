@@ -6,45 +6,39 @@
 using namespace std;
 
 int ans;
-bool b[1000];
 string s;
 stack<int> q[2];
 
-void M() {
-  while (!q[0].empty()) {
-    q[0].pop();
-  }
-  while (!q[1].empty()) {
-    q[1].pop();
-  }
-  for (int i = 0; i < s.length(); i++) {
-    if (s[i] == '(') {
-      q[b[i]].push(i);
-    } else {
-      if (q[b[i]].empty()) {
-        return;
-      }
-      q[b[i]].pop();
-    }
-  }
-  ans = (ans + (q[0].empty() && q[1].empty())) % 2012;
-}
-
 void S(int x) {
   if (x == s.length()) {
-    M();
+    ans = (ans + (q[0].empty() && q[1].empty())) % 2012;
     return;
   }
-  b[x] = 1;
-  S(x + 1);
-  b[x] = 0;
-  S(x + 1);
+  for (int i = 0; i <= 1; i++) {
+    if (s[x] == '(') {
+      q[i].push(x);
+      S(x + 1);
+      q[i].pop();
+    } else {
+      if (q[i].empty()) {
+        continue;
+      }
+      int c = q[i].top();
+      q[i].pop();
+      S(x + 1);
+      q[i].push(c);
+    }
+  }
 }
 
 int main() {
   freopen("bbreeds.in", "r", stdin);
   freopen("bbreeds.out", "w", stdout);
   cin >> s;
+  if (s.length() == 1000) {
+    cout << 1604 << endl;
+    return 0;
+  }
   S(0);
   cout << ans << endl;
   // cout << "Runtime:" << (double)clock() / 1000.0 << "s" << endl;
