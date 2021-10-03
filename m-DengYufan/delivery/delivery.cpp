@@ -15,9 +15,10 @@ int main() {
     cin >> a[i].first >> a[i].second;
   }
   a[++n] = a[1];
-  for (int i = 1; i <= n; i++) {  // from i to i + 1
-    
+  for (int i = 1; i < n; i++) {  // from i to i + 1
+
   }
   // cout << "Runtime:" << (double)clock() / 1000.0 << "s" << endl;
   return 0;
 }
+// 双向BFS

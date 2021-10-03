@@ -19,11 +19,11 @@ int main() {
   }
   while (q--) {
     cin >> k;
-    _k = max(m - k + 1, 1);
-    for (int i = 1; i <= min(m, n - k + 1); i++) {
-      _k = p[_k] + 1;
+    _k = n - k + 1;
+    for (int i = n - max(k, m); i >= 0; i--) {
+      _k = p[_k - i] + i;
     }
-    cout << _k - 1 << endl;
+    cout << _k << endl;
   }
   // cout << "Runtime:" << (double)clock() / 1000.0 << "s" << endl;
   return 0;
