@@ -14,7 +14,9 @@ int main() {
     b = 0;
     cin >> n >> m;
     for (LL i = 1; i <= sqrt(n); i++) {
-      b |= (ceil(n / i) + i) * 2 <= m;
+      if (!(n % i)) {
+        b |= (n / i + i) * 2 + 4 <= m;
+      }
     }
     cout << (b ? "Good" : "Miss") << endl;
   }
