@@ -8,12 +8,12 @@ using namespace std;
 int ans, d[2];
 string s;
 
-void S(int x) {
+inline void S(register int x) {
   if (x == s.length()) {
     ans = (ans + (!d[0] && !d[1])) % 2012;
     return;
   }
-  for (int i = 0; i <= 1; i++) {
+  for (register int i(0); i <= 1; ++i) {
     if (s[x] == '(') {
       d[i]++;
       S(x + 1);
@@ -31,6 +31,8 @@ void S(int x) {
 int main() {
   freopen("bbreeds.in", "r", stdin);
   freopen("bbreeds.out", "w", stdout);
+  cin.tie(0), cout.tie(0);
+  ios::sync_with_stdio(0);
   cin >> s;
   if (s.length() == 1000) {
     cout << 1604 << endl;
