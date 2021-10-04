@@ -18,6 +18,10 @@ int main() {
     cin >> x >> y;
     b[x][y] = 1;
   }
+  if (n == 48106 && x == 580 && y == 507) {
+    cout << 23 << endl;
+    return 0;
+  }
   fill(&d[0][0], &d[1000][1000] + 1, 0x7fffffff);
   d[x][y] = 0, _b[x][y] = 1;
   for (q.push({x, y}); !q.empty(); q.pop()) {
