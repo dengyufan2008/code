@@ -4,21 +4,29 @@
 
 using namespace std;
 
-int n, f[251][251][2];
+int n, ans, f[251][251];
 
 int main() {
   cin >> n;
+  fill(&f[0][0], &f[250][250] + 1, -1);
   for (int i = 1; i <= n; i++) {
-    cin >> f[i][i][0];
-    f[i][i][1] = f[i][i][0];
+    cin >> f[i][i];
   }
-  for (int i = 2; i <= n; i++) {
+  for (int i = 1; i <= n; i++) {
     for (int j = 1, k; (k = j + i - 1) <= n; j++) {
-      f[j][k][0] = max(f[j][k - 1][0] + (f[max(j - i, 1)][j - 1][1] == f[j][k - 1][0]), f[j + 1][min(j + i, n)][0] + (f[j + 1][min(j + 1, n)][0] == f[max(j - i, 1)][j - 1][1]));
-      f[j][k][1] = f[j + 1][k][1] + (f[k + 1][min(k + i, n)][0] == f[j + 1][k][1]);
+      for (int l = k + 1; l <= n; l++) {
+        if (f[k + 1][l] != -1 && f[k + 1][l] == f[j][k]) {
+          f[j][l] = f[j][k] + 1;
+        }
+      }
     }
   }
-  cout << max(f[1][n][0], f[1][n][1]) << endl;
+  for (int i = 1; i <= n; i++) {
+    for (int j = 1, k; (k = j + i - 1) <= n; j++) {
+      ans = max(ans, f[j][k]);
+    }
+  }
+  cout << ans << endl;
   // cout << "Runtime:" << (double)clock() / 1000.0 << "s" << endl;
   return 0;
 }
