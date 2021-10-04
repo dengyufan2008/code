@@ -12,11 +12,11 @@ int main() {
   for (int i = 1; i <= n; i++) {
     cin >> f[i][i];
   }
-  for (int i = 1; i <= n; i++) {
+  for (int i = 2; i <= n; i++) {
     for (int j = 1, k; (k = j + i - 1) <= n; j++) {
-      for (int l = k + 1; l <= n; l++) {
-        if (f[k + 1][l] != -1 && f[k + 1][l] == f[j][k]) {
-          f[j][l] = f[j][k] + 1;
+      for (int l = j; l < k; l++) {
+        if (f[j][l] != -1 && f[l + 1][k] != -1 && f[j][l] == f[l + 1][k]) {
+          f[j][k] = max(f[j][k], f[j][l] + 1);
         }
       }
     }
