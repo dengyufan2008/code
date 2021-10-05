@@ -4,26 +4,22 @@
 
 using namespace std;
 
-LL n, a[1001], f[1001][1001];
+int n, a[501], f[501][501];
 
 int main() {
   cin >> n;
-  fill(&f[0][0], &f[1000][1000] + 1, 0x7fffffff);
-  for (LL i = 1; i <= n; i++) {
+  fill(&f[0][0], &f[500][500] + 1, 1000000000);
+  for (int i = 1; i <= n; i++) {
     cin >> a[i];
+    f[i][i] = 1;
   }
-  for (LL i = 1; i <= n; i++) {
-    for (LL j = 1, k; (k = j + i - 1) <= n; j++) {
-      LL _j = j, _k = k;
-      while (a[_j] == a[_k] && _j <= _k) {
-        _j++, _k--;
+  for (int i = 2; i <= n; i++) {
+    for (int j = 1, k; (k = j + i - 1) <= n; j++) {
+      if (a[j] == a[k]) {
+        f[j][k] = min(f[j][k], i == 2 ? 1 : f[j + 1][k - 1]);
       }
-      if (_j > _k) {
-        f[j][k] = 1;
-      } else {
-        for (LL l = _j; l < _k; l++) {
-          f[j][k] = min(f[j][k], f[_j][l] + f[l + 1][_k]);
-        }
+      for (int l = j; l < k; l++) {
+        f[j][k] = min(f[j][k], f[j][l] + f[l + 1][k]);
       }
     }
   }
