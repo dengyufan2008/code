@@ -8,9 +8,9 @@ using namespace std;
 
 struct V {
   LL x, h, v;
-  bool operator<(const V &c) const { return v < c.v; }
-} v[1001];
-LL n, x, p, c, d[1001][1001], f[1001][1001][2];
+  bool operator<(const V &c) const { return x < c.x; }
+} v[1002];
+LL n, x, p, c, d[1002][1002], f[1002][1002][2];
 
 int main() {
   cin >> n >> x;
@@ -19,28 +19,25 @@ int main() {
   }
   for (LL i = 1; i <= n; i++) {
     cin >> v[i].h;
-    c += v[i].h;
   }
   for (LL i = 1; i <= n; i++) {
     cin >> v[i].v;
   }
+
+  v[++n].x = x;
   sort(v + 1, v + n + 1);
   for (LL i = 1; i <= n; i++) {
+    c += v[i].h;
     for (LL j = i; j <= n; j++) {
       d[i][j] = d[i][j - 1] + v[j].v;
     }
   }
-  for (LL i = 9; i >= 0; i--) {
-    if (v[p + (1 << i)].x <= x) {
-      p += 1 << i;
+
+  fill(&f[0][0][0], &f[1000][1000][1] + 1, -1145141919810);
+  for (LL i = 1; i <= n; i++) {
+    if (v[i].x == x) {
+      f[i][i][0] = f[i][i][1] = c;
     }
-  }
-  fill(&f[0][0][0], &f[1000][1000][1] + 1, -1000000000);
-  if (v[p].x == x) {
-    f[p][p][0] = f[p][p][1] = c;
-  } else {
-    f[p][p][0] = f[p][p][1] = c - (x - v[p].x) * d[1][n];
-    f[p + 1][p + 1][0] = f[p + 1][p + 1][1] = c - (v[p + 1].x - x) * d[1][n];
   }
   for (LL i = 2; i <= n; i++) {
     for (LL j = 1, k; (k = j + i - 1) <= n; j++) {
