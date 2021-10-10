@@ -7,45 +7,36 @@
 using namespace std;
 
 struct V {
-  LL x, h, v;
-  bool operator<(const V &c) const { return x < c.x; }
-} v[1002];
-LL n, x, p, c, d[1002][1002], f[1002][1002][2];
+  LL x, y, v;
+} v[1001];
+LL n, s, tot, f[1001][1001][2];
 
 int main() {
-  cin >> n >> x;
+  cin >> n >> s;
   for (LL i = 1; i <= n; i++) {
     cin >> v[i].x;
   }
   for (LL i = 1; i <= n; i++) {
-    cin >> v[i].h;
+    cin >> v[i].y;
   }
   for (LL i = 1; i <= n; i++) {
     cin >> v[i].v;
   }
-
-  v[++n].x = x;
-  sort(v + 1, v + n + 1);
+  sort(v + 1, v + 1 + n, [](V i, V j) { return i.x < j.x; });
   for (LL i = 1; i <= n; i++) {
-    c += v[i].h;
-    for (LL j = i; j <= n; j++) {
-      d[i][j] = d[i][j - 1] + v[j].v;
-    }
+    v[i].v += v[i - 1].v;
+    tot += v[i].y;
   }
-
-  fill(&f[0][0][0], &f[1000][1000][1] + 1, -1145141919810);
   for (LL i = 1; i <= n; i++) {
-    if (v[i].x == x) {
-      f[i][i][0] = f[i][i][1] = c;
-    }
+    f[i][i][0] = f[i][i][1] = -v[n].v * abs(v[i].x - s);
   }
   for (LL i = 2; i <= n; i++) {
     for (LL j = 1, k; (k = j + i - 1) <= n; j++) {
-      f[j][k][0] = max(f[j + 1][k][0] - (v[j + 1].x - v[j].x) * (d[1][n] - d[j + 1][k]), f[j + 1][k][1] - (v[k].x - v[j].x) * (d[1][n] - d[j + 1][k]));
-      f[j][k][1] = max(f[j][k - 1][0] - (v[k].x - v[j].x) * (d[1][n] - d[j][k - 1]), f[j][k - 1][1] - (v[k].x - v[k - 1].x) * (d[1][n] - d[j][k - 1]));
+      f[j][k][0] = max(f[j + 1][k][0] - (v[n].v - v[k].v + v[j].v) * (v[j + 1].x - v[j].x), f[j + 1][k][1] - (v[n].v - v[k].v + v[j].v) * (v[k].x - v[j].x));
+      f[j][k][1] = max(f[j][k - 1][1] - (v[n].v - v[k - 1].v + v[j - 1].v) * (v[k].x - v[k - 1].x), f[j][k - 1][0] - (v[n].v - v[k - 1].v + v[j - 1].v) * (v[k].x - v[j].x));
     }
   }
-  cout << fixed << setprecision(3) << max(f[1][n][0], f[1][n][1]) / 1000.0 << endl;
-  // cout << "Runtime:" << (double)clock() / 1000.0 << "s" << endl;
+  cout << fixed << setprecision(3) << (max(f[1][n][0], f[1][n][1]) + tot) / 1000.0 << endl;
+  // cout << "Runtime:" << clock() / 1000.0 << "s" << endl;
   return 0;
 }
