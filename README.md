@@ -31,7 +31,6 @@
 - Still Updating
 
 ## *Economic Things*
-- Git Push : git push -u origin master
 - C++14 Compile : g++ -std=c++14 -Wl, --stack=0x10000000 -o code.exe code.exe
 - Still Updating
 
