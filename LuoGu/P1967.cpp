@@ -39,7 +39,10 @@ void SpawnTree() {
 void T(int f, int x) {
   v[x].d = v[f].d + 1, d[x][0] = f;
   for (auto i : v[x].e) {
-    T(x, i.first);
+    if (f != i.first) {
+      _d[i.first][0] = i.second;
+      T(x, i.first);
+    }
   }
 }
 
@@ -47,7 +50,7 @@ void MakeST() {
   for (int j = 1; j <= 13; j++) {
     for (int i = 1; i <= n; i++) {
       d[i][j] = d[d[i][j - 1]][j - 1];
-      _d[i][j] = min(_d[i][j - 1], _d[i + (1 << j - 1)][j - 1]);
+      _d[i][j] = min(_d[i][j - 1], _d[d[i][j - 1]][j - 1]);
     }
   }
 }
@@ -58,9 +61,9 @@ int Lca(int x, int y) {
     swap(x, y);
   }
   for (int i = 13; i >= 0; i--) {
-    if (v[x].d + (1 << i) >= v[y].d) {
-      x = d[x][i];
+    if (v[x].d - (1 << i) >= v[y].d) {
       ans = min(ans, _d[x][i]);
+      x = d[x][i];
     }
   }
   for (int i = 13; i >= 0; i--) {
@@ -69,10 +72,7 @@ int Lca(int x, int y) {
       x = d[x][i], y = d[y][i];
     }
   }
-  if (x != y) {
-    ans = min(ans, min(_d[x][0], _d[y][0]));
-  }
-  return x == y ? x : d[x][0];
+  return x == y ? ans : min(ans, min(_d[x][0], _d[y][0]));
 }
 
 int main() {
@@ -81,13 +81,17 @@ int main() {
     cin >> e[i].x >> e[i].y >> e[i].v;
   }
   SpawnTree();
-  T(0, 1);
+  for (int i = 1; i <= n; i++) {
+    if (!v[i].d) {
+      T(0, i);
+    }
+  }
   MakeST();
   cin >> q;
   while (q--) {
     cin >> x >> y;
     int c = Lca(x, y);
-    cout << (c == 114514 ? -1 : c) << '\n';
+    cout << (c == 0 ? -1 : c) << '\n';
   }
   // cout << "Runtime:" << (double)clock() / 1000.0 << "s" << endl;
   return 0;
