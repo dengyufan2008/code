@@ -1,7 +1,7 @@
 #include <ctime>
 #include <iostream>
 #define LL long long
-#define UNICODE
+
 
 using namespace std;
 
