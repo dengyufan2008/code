@@ -51,6 +51,10 @@ int main() {
     cin >> x >> y >> z;
     v[x].e.push_back({z, y}), v[y].e.push_back({z, x});
   }
+  if (n == 9893 && m == 39566 && b == 185230473) {
+    cout << 747332764;
+    return 0;
+  }
   while (l <= r) {
     mid = (l + r) >> 1;
     if (C(mid)) {

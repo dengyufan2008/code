@@ -13,14 +13,12 @@ int main() {
     cin >> a[i].first >> a[i].second;
   }
   for (int i = 1; i <= n; i++) {
-    for (int j = 1; j <= n; j++) {
-      if (i != j) {
-        int num = 0;
-        for (int k = 1; k <= n; k++) {
-          num += (a[i].first - a[k].first) * (a[j].second - a[k].second) - (a[i].second - a[k].second) * (a[j].first - a[k].first) == 0;
-        }
-        ans = max(ans, num);
+    for (int j = i + 1; j <= n; j++) {
+      int num = 2;
+      for (int k = j + 1; k <= n; k++) {
+        num += (a[i].first - a[k].first) * (a[j].second - a[k].second) - (a[i].second - a[k].second) * (a[j].first - a[k].first) == 0;
       }
+      ans = max(ans, num);
     }
   }
   cout << ans;
