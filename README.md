@@ -8,9 +8,9 @@
 - Start Coding : 2019.8.16
 - Registing in Luogu : 2019.9.15
 - Gold Name in Luogu : 2021.10.21
-- CSP Jenior Second Grade : 2020
-- CSP Jenior First Grade : 2021
-- CSP Senior Second Grade : 2021
+- CSP Jenior Second Prize : 2020
+- CSP Jenior First Prize : 2021
+- CSP Senior Second Prize : 2021
 - Still Updating
 
 ## *Accounts*
@@ -31,7 +31,7 @@
 - Still Updating
 
 ## *Economic Things*
-- C++14 Compile : g++ -std=c++14 -Wl, --stack=0x10000000 -o code.exe code.exe
+- C++14 Compile : g++ -std=c++14 -Wl, --stack=0x10000000 -o code.cpp code.exe
 - Still Updating
 
 ## *Code*
