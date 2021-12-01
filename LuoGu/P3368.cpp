@@ -25,16 +25,18 @@ int m;
 
 int main() {
   cin >> h.n >> m;
-  for (int i = 1, x; i <= h.n; i++) {
+  for (int i = 1, x, _x = 0; i <= h.n; i++) {
     cin >> x;
-    h.Add(i, x);
+    h.Add(i, x - _x), _x = x;
   }
-  for (int i = 1, c, x, y; i <= m; i++) {
-    cin >> c >> x >> y;
+  for (int i = 1, c, x, y, z; i <= m; i++) {
+    cin >> c;
     if (c == 1) {
-      h.Add(x, y);
+      cin >> x >> y >> z;
+      h.Add(x, z), h.Add(y + 1, -z);
     } else {
-      cout << h.Find(y) - h.Find(x - 1) << '\n';
+      cin >> x;
+      cout << h.Find(x) << '\n';
     }
   }
   // cout << "Runtime:" << (double)clock() / 1000.0 << "s" << endl;
