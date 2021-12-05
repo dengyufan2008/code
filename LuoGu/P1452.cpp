@@ -8,7 +8,7 @@
 
 using namespace std;
 
-int n, p = 1, d[50001] = {0, 1};
+int n, p = 1, s, d[50001] = {0, 1};
 Pii c = {100000, 100000}, a[50001];
 
 double Cross(Pii k, Pii x, Pii y) {
@@ -33,7 +33,9 @@ int main() {
     }
     d[++p] = i;
   }
-  
+  for (int i = 1; i <= p; i++) {
+    
+  }
   // cout << "Runtime:" << (double)clock() / 1000.0 << "s" << endl;
   return 0;
 }
