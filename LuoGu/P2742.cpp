@@ -8,9 +8,9 @@
 
 using namespace std;
 
-int n, p, d[100001] = {0, 1};
+int n, p = 1, d[100001] = {0, 1};
 double ans;
-Pdd a[100001];
+Pdd c = {10000000, 10000000}, a[100001];
 
 double Cross(Pdd k, Pdd x, Pdd y) {
   return (x.first - k.first) * (y.second - k.second) - (y.first - k.first) * (x.second - k.second);
@@ -24,18 +24,13 @@ int main() {
   cin >> n;
   for (int i = 1; i <= n; i++) {
     cin >> a[i].first >> a[i].second;
-    if (!p || a[p] > a[i]) {
-      p = i;
-    }
+    c = min(c, a[i]);
   }
-  swap(a[1], a[p]);
-  sort(a + 2, a + n + 1, [](Pdd i, Pdd j) {
-    return Cross(a[1], i, j) > 0 || Cross(a[1], i, j) == 0 && Dis(a[1], i) < Dis(a[1], j);
+  sort(a + 1, a + n + 1, [](Pdd i, Pdd j) {
+    return Cross(c, i, j) > 0 || Cross(c, i, j) == 0 && Dis(c, i) < Dis(c, j);
   });
-  p = 1;
   for (int i = 2; i <= n; i++) {
-    while (p > 1 && Cross(a[d[p - 1]], a[d[p]], a[i]) < 0) {
-      p--;
+    for (; p > 1 && Cross(a[d[p - 1]], a[d[p]], a[i]) < 0; p--) {
     }
     d[++p] = i;
   }
