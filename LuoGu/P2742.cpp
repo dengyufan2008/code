@@ -8,7 +8,8 @@
 
 using namespace std;
 
-int n, p, ans, d[100001] = {0, 1};
+int n, p, d[100001] = {0, 1};
+double ans;
 Pdd a[100001] = {{10000000, 10000000}};
 
 double ChaCheng(Pdd k, Pdd x, Pdd y) {
