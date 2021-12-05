@@ -9,7 +9,7 @@ LL n;
 bool b[1001];
 pair<LL, LL> a[1001] = {{0, 0}};
 
-LL ChaCheng(LL o, LL x, LL y) {
+LL Cross(LL o, LL x, LL y) {
   return (a[x].first - a[o].first) * (a[y].second - a[o].second) - (a[y].first - a[o].first) * (a[x].second - a[o].second);
 }
 
@@ -26,7 +26,7 @@ int main() {
   for (LL i = 1, p = 0; i <= n; i++) {
     LL mx = 0;
     for (LL j = 1; j <= n; j++) {
-      if (!b[j] && (!mx || ChaCheng(p, mx, j) < 0 || ChaCheng(p, mx, j) == 0 && Dis(p, j) < Dis(p, mx))) {
+      if (!b[j] && (!mx || Cross(p, mx, j) < 0 || Cross(p, mx, j) == 0 && Dis(p, j) < Dis(p, mx))) {
         mx = j;
       }
     }
