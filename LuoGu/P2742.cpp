@@ -34,10 +34,11 @@ int main() {
     }
     d[++p] = i;
   }
+  ans = Dis(a[d[1]], a[d[p]]);
   for (int i = 1; i < p; i++) {
     ans += Dis(a[d[i]], a[d[i + 1]]);
   }
-  cout << fixed << setprecision(2) << ans + Dis(a[d[p]], a[d[1]]);
+  cout << fixed << setprecision(2) << ans;
   // cout << "Runtime:" << (double)clock() / 1000.0 << "s" << endl;
   return 0;
 }
