@@ -10,7 +10,7 @@ using namespace std;
 
 int n, p, d[100001] = {0, 1};
 double ans;
-Pdd a[100001] = {{10000000, 10000000}};
+Pdd a[100001];
 
 double ChaCheng(Pdd k, Pdd x, Pdd y) {
   return (x.first - k.first) * (y.second - k.second) - (y.first - k.first) * (x.second - k.second);
@@ -24,7 +24,7 @@ int main() {
   cin >> n;
   for (int i = 1; i <= n; i++) {
     cin >> a[i].first >> a[i].second;
-    if (a[p] > a[i]) {
+    if (!p || a[p] > a[i]) {
       p = i;
     }
   }
@@ -34,7 +34,7 @@ int main() {
   });
   p = 1;
   for (int i = 2; i <= n; i++) {
-    while (ChaCheng(a[d[p - 1]], a[d[p]], a[i]) < 0) {
+    while (p > 1 && ChaCheng(a[d[p - 1]], a[d[p]], a[i]) < 0) {
       p--;
     }
     d[++p] = i;
