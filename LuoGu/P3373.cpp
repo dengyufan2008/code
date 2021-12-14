@@ -22,10 +22,10 @@ void Build(int s, int l, int r) {
 
 void SpreadTime(int s) {
   if (v[s].t > 1) {
-    v[s << 1].d *= v[s].t;
-    v[s << 1 | 1].d *= v[s].t;
-    v[s << 1].a *= v[s].t, v[s << 1].t *= v[s].t;
-    v[s << 1 | 1].a *= v[s].t, v[s << 1 | 1].t *= v[s].t;
+    v[s << 1].d = v[s << 1].d * v[s].t % p;
+    v[s << 1 | 1].d = v[s << 1 | 1].d * v[s].t % p;
+    v[s << 1].a = v[s << 1].a * v[s].t % p, v[s << 1].t = v[s << 1].t * v[s].t % p;
+    v[s << 1 | 1].a = (v[s << 1 | 1].a * v[s].t) % p, v[s << 1 | 1].t = (v[s << 1 | 1].t * v[s].t) % p;
     v[s].t = 1;
   }
 }
