@@ -42,7 +42,7 @@ void SpreadAdd(int s) {
 
 void Time(int s, int l, int r, int x) {
   if (v[s].l >= l && v[s].r <= r) {
-    v[s].d *= x, v[s].a *= x, v[s].t *= x;
+    v[s].d = (v[s].d * x) % p, v[s].a = (v[s].a * x) % p, v[s].t = (v[s].t * x) % p;
     return;
   }
   SpreadTime(s);
@@ -53,7 +53,7 @@ void Time(int s, int l, int r, int x) {
   if (mid < r) {
     Time(s << 1 | 1, l, r, x);
   }
-  v[s].d = v[s << 1].d + v[s << 1 | 1].d;
+  v[s].d = (v[s << 1].d + v[s << 1 | 1].d) % p;
 }
 
 void Add(int s, int l, int r, int x) {
