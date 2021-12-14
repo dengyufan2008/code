@@ -38,7 +38,7 @@ void Build(LL s, LL l, LL r) {
 
 void Spread(LL s) {
   if (v[s].c > 1 << 31) {
-    v[s << 1].d = v[s << 1 | 1].d = v[s].c;
+    v[s << 1].c = v[s << 1 | 1].c = v[s << 1].d = v[s << 1 | 1].d = v[s].c;
     v[s << 1].s = v[s << 1 | 1].s = 0;
   }
   v[s << 1].d += v[s].s, v[s << 1 | 1].d += v[s].s;
