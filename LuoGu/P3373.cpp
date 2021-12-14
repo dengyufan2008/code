@@ -20,24 +20,14 @@ void Build(LL s, LL l, LL r) {
   v[s].d = (v[s << 1].d + v[s << 1 | 1].d) % p;
 }
 
-void SpreadTime(LL s) {
-  if (v[s].t > 1) {
-    v[s << 1].d = v[s << 1].d * v[s].t % p;
-    v[s << 1 | 1].d = v[s << 1 | 1].d * v[s].t % p;
-    v[s << 1].a = v[s << 1].a * v[s].t % p, v[s << 1].t = v[s << 1].t * v[s].t % p;
-    v[s << 1 | 1].a = (v[s << 1 | 1].a * v[s].t) % p, v[s << 1 | 1].t = (v[s << 1 | 1].t * v[s].t) % p;
-    v[s].t = 1;
-  }
-}
-
-void SpreadAdd(LL s) {
-  if (v[s].a > 0) {
-    v[s << 1].a = (v[s << 1].a + v[s].a) % p;
-    v[s << 1 | 1].a = (v[s << 1 | 1].a + v[s].a) % p;
-    v[s << 1].d = (v[s << 1].d + (v[s << 1].r - v[s << 1].l + 1) * v[s].a) % p;
-    v[s << 1 | 1].d = (v[s << 1 | 1].d + (v[s << 1 | 1].r - v[s << 1 | 1].l + 1) * v[s].a) % p;
-    v[s].a = 0;
-  }
+void Spread(LL s) {
+  v[s << 1].d = (v[s].t * v[s << 1].d + (v[s << 1].r - v[s << 1].l + 1) * v[s].a % p) % p;
+  v[s << 1 | 1].d = (v[s].t * v[s << 1 | 1].d + (v[s << 1 | 1].r - v[s << 1 | 1].l + 1) * v[s].a % p) % p;
+  v[s << 1].t = v[s << 1].t * v[s].t % p;
+  v[s << 1 | 1].t = v[s << 1 | 1].t * v[s].t % p;
+  v[s << 1].a = (v[s << 1].a * v[s].t + v[s].a) % p;
+  v[s << 1 | 1].a = (v[s << 1 | 1].a * v[s].t + v[s].a) % p;
+  v[s].t = 1, v[s].a = 0;
 }
 
 void Time(LL s, LL l, LL r, LL x) {
@@ -45,7 +35,7 @@ void Time(LL s, LL l, LL r, LL x) {
     v[s].d = (v[s].d * x) % p, v[s].a = (v[s].a * x) % p, v[s].t = (v[s].t * x) % p;
     return;
   }
-  SpreadTime(s);
+  Spread(s);
   LL mid = (v[s].l + v[s].r) >> 1;
   if (mid >= l) {
     Time(s << 1, l, r, x);
@@ -61,7 +51,7 @@ void Add(LL s, LL l, LL r, LL x) {
     v[s].d = (v[s].d + (v[s].r - v[s].l + 1) * x) % p, v[s].a = (v[s].a + x) % p;
     return;
   }
-  SpreadAdd(s);
+  Spread(s);
   LL mid = (v[s].l + v[s].r) >> 1;
   if (mid >= l) {
     Add(s << 1, l, r, x);
@@ -76,7 +66,7 @@ LL Ask(LL s, LL l, LL r) {
   if (v[s].l >= l && v[s].r <= r) {
     return v[s].d;
   }
-  SpreadTime(s), SpreadAdd(s);
+  Spread(s);
   LL mid = (v[s].l + v[s].r) >> 1, ans = 0;
   if (mid >= l) {
     ans = (ans + Ask(s << 1, l, r)) % p;
