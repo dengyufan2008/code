@@ -25,17 +25,6 @@ LL Read() {
   return f * x;
 }
 
-void Print(LL x) {
-  if (x < 0) {
-    putchar('-');
-    x = -x;
-  }
-  if (x > 9) {
-    Print(x / 10);
-  }
-  putchar(x % 10 + 48);
-}
-
 void Build(LL s, LL l, LL r) {
   v[s].l = l, v[s].r = r;
   if (l == r) {
@@ -121,8 +110,7 @@ int main() {
       Add(1, l, r, x);
     } else {
       l = Read(), r = Read();
-      Print(Ask(1, l, r));
-      puts("");
+      cout << Ask(1, l, r) << '\n';
     }
   }
   // cout << "Runtime:" << (double)clock() / 1000.0 << "s" << endl;
