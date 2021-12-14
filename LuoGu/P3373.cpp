@@ -58,7 +58,7 @@ void Time(int s, int l, int r, int x) {
 
 void Add(int s, int l, int r, int x) {
   if (v[s].l >= l && v[s].r <= r) {
-    v[s].d += (v[s].r - v[s].l + 1) * x, v[s].a += x;
+    v[s].d = (v[s].d + (v[s].r - v[s].l + 1) * x) % p, v[s].a = (v[s].a + x) % p;
     return;
   }
   SpreadAdd(s);
@@ -69,7 +69,7 @@ void Add(int s, int l, int r, int x) {
   if (mid < r) {
     Add(s << 1 | 1, l, r, x);
   }
-  v[s].d = v[s << 1].d + v[s << 1 | 1].d;
+  v[s].d = (v[s << 1].d + v[s << 1 | 1].d) % p;
 }
 
 int Ask(int s, int l, int r) {
