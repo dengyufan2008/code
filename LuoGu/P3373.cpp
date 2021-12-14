@@ -79,10 +79,10 @@ int Ask(int s, int l, int r) {
   SpreadTime(s), SpreadAdd(s);
   int mid = (v[s].l + v[s].r) >> 1, ans = 0;
   if (mid >= l) {
-    ans += Ask(s << 1, l, r);
+    ans = (ans + Ask(s << 1, l, r)) % p;
   }
   if (mid < r) {
-    ans += Ask(s << 1 | 1, l, r);
+    ans = (ans + Ask(s << 1 | 1, l, r)) % p;
   }
   return ans;
 }
