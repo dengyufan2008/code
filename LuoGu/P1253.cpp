@@ -9,6 +9,33 @@ struct V {
 } v[4000001];
 LL n, q, a[1000001];
 
+LL Read() {
+  LL f = 1, x = 0;
+  char ch = getchar();
+  while (ch < '0' || ch > '9') {
+    if (ch == '-') {
+      f = -1;
+    }
+    ch = getchar();
+  }
+  while (ch > '/' && ch < ':') {
+    x = (x << 3) + (x << 1) + (ch - '0');
+    ch = getchar();
+  }
+  return f * x;
+}
+
+void Print(LL x) {
+  if (x < 0) {
+    putchar('-');
+    x = -x;
+  }
+  if (x > 9) {
+    Print(x / 10);
+  }
+  putchar(x % 10 + 48);
+}
+
 void Build(LL s, LL l, LL r) {
   v[s].l = l, v[s].r = r;
   if (l == r) {
@@ -79,22 +106,23 @@ LL Ask(LL s, LL l, LL r) {
 }
 
 int main() {
-  cin >> n >> q;
+  n = Read(), q = Read();
   for (LL i = 1; i <= n; i++) {
-    cin >> a[i];
+    a[i] = Read();
   }
   Build(1, 1, n);
   for (LL i = 1, p, l, r, x; i <= q; i++) {
-    cin >> p;
+    p = Read();
     if (p == 1) {
-      cin >> l >> r >> x;
+      l = Read(), r = Read(), x = Read();
       Change(1, l, r, x);
     } else if (p == 2) {
-      cin >> l >> r >> x;
+      l = Read(), r = Read(), x = Read();
       Add(1, l, r, x);
     } else {
-      cin >> l >> r;
-      cout << Ask(1, l, r) << '\n';
+      l = Read(), r = Read();
+      Print(Ask(1, l, r));
+      puts("");
     }
   }
   // cout << "Runtime:" << (double)clock() / 1000.0 << "s" << endl;
