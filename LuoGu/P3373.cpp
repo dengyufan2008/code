@@ -6,18 +6,18 @@ using namespace std;
 
 struct V {
   int l, r, d, a, t = 1;  // Data, AddMark, TimeMark
-} v[401];
+} v[400001];
 int n, m, p, a[100001];
 
 void Build(int s, int l, int r) {
   v[s].l = l, v[s].r = r;
   if (l == r) {
-    v[s].d = a[l];
+    v[s].d = a[l] % p;
     return;
   }
   int mid = (l + r) >> 1;
   Build(s << 1, l, mid), Build(s << 1 | 1, mid + 1, r);
-  v[s].d = v[s << 1].d + v[s << 1 | 1].d;
+  v[s].d = (v[s << 1].d + v[s << 1 | 1].d) % p;
 }
 
 void SpreadTime(int s) {
@@ -32,10 +32,10 @@ void SpreadTime(int s) {
 
 void SpreadAdd(int s) {
   if (v[s].a > 0) {
-    v[s << 1].a += v[s].a;
-    v[s << 1 | 1].a += v[s].a;
-    v[s << 1].d += (v[s << 1].r - v[s << 1].l + 1) * v[s].a;
-    v[s << 1 | 1].d += (v[s << 1 | 1].r - v[s << 1 | 1].l + 1) * v[s].a;
+    v[s << 1].a = (v[s << 1].a + v[s].a) % p;
+    v[s << 1 | 1].a = (v[s << 1 | 1].a + v[s].a) % p;
+    v[s << 1].d = (v[s << 1].d + (v[s << 1].r - v[s << 1].l + 1) * v[s].a) % p;
+    v[s << 1 | 1].d = (v[s << 1 | 1].d + (v[s << 1 | 1].r - v[s << 1 | 1].l + 1) * v[s].a) % p;
     v[s].a = 0;
   }
 }
