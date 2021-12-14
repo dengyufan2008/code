@@ -25,8 +25,7 @@ void Spread(LL s) {
     v[s << 1].d = v[s << 1 | 1].d = v[s].c;
     v[s << 1].s = v[s << 1 | 1].s = 0;
   }
-  v[s << 1].d += (v[s << 1].r - v[s << 1].l + 1) * v[s].s;
-  v[s << 1 | 1].d += (v[s << 1 | 1].r - v[s << 1 | 1].l + 1) * v[s].s;
+  v[s << 1].d += v[s].s, v[s << 1 | 1].d += v[s].s;
   v[s << 1].s += v[s].s, v[s << 1 | 1].s += v[s].s;
   v[s].c = 1 << 31, v[s].s = 0;
 }
@@ -37,6 +36,7 @@ void Change(LL s, LL l, LL r, LL x) {
     v[s].d = v[s].c = x;
     return;
   }
+  Spread(s);
   LL mid = (v[s].l + v[s].r) >> 1;
   if (mid >= l) {
     Change(s << 1, l, r, x);
@@ -49,9 +49,10 @@ void Change(LL s, LL l, LL r, LL x) {
 
 void Add(LL s, LL l, LL r, LL x) {
   if (v[s].l >= l && v[s].r <= r) {
-    v[s].d += (v[s].r - v[s].l + 1) * x, v[s].s += x;
+    v[s].d += x, v[s].s += x;
     return;
   }
+  Spread(s);
   LL mid = (v[s].l + v[s].r) >> 1;
   if (mid >= l) {
     Add(s << 1, l, r, x);
