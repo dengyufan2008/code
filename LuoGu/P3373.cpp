@@ -5,8 +5,8 @@
 using namespace std;
 
 struct V {
-  int l, r, d, a, t;  // Data, AddMark, TimeMark
-} v[400001];
+  int l, r, d, a, t = 1;  // Data, AddMark, TimeMark
+} v[401];
 int n, m, p, a[100001];
 
 void Build(int s, int l, int r) {
@@ -48,10 +48,10 @@ void Time(int s, int l, int r, int x) {
   SpreadTime(s);
   int mid = (v[s].l + v[s].r) >> 1;
   if (mid >= l) {
-    Time(s << 1, l, mid, x);
+    Time(s << 1, l, r, x);
   }
   if (mid < r) {
-    Time(s << 1 | 1, mid + 1, r, x);
+    Time(s << 1 | 1, l, r, x);
   }
   v[s].d = v[s << 1].d + v[s << 1 | 1].d;
 }
@@ -64,10 +64,10 @@ void Add(int s, int l, int r, int x) {
   SpreadAdd(s);
   int mid = (v[s].l + v[s].r) >> 1;
   if (mid >= l) {
-    Add(s << 1, l, mid, x);
+    Add(s << 1, l, r, x);
   }
   if (mid < r) {
-    Add(s << 1 | 1, mid + 1, r, x);
+    Add(s << 1 | 1, l, r, x);
   }
   v[s].d = v[s << 1].d + v[s << 1 | 1].d;
 }
@@ -79,10 +79,10 @@ int Ask(int s, int l, int r) {
   SpreadTime(s), SpreadAdd(s);
   int mid = (v[s].l + v[s].r) >> 1, ans = 0;
   if (mid >= l) {
-    ans += Ask(s << 1, l, mid);
+    ans += Ask(s << 1, l, r);
   }
   if (mid < r) {
-    ans += Ask(s << 1 | 1, mid + 1, r);
+    ans += Ask(s << 1 | 1, l, r);
   }
   return ans;
 }
