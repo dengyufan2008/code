@@ -5,22 +5,22 @@
 using namespace std;
 
 struct V {
-  int l, r, d, a, t = 1;  // Data, AddMark, TimeMark
+  LL l, r, d, a, t = 1;  // Data, AddMark, TimeMark
 } v[400001];
-int n, m, p, a[100001];
+LL n, m, p, a[100001];
 
-void Build(int s, int l, int r) {
+void Build(LL s, LL l, LL r) {
   v[s].l = l, v[s].r = r;
   if (l == r) {
     v[s].d = a[l] % p;
     return;
   }
-  int mid = (l + r) >> 1;
+  LL mid = (l + r) >> 1;
   Build(s << 1, l, mid), Build(s << 1 | 1, mid + 1, r);
   v[s].d = (v[s << 1].d + v[s << 1 | 1].d) % p;
 }
 
-void SpreadTime(int s) {
+void SpreadTime(LL s) {
   if (v[s].t > 1) {
     v[s << 1].d = v[s << 1].d * v[s].t % p;
     v[s << 1 | 1].d = v[s << 1 | 1].d * v[s].t % p;
@@ -30,7 +30,7 @@ void SpreadTime(int s) {
   }
 }
 
-void SpreadAdd(int s) {
+void SpreadAdd(LL s) {
   if (v[s].a > 0) {
     v[s << 1].a = (v[s << 1].a + v[s].a) % p;
     v[s << 1 | 1].a = (v[s << 1 | 1].a + v[s].a) % p;
@@ -40,13 +40,13 @@ void SpreadAdd(int s) {
   }
 }
 
-void Time(int s, int l, int r, int x) {
+void Time(LL s, LL l, LL r, LL x) {
   if (v[s].l >= l && v[s].r <= r) {
     v[s].d = (v[s].d * x) % p, v[s].a = (v[s].a * x) % p, v[s].t = (v[s].t * x) % p;
     return;
   }
   SpreadTime(s);
-  int mid = (v[s].l + v[s].r) >> 1;
+  LL mid = (v[s].l + v[s].r) >> 1;
   if (mid >= l) {
     Time(s << 1, l, r, x);
   }
@@ -56,13 +56,13 @@ void Time(int s, int l, int r, int x) {
   v[s].d = (v[s << 1].d + v[s << 1 | 1].d) % p;
 }
 
-void Add(int s, int l, int r, int x) {
+void Add(LL s, LL l, LL r, LL x) {
   if (v[s].l >= l && v[s].r <= r) {
     v[s].d = (v[s].d + (v[s].r - v[s].l + 1) * x) % p, v[s].a = (v[s].a + x) % p;
     return;
   }
   SpreadAdd(s);
-  int mid = (v[s].l + v[s].r) >> 1;
+  LL mid = (v[s].l + v[s].r) >> 1;
   if (mid >= l) {
     Add(s << 1, l, r, x);
   }
@@ -72,12 +72,12 @@ void Add(int s, int l, int r, int x) {
   v[s].d = (v[s << 1].d + v[s << 1 | 1].d) % p;
 }
 
-int Ask(int s, int l, int r) {
+LL Ask(LL s, LL l, LL r) {
   if (v[s].l >= l && v[s].r <= r) {
     return v[s].d;
   }
   SpreadTime(s), SpreadAdd(s);
-  int mid = (v[s].l + v[s].r) >> 1, ans = 0;
+  LL mid = (v[s].l + v[s].r) >> 1, ans = 0;
   if (mid >= l) {
     ans = (ans + Ask(s << 1, l, r)) % p;
   }
@@ -89,11 +89,11 @@ int Ask(int s, int l, int r) {
 
 int main() {
   cin >> n >> m >> p;
-  for (int i = 1; i <= n; i++) {
+  for (LL i = 1; i <= n; i++) {
     cin >> a[i];
   }
   Build(1, 1, n);
-  for (int i = 1, c, x, y, k; i <= m; i++) {
+  for (LL i = 1, c, x, y, k; i <= m; i++) {
     cin >> c;
     if (c == 1) {
       cin >> x >> y >> k;
