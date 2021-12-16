@@ -4,8 +4,9 @@
 
 using namespace std;
 
+const LL kInf = -1LL << 61;
 struct V {
-  LL l, r, d, c = 1 << 31, s;
+  LL l, r, d, c = kInf, s;
 } v[4000001];
 LL n, q, a[1000001];
 
@@ -37,10 +38,10 @@ void Build(LL s, LL l, LL r) {
 }
 
 void Spread(LL s) {
-  if (v[s].c > 1 << 31) {
+  if (v[s].c != kInf) {
     v[s << 1].c = v[s << 1 | 1].c = v[s << 1].d = v[s << 1 | 1].d = v[s].c;
     v[s << 1].s = v[s << 1 | 1].s = 0;
-    v[s].c = 1 << 31;
+    v[s].c = kInf;
   }
   v[s << 1].d += v[s].s, v[s << 1 | 1].d += v[s].s;
   v[s << 1].s += v[s].s, v[s << 1 | 1].s += v[s].s;
@@ -84,7 +85,7 @@ LL Ask(LL s, LL l, LL r) {
     return v[s].d;
   }
   Spread(s);
-  LL mid = (v[s].l + v[s].r) >> 1, ans = 1 << 31;
+  LL mid = (v[s].l + v[s].r) >> 1, ans = kInf;
   if (mid >= l) {
     ans = max(ans, Ask(s << 1, l, r));
   }
