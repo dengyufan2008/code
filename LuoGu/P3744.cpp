@@ -27,6 +27,6 @@ int main() {
   for (int i = 2; i <= n - 1; i++) {
     ans = min(ans, Cross(p[i], p[i - 1], p[i + 1]) / Dis(p[i - 1], p[i + 1]) / 2.0);
   }
-  cout << fixed << setprecision(20) << ans;
+  cout << fixed << setprecision(10) << ans;
   return 0;
 }
