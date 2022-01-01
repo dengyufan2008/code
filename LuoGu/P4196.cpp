@@ -1,13 +1,15 @@
+#include <iomanip>
 #include <iostream>
 #include <vector>
 #define PDD pair<double, double>
 
 using namespace std;
 
-const int kInf = 2147483847;
-int n;
-pair<PDD, PDD> l[50001];
+const double kInf = 1e4;
+int n, m;
+double ans;
 vector<PDD> a, _a;
+PDD d[51];
 
 double Cross(PDD s, PDD x, PDD y) {
   return (x.first - s.first) * (y.second - s.second) - (x.second - s.second) * (y.first - s.first);
@@ -34,12 +36,19 @@ void M(PDD x, PDD y) {
 int main() {
   a.push_back({kInf, kInf}), a.push_back({-kInf, kInf}), a.push_back({-kInf, -kInf}), a.push_back({kInf, -kInf}), a.push_back(a[0]);
   cin >> n;
-  for (int i = 1, a, b; i <= n; i++) {
-    cin >> a >> b;
-    l[i] = {{-1, -a + b}, {1, a + b}};
+  while (n--) {
+    cin >> m;
+    for (int i = 1; i <= m; i++) {
+      cin >> d[i].first >> d[i].second;
+    }
+    d[0] = d[m];
+    for (int i = 1; i <= m; i++) {
+      M(d[i - 1], d[i]);
+    }
   }
-  for (int i = 1; i <= n; i++) {
-    M(l[i].first, l[i].second);
+  for (int i = 1; i < a.size(); i++) {
+    ans += Cross({0, 0}, a[i - 1], a[i]);
   }
+  cout << fixed << setprecision(3) << ans / 2;
   return 0;
 }
