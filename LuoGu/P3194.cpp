@@ -4,7 +4,7 @@
 
 using namespace std;
 
-const int kInf = 2147483847;
+const double kInf = 114514191981.0;
 int n;
 pair<PDD, PDD> l[50001];
 vector<PDD> a, _a;
@@ -21,11 +21,11 @@ PDD P(PDD x, PDD y, PDD p, PDD q) {
 void M(PDD x, PDD y) {
   _a.clear();
   for (int i = 1; i < a.size(); i++) {
+    if (Cross(x, y, a[i]) <= 0) {
+      _a.push_back(a[i]);
+    }
     if (Cross(x, y, a[i]) * Cross(x, y, a[i - 1]) <= 0) {
       _a.push_back(P(x, y, a[i], a[i - 1]));
-    }
-    if (Cross(x, y, a[i]) >= 0) {
-      _a.push_back(a[i]);
     }
   }
   _a.push_back(_a[0]), a = _a;
@@ -40,6 +40,9 @@ int main() {
   }
   for (int i = 1; i <= n; i++) {
     M(l[i].first, l[i].second);
+  }
+  for (int i = 1; i < a.size(); i++) {
+    cout << a[i].first << ' ' << a[i].second << '\n';
   }
   return 0;
 }
