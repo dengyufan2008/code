@@ -5,17 +5,19 @@ using namespace std;
 
 const int kInf = 1000000000;
 struct V {
-  int d, s, l, r;
+  int d, c, s, l, r;
 } v[100001];
 int n, m, s = 1;
 
 void Update(int &p) {
-  v[p].s = v[v[p].l].s + v[v[p].r].s + (p != 0);
+  v[p].s = v[v[p].l].s + v[v[p].r].s + (p != 0) * v[p].c;
 }
 
 void Insert(int &p, int x) {
   if (!p || !m) {
-    v[p = ++m].d = x;
+    v[p = ++m] = {x, 1};
+  } else if (v[p].d == x) {
+    v[p].c++;
   } else {
     Insert(v[p].d <= x ? v[p].r : v[p].l, x);
   }
@@ -35,11 +37,13 @@ int Replace(int &p) {
 
 void Delete(int &p, int x) {
   if (v[p].d == x) {
-    if (!v[p].l || !v[p].r) {
-      p = v[p].l ? v[p].l : v[p].r;
-    } else {
-      int i = Replace(v[p].l);
-      v[p].d = v[i].d;
+    if (!--v[p].c) {
+      if (!v[p].l || !v[p].r) {
+        p = v[p].l ? v[p].l : v[p].r;
+      } else {
+        int i = Replace(v[p].l);
+        v[p].d = v[i].d, v[p].c = v[i].c;
+      }
     }
   } else {
     Delete(v[p].d < x ? v[p].r : v[p].l, x);
@@ -51,17 +55,17 @@ int FindRank(int &p, int x) {
   if (v[p].d == x) {
     return v[v[p].l].s + 1;
   } else if (v[p].d < x) {
-    return FindRank(v[p].r, x) + v[v[p].l].s + 1;
+    return FindRank(v[p].r, x) + v[v[p].l].s + v[p].c;
   } else {
     return FindRank(v[p].l, x);
   }
 }
 
 int FindVal(int &p, int x) {
-  if (v[v[p].l].s + 1 == x) {
+  if (v[v[p].l].s < x && v[v[p].l].s + v[p].c >= x) {
     return v[p].d;
-  } else if (v[v[p].l].s + 1 < x) {
-    return FindVal(v[p].r, x - v[v[p].l].s - 1);
+  } else if (v[v[p].l].s + v[p].c < x) {
+    return FindVal(v[p].r, x - v[v[p].l].s - v[p].c);
   } else {
     return FindVal(v[p].l, x);
   }
