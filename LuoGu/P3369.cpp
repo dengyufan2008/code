@@ -14,12 +14,9 @@ void Insert(int &p, int x) {
     v[p = ++m] = {x, 1, 1};
   } else if (v[p].d == x) {
     v[p].c++, v[p].s++;
-  } else if (v[p].d < x) {
-    v[p].s++;
-    Insert(v[p].r, x);
   } else {
-    v[p].s++;
-    Insert(v[p].l, x);
+    Insert(v[p].d < x ? v[p].r : v[p].l, x);
+    v[p].s = v[v[p].l].s + v[v[p].r].s;
   }
 }
 
@@ -33,32 +30,25 @@ void Delete(int &p, int x) {
       }
       v[p].d = v[v[i].r].d, v[p].c = v[v[i].r].c, v[i].r = v[v[i].r].r;
     }
-  } else if (v[p].d < x) {
-    v[p].s--;
-    Delete(v[p].r, x);
   } else {
-    v[p].s--;
-    Delete(v[p].l, x);
+    Delete(v[p].d < x ? v[p].r : v[p].l, x);
+    v[p].s = v[v[p].l].s + v[v[p].r].s;
   }
 }
 
 int FindRank(int &p, int x) {
   if (v[p].d == x) {
-    return 1;
-  } else if (v[p].d < x) {
-    return v[v[p].l].s + FindRank(v[p].r, x);
+    return v[v[p].l].s + 1;
   } else {
-    return FindRank(v[p].l, x);
+    return (v[p].d < x) * v[v[p].l].s + FindRank(v[p].d < x ? v[p].r : v[p].l, x);
   }
 }
 
 int FindVal(int &p, int x) {
   if (v[v[p].l].s + 1 == x) {
     return v[p].d;
-  } else if (v[v[p].l].s + 1 < x) {
-    return FindVal(v[p].r, x - v[v[p].l].s - 1);
   } else {
-    return FindVal(v[p].l, x);
+    return FindVal(v[p].l, x - (v[v[p].l].s + 1 < x) * (v[v[p].l].s + 1));
   }
 }
 
