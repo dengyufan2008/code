@@ -23,9 +23,9 @@ void Insert(int &p, int x) {
 }
 
 int Replace(int &p) {
-  int c = v[p].r;
-  if (!v[v[p].r].r) {
-    v[p].r = v[v[p].r].l;
+  int c = p;
+  if (!v[p].r) {
+    p = v[p].l;
   } else {
     c = Replace(v[p].r);
   }
@@ -35,8 +35,12 @@ int Replace(int &p) {
 
 void Delete(int &p, int x) {
   if (v[p].d == x) {
-    int i = Replace(v[p].l);
-    v[p].d = v[i].d;
+    if (!v[p].l || !v[p].r) {
+      p = v[p].l ? v[p].l : v[p].r;
+    } else {
+      int i = Replace(v[p].l);
+      v[p].d = v[i].d;
+    }
   } else {
     Delete(v[p].d < x ? v[p].r : v[p].l, x);
   }
@@ -49,7 +53,7 @@ int FindRank(int &p, int x) {
   } else if (v[p].d < x) {
     return FindRank(v[p].r, x) + v[v[p].l].s + 1;
   } else {
-    return FindRank(v[p].l, x) + 1;
+    return FindRank(v[p].l, x);
   }
 }
 
