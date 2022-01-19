@@ -35,7 +35,7 @@ int Replace(int &p) {
 
 void Delete(int &p, int x) {
   if (v[p].d == x) {
-    int i = Replace(p);
+    int i = Replace(v[p].l);
     v[p].d = v[i].d;
   } else {
     Delete(v[p].d < x ? v[p].r : v[p].l, x);
@@ -46,16 +46,20 @@ void Delete(int &p, int x) {
 int FindRank(int &p, int x) {
   if (v[p].d == x) {
     return v[v[p].l].s + 1;
+  } else if (v[p].d < x) {
+    return FindRank(v[p].r, x) + v[v[p].l].s + 1;
   } else {
-    return (v[p].d < x) * v[v[p].l].s + 1 + FindRank(v[p].d < x ? v[p].r : v[p].l, x);
+    return FindRank(v[p].l, x) + 1;
   }
 }
 
 int FindVal(int &p, int x) {
   if (v[v[p].l].s + 1 == x) {
     return v[p].d;
+  } else if (v[v[p].l].s + 1 < x) {
+    return FindVal(v[p].r, x - v[v[p].l].s - 1);
   } else {
-    return FindVal(v[p].l, x - (v[v[p].l].s + 1 < x) * (v[v[p].l].s + 1));
+    return FindVal(v[p].l, x);
   }
 }
 
