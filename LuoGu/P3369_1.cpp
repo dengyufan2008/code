@@ -1,3 +1,4 @@
+#include <ctime>
 #include <iostream>
 #define LL long long
 
@@ -5,7 +6,7 @@ using namespace std;
 
 const int kInf = 1000000000;
 struct V {
-  int d, c, s, l, r;
+  int d, c, k, s, l, r;
 } v[100001];
 int n, m, s = 1;
 
@@ -26,18 +27,17 @@ void Right(int &p) {  // CHICK
 }
 
 void Rebalance(int &p) {
-
 }
 
 void Insert(int &p, int x) {
   if (!p || !m) {
-    v[p = ++m] = {x, 1};
+    v[p = ++m] = {x, 1, rand()};
   } else if (v[p].d == x) {
     v[p].c++;
   } else {
     Insert(v[p].d <= x ? v[p].r : v[p].l, x);
   }
-  Update(p);
+  Update(p), Rebalance(p);
 }
 
 int Replace(int &p) {
@@ -108,6 +108,7 @@ int FindNext(int &p, int x) {
 }
 
 int main() {
+  srand(time(0));
   cin >> n;
   for (int i = 1, o, x; i <= n; i++) {
     cin >> o >> x;
