@@ -86,24 +86,18 @@ int main() {
   cin >> n;
   for (int i = 1, o, x; i <= n; i++) {
     cin >> o >> x;
-    switch (o) {
-      case 1:
-        Insert(s, x);
-        break;
-      case 2:
-        Delete(s, x);
-        break;
-      case 3:
-        cout << FindRank(s, x) << '\n';
-        break;
-      case 4:
-        cout << FindVal(s, x) << '\n';
-        break;
-      case 5:
-        cout << FindLast(s, x) << '\n';
-        break;
-      default:
-        cout << FindNext(s, x) << '\n';
+    if (o == 1) {
+      Insert(s, x);
+    } else if (o == 2) {
+      Delete(s, x);
+    } else if (o == 3) {
+      cout << FindRank(s, x) << '\n';
+    } else if (o == 4) {
+      cout << FindVal(s, x) << '\n';
+    } else if (o == 5) {
+      cout << FindLast(s, x) << '\n';
+    } else {
+      cout << FindNext(s, x) << '\n';
     }
   }
   return 0;
