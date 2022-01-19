@@ -7,7 +7,7 @@ using namespace std;
 struct L {
   LL x, y1, y2, k;
   bool operator<(const L &l) const {
-    return x < l.x;
+    return x < l.x || x == l.x && k < l.k;
   }
 } l[20001];
 LL t, n, w, h, ans, raw[20001];
