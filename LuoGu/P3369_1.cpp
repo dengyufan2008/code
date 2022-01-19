@@ -8,7 +8,7 @@ const int kInf = 1000000000;
 struct V {
   int d, c, k, s, l, r;
 } v[100001];
-int n, m, s = 1;
+int n, m, s;
 
 void Update(int &p) {
   v[p].s = v[v[p].l].s + v[v[p].r].s + (p != 0) * v[p].c;
@@ -17,20 +17,27 @@ void Update(int &p) {
 void Left(int &p) {  // CHICK
   int q = v[p].r;
   v[p].r = v[q].l, v[q].l = p;
+  Update(p), Update(q);
   p = q;
 }
 
 void Right(int &p) {  // CHICK
   int q = v[p].l;
   v[p].l = v[q].r, v[q].r = p;
+  Update(p), Update(q);
   p = q;
 }
 
 void Rebalance(int &p) {
+  if (v[p].l && v[p].k > v[v[p].l].k) {
+    Right(p);
+  } else if (v[p].r && v[p].k > v[v[p].r].k) {
+    Left(p);
+  }
 }
 
 void Insert(int &p, int x) {
-  if (!p || !m) {
+  if (!p) {
     v[p = ++m] = {x, 1, rand()};
   } else if (v[p].d == x) {
     v[p].c++;
@@ -46,8 +53,8 @@ int Replace(int &p) {
     p = v[p].l;
   } else {
     c = Replace(v[p].r);
+    Update(p);
   }
-  Update(p);
   return c;
 }
 
@@ -55,7 +62,7 @@ void Delete(int &p, int x) {
   if (v[p].d == x) {
     if (!--v[p].c) {
       if (!v[p].l || !v[p].r) {
-        p = v[p].l ? v[p].l : v[p].r;
+        p = v[p].l + v[p].r;
       } else {
         int i = Replace(v[p].l);
         v[p].d = v[i].d, v[p].c = v[i].c;
@@ -108,7 +115,7 @@ int FindNext(int &p, int x) {
 }
 
 int main() {
-  srand(time(0));
+  srand((unsigned)time(0));
   cin >> n;
   for (int i = 1, o, x; i <= n; i++) {
     cin >> o >> x;

@@ -1,98 +1,119 @@
-// 狂狼电竞俱乐部 | 胖头鱼
-#include <algorithm>
+#include <ctime>
 #include <iostream>
+#define LL long long
 
 using namespace std;
 
-const int kMaxN = 1e5 + 1, kInf = 1e9;
-
+const int kInf = 1000000000;
 struct V {
-  int v, t, l, r;  // 值、子树大小、左右儿子
-} v[kMaxN];
-int n, r, m, o, x, y;
+  int d, s, k, l, r;
+} v[100001];
+int n, m, s;
 
-void ReCalc(int x) {                              // 重新计算节点
-  v[x].t = v[v[x].l].t + v[v[x].r].t + (x != 0);  // 空节点不计算
+void Update(int &p) {
+  v[p].s = v[v[p].l].s + v[v[p].r].s + (p != 0);
 }
 
-void Insert(int &x) {     // 插入
-  if (!x) {               // 遇到空节点
-    x = ++m, v[x].v = y;  // 生成新节点并记录值
-  } else {                // 插入到子树中
-    Insert(y < v[x].v ? v[x].l : v[x].r);
+void Left(int &p) {
+  int q = v[p].r;
+  v[p].r = v[q].l, v[q].l = p;
+  Update(p), Update(q);
+  p = q;
+}
+
+void Right(int &p) {
+  int q = v[p].l;
+  v[p].l = v[q].r, v[q].r = p;
+  Update(p), Update(q);
+  p = q;
+}
+
+void Rebalance(int &p) {
+  if (v[p].l && v[v[p].l].k < v[p].k) {
+    Right(p);
+  } else if (v[p].r && v[v[p].r].k < v[p].k) {
+    Left(p);
   }
-  ReCalc(x);
 }
 
-int Replace(int &x) {  // 左子树中寻找替换删除节点
-  int t = v[x].v;      // 记录当前节点的值
-  if (!v[x].r) {       // 没有右儿子
-    x = v[x].l;        // 删除当前节点
+void Insert(int &p, int x) {
+  if (!p) {
+    v[p = ++m].d = x, v[p].k = rand();
   } else {
-    t = Replace(v[x].r);  // 到右子树中删除
-    ReCalc(x);
+    Insert(v[p].d > x ? v[p].l : v[p].r, x);
   }
-  return t;
+  Update(p), Rebalance(p);
 }
 
-void Delete(int &x) {          // 删除节点
-  if (y == v[x].v) {           // 找到值
-    if (!v[x].l || !v[x].r) {  // 最多有一个儿子
-      x = v[x].l + v[x].r;     // 直接删除
+int Replace(int &p) {
+  int c = v[p].d;
+  if (!v[p].r) {
+    p = v[p].l;
+  } else {
+    c = Replace(v[p].r);
+    Update(p);
+  }
+  return c;
+}
+
+void Delete(int &p, int x) {
+  if (v[p].d == x) {
+    if (!v[p].l || !v[p].r) {
+      p = v[p].l + v[p].r;
     } else {
-      v[x].v = Replace(v[x].l);  // 寻找替代值
+      v[p].d = Replace(v[p].l);
     }
   } else {
-    Delete(y < v[x].v ? v[x].l : v[x].r);
+    Delete(v[p].d > x ? v[p].l : v[p].r, x);
   }
-  ReCalc(x);
+  Update(p);
 }
 
-int FindR(int x) {  // 查询比y小的数的个数
-  if (!x) {
+int FindRank(int &p, int x) {
+  if (!p) {
     return 0;
   }
-  return v[x].v >= y ? FindR(v[x].l) : FindR(v[x].r) + v[v[x].l].t + 1;
+  return v[p].d >= x ? FindRank(v[p].l, x) : FindRank(v[p].r, x) + v[v[p].l].s + 1;
 }
 
-int FindV(int x, int y) {
-  int t = v[v[x].l].t;
-  if (y == t + 1) {  // 刚好等于根
-    return v[x].v;
+int FindVal(int &p, int x) {
+  if (v[v[p].l].s + 1 == x) {
+    return v[p].d;
   }
-  return y <= t ? FindV(v[x].l, y) : FindV(v[x].r, y - t - 1);
+  return v[v[p].l].s >= x ? FindVal(v[p].l, x) : FindVal(v[p].r, x - v[v[p].l].s - 1);
 }
 
-int FindP(int x) {  // 寻找前驱
-  if (!x) {
+int FindLast(int &p, int x) {
+  if (!p) {
     return -kInf;
   }
-  return v[x].v < y ? max(v[x].v, FindP(v[x].r)) : FindP(v[x].l);
+  return v[p].d < x ? max(v[p].d, FindLast(v[p].r, x)) : FindLast(v[p].l, x);
 }
 
-int FindS(int x) {  // 寻找后继
-  if (!x) {
+int FindNext(int &p, int x) {
+  if (!p) {
     return kInf;
   }
-  return v[x].v > y ? min(v[x].v, FindS(v[x].l)) : FindS(v[x].r);
+  return v[p].d > x ? min(v[p].d, FindNext(v[p].l, x)) : FindNext(v[p].r, x);
 }
 
 int main() {
+  srand((unsigned)time(0));
   cin >> n;
-  for (int i = 1; i <= n; i++) {
-    cin >> o >> y;
+  for (int i = 1, o, x; i <= n; i++) {
+    cin >> o >> x;
     if (o == 1) {
-      Insert(r);
+      Insert(s, x);
     } else if (o == 2) {
-      Delete(r);
+      Delete(s, x);
     } else if (o == 3) {
-      cout << FindR(r) + 1 << '\n';
+      cout << FindRank(s, x) + 1 << '\n';
     } else if (o == 4) {
-      cout << FindV(r, y) << '\n';
+      cout << FindVal(s, x) << '\n';
     } else if (o == 5) {
-      cout << FindP(r) << '\n';
+      cout << FindLast(s, x) << '\n';
     } else {
-      cout << FindS(r) << '\n';
+      cout << FindNext(s, x) << '\n';
     }
   }
   return 0;
