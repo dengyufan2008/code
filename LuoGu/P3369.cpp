@@ -13,6 +13,22 @@ void Update(int &p) {
   v[p].s = v[v[p].l].s + v[v[p].r].s + (p != 0) * v[p].c;
 }
 
+void Left(int &p) {  // CHICK
+  int q = v[p].r;
+  v[p].r = v[q].l, v[q].l = p;
+  p = q;
+}
+
+void Right(int &p) {  // CHICK
+  int q = v[p].l;
+  v[p].l = v[q].r, v[q].r = p;
+  p = q;
+}
+
+void Rebalance(int &p) {
+
+}
+
 void Insert(int &p, int x) {
   if (!p || !m) {
     v[p = ++m] = {x, 1};
