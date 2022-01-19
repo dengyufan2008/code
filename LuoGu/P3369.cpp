@@ -78,7 +78,7 @@ int FindNext(int &p, int x) {
   } else if (v[p].d <= x) {
     return FindNext(v[p].r, x);
   } else {
-    return min(v[p].d, FindLast(v[p].l, x));
+    return min(v[p].d, FindNext(v[p].l, x));
   }
 }
 
