@@ -17,7 +17,7 @@ void Insert(int &p, int x) {
   if (!p || !m) {
     v[p = ++m].d = x;
   } else {
-    Insert(v[p].d < x ? v[p].r : v[p].l, x);
+    Insert(v[p].d <= x ? v[p].r : v[p].l, x);
   }
   Update(p);
 }
