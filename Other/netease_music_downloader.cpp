@@ -3,7 +3,7 @@
 
 using namespace std;
 
-string num, local;
+string num, local, _local;
 
 void Powershell() {
   ofstream file;
@@ -22,17 +22,17 @@ void Powershell() {
 }
 
 int main() {
-  for (int i = 1;; i++) {
+  cout << "Save to (For example : D:\\) : ";
+  cin >> _local;
+  for (int i = 1; num != "0"; i++) {
     cout << "[Task " << i << " Begin]\n";
     cout << "Music number (For example : 1 | 0 For exit) : ";
     cin >> num;
-    if (num == "0") {
-      break;
-    }
-    cout << "Save to (For example : D:\\) : ";
-    cin >> local;
+    local = _local;
     local += "NeteaseMusic#" + num + ".mp3";
-    Powershell();
+    if (num != "0") {
+      Powershell();
+    }
     cout << "[Task " << i << " End]\n";
   }
   return 0;
