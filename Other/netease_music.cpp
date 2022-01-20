@@ -22,12 +22,14 @@ void Powershell() {
 }
 
 int main() {
-  while (1) {
-    cout << "Music number (For example:1):";
+  for (int i = 1; num != "0"; i++) {
+    cout << "[Task " << i << " Begin]\n";
+    cout << "Music number (For example:1 | 0 For exit):";
     cin >> num;
     cout << "Save to (For example:D:\\1.mp3):";
     cin >> local;
     Powershell();
+    cout << "Task " << i << " End]\n";
   }
   return 0;
 }
