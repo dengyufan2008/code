@@ -24,13 +24,14 @@ void Powershell() {
 int main() {
   for (int i = 1;; i++) {
     cout << "[Task " << i << " Begin]\n";
-    cout << "Music number (For example:1 | 0 For exit) : ";
+    cout << "Music number (For example : 1 | 0 For exit) : ";
     cin >> num;
     if (num == "0") {
       break;
     }
-    cout << "Save to (For example:D:\\1.mp3) : ";
+    cout << "Save to (For example : D:\\) : ";
     cin >> local;
+    local += "NeteaseMusic#" + num + ".mp3";
     Powershell();
     cout << "[Task " << i << " End]\n";
   }
