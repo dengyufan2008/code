@@ -35,5 +35,6 @@ int main() {
     }
     cout << "[Task " << i << " End]\n";
   }
+  system("pause");
   return 0;
 }
