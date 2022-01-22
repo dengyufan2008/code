@@ -10,7 +10,6 @@
       "request": "launch",
       "program": "${fileDirname}\\${fileBasenameNoExtension}.exe",
       "args": [],
-      "stopAtEntry": true,
       "cwd": "${fileDirname}",
       "environment": [],
       "externalConsole": false,
