@@ -7,7 +7,7 @@ using namespace std;
 struct V {
   bool b;
   int v, c, s[2];
-} v[100001];
+} v[1001];
 int n, q, l, r, s = 1, _s;
 vector<bool> h;
 
@@ -61,7 +61,7 @@ void Swap(int l, int r) {
   Up(s, r + 2);
   _s = v[s].s[0];
   Up(v[s].s[0], l);
-  v[v[v[s].s[0]].s[1]].b = 1;
+  v[v[v[s].s[0]].s[1]].b ^= 1;
 }
 
 void Print(int p) {
