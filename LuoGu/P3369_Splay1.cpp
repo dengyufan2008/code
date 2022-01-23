@@ -7,7 +7,7 @@ using namespace std;
 const int kInf = 1e9;
 struct V {
   int c, v, s[2];
-} v[101];
+} v[100001];
 int n, m, s;
 vector<bool> l;
 
