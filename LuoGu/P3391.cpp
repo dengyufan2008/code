@@ -18,7 +18,7 @@ void Update(int p) {
 void Down(int p) {
   if (v[p].b) {
     swap(v[p].s[0], v[p].s[1]);
-    v[v[p].s[0]].b = v[v[p].s[1]].b = 1;
+    v[v[p].s[0]].b ^= 1, v[v[p].s[1]].b ^= 1;
     v[p].b = 0;
   }
 }
@@ -44,16 +44,13 @@ void Rebalance(int &p) {
 }
 
 void Up(int &p, int q) {
-  if (!p) {
-    return;
-  }
   Down(p);
   int c = v[v[p].s[0]].c;
   if (c + 1 != q) {
     Up(v[p].s[c + 1 < q], q - (c + 1 < q) * (c + 1));
     h.push_back(c + 1 < q);
+    Update(p), Rebalance(p);
   }
-  Update(p), Rebalance(p);
 }
 
 void Swap(int l, int r) {
