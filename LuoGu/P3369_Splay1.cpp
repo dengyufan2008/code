@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 #define LL long long
 
 using namespace std;
@@ -6,11 +7,41 @@ using namespace std;
 const int kInf = 1e9;
 struct V {
   int c, v, s[2];
-} v[100001];
+} v[101];
 int n, m, s;
+vector<bool> l;
 
 void Update(int p) {
   v[p].c = v[v[p].s[0]].c + v[v[p].s[1]].c + (p > 0);
+}
+
+void Turn(int &p, bool b) {
+  int q = v[p].s[!b];
+  v[p].s[!b] = v[q].s[b], v[q].s[b] = p;
+  Update(p), Update(q);
+  p = q;
+}
+
+void Rebalance(int &p) {
+  if (p != s && l.size() != 2) {
+    return;
+  }
+  if (l.front() != l.back()) {
+    Turn(v[p].s[l.back()], l.back());
+  } else if (l.size() == 2) {
+    Turn(p, !l.back());
+  }
+  Turn(p, !l.back());
+  l.clear();
+}
+
+void Pushup(int &p, int x) {
+  int t = v[v[p].s[0]].c + 1;
+  if (t != x) {
+    Pushup(v[p].s[t < x], x - (t < x) * t);
+    l.push_back(t < x);
+    Rebalance(p);
+  }
 }
 
 void Insert(int &p, int x) {
@@ -19,7 +50,7 @@ void Insert(int &p, int x) {
   } else {
     Insert(v[p].s[x >= v[p].v], x);
   }
-  Update(p);
+  Update(p), Pushup(p, 1);  // CHICK
 }
 
 int Replace(int &p) {
