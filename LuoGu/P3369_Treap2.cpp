@@ -6,22 +6,22 @@ using namespace std;
 
 const int kInf = 1000000000;
 struct V {
-  int d, s, k, l, r;
+  int d, c, k, s, l, r;
 } v[100001];
 int n, m, s;
 
 void Update(int &p) {
-  v[p].s = v[v[p].l].s + v[v[p].r].s + (p != 0);
+  v[p].s = v[v[p].l].s + v[v[p].r].s + (p != 0) * v[p].c;
 }
 
-void Left(int &p) {
+void Left(int &p) {  // CHICK
   int q = v[p].r;
   v[p].r = v[q].l, v[q].l = p;
   Update(p), Update(q);
   p = q;
 }
 
-void Right(int &p) {
+void Right(int &p) {  // CHICK
   int q = v[p].l;
   v[p].l = v[q].r, v[q].r = p;
   Update(p), Update(q);
@@ -29,24 +29,26 @@ void Right(int &p) {
 }
 
 void Rebalance(int &p) {
-  if (v[p].l && v[v[p].l].k < v[p].k) {
+  if (v[p].l && v[p].k > v[v[p].l].k) {
     Right(p);
-  } else if (v[p].r && v[v[p].r].k < v[p].k) {
+  } else if (v[p].r && v[p].k > v[v[p].r].k) {
     Left(p);
   }
 }
 
 void Insert(int &p, int x) {
   if (!p) {
-    v[p = ++m].d = x, v[p].k = rand();
+    v[p = ++m] = {x, 1, rand()};
+  } else if (v[p].d == x) {
+    v[p].c++;
   } else {
-    Insert(v[p].d > x ? v[p].l : v[p].r, x);
+    Insert(v[p].d <= x ? v[p].r : v[p].l, x);
   }
   Update(p), Rebalance(p);
 }
 
 int Replace(int &p) {
-  int c = v[p].d;
+  int c = p;
   if (!v[p].r) {
     p = v[p].l;
   } else {
@@ -58,43 +60,58 @@ int Replace(int &p) {
 
 void Delete(int &p, int x) {
   if (v[p].d == x) {
-    if (!v[p].l || !v[p].r) {
-      p = v[p].l + v[p].r;
-    } else {
-      v[p].d = Replace(v[p].l);
+    if (!--v[p].c) {
+      if (!v[p].l || !v[p].r) {
+        p = v[p].l + v[p].r;
+      } else {
+        int i = Replace(v[p].l);
+        v[p].d = v[i].d, v[p].c = v[i].c;
+      }
     }
   } else {
-    Delete(v[p].d > x ? v[p].l : v[p].r, x);
+    Delete(v[p].d < x ? v[p].r : v[p].l, x);
   }
   Update(p);
 }
 
 int FindRank(int &p, int x) {
-  if (!p) {
-    return 0;
+  if (v[p].d == x) {
+    return v[v[p].l].s + 1;
+  } else if (v[p].d < x) {
+    return FindRank(v[p].r, x) + v[v[p].l].s + v[p].c;
+  } else {
+    return FindRank(v[p].l, x);
   }
-  return v[p].d >= x ? FindRank(v[p].l, x) : FindRank(v[p].r, x) + v[v[p].l].s + 1;
 }
 
 int FindVal(int &p, int x) {
-  if (v[v[p].l].s + 1 == x) {
+  if (v[v[p].l].s < x && v[v[p].l].s + v[p].c >= x) {
     return v[p].d;
+  } else if (v[v[p].l].s + v[p].c < x) {
+    return FindVal(v[p].r, x - v[v[p].l].s - v[p].c);
+  } else {
+    return FindVal(v[p].l, x);
   }
-  return v[v[p].l].s >= x ? FindVal(v[p].l, x) : FindVal(v[p].r, x - v[v[p].l].s - 1);
 }
 
 int FindLast(int &p, int x) {
   if (!p) {
     return -kInf;
+  } else if (v[p].d < x) {
+    return max(v[p].d, FindLast(v[p].r, x));
+  } else {
+    return FindLast(v[p].l, x);
   }
-  return v[p].d < x ? max(v[p].d, FindLast(v[p].r, x)) : FindLast(v[p].l, x);
 }
 
 int FindNext(int &p, int x) {
   if (!p) {
     return kInf;
+  } else if (v[p].d <= x) {
+    return FindNext(v[p].r, x);
+  } else {
+    return min(v[p].d, FindNext(v[p].l, x));
   }
-  return v[p].d > x ? min(v[p].d, FindNext(v[p].l, x)) : FindNext(v[p].r, x);
 }
 
 int main() {
@@ -107,7 +124,7 @@ int main() {
     } else if (o == 2) {
       Delete(s, x);
     } else if (o == 3) {
-      cout << FindRank(s, x) + 1 << '\n';
+      cout << FindRank(s, x) << '\n';
     } else if (o == 4) {
       cout << FindVal(s, x) << '\n';
     } else if (o == 5) {
