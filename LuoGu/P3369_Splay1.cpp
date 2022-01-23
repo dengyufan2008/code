@@ -16,42 +16,48 @@ void Update(int p) {
 void Insert(int &p, int x) {
   if (!p) {
     v[p = ++m] = {1, x};
-    return;
+  } else {
+    Insert(v[p].s[x >= v[p].v], x);
   }
-  Insert(v[p].s[x >= v[p].v], x);
+  Update(p);
 }
 
 int Replace(int &p) {
+  int t = v[p].v;
   if (!v[p].s[1]) {
-    int t = v[p].v;
     p = v[p].s[0];
-    return t;
+  } else {
+    t = Replace(v[p].s[1]);
+    Update(p);
   }
-  return Replace(v[p].s[1]);
+  return t;
 }
 
 void Delete(int &p, int x) {
   if (v[p].v == x) {
-    v[p].v = Replace(v[p].s[0]);
-    return;
+    if (!v[p].s[0] || !v[p].s[1]) {
+      p = v[p].s[0] + v[p].s[1];
+    } else {
+      v[p].v = Replace(v[p].s[0]);
+    }
+  } else {
+    Delete(v[p].s[x > v[p].v], x);
   }
-  Delete(v[p].s[x > v[p].v], x);
+  Update(p);
 }
 
 int FindRank(int p, int x) {
-  if (v[p].v == x) {
-    return v[v[p].s[0]].c;
+  if (!p) {
+    return 0;
   }
-  bool t = x > v[p].v;
-  return FindRank(v[p].s[t], x) + t * (v[v[p].s[0]].c + 1);
+  return FindRank(v[p].s[x > v[p].v], x) + (x > v[p].v) * (v[v[p].s[0]].c + 1);
 }
 
 int FindVal(int p, int x) {
-  if (x == 1) {
+  if (v[v[p].s[0]].c + 1 == x) {
     return v[p].v;
   }
-  int t = v[v[p].s[0]].c + 1;
-  return FindVal(v[p].s[x > t], x - (x > t) * t);
+  return FindVal(v[p].s[v[v[p].s[0]].c < x], x - (v[v[p].s[0]].c < x) * (v[v[p].s[0]].c + 1));
 }
 
 int FindPast(int p, int x) {
