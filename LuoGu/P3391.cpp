@@ -45,11 +45,11 @@ void Rebalance(int &p) {
 
 void Up(int &p, int q) {
   Down(p);
-  int c = v[v[p].s[0]].c;
-  if (c + 1 != q) {
-    Up(v[p].s[c + 1 < q], q - (c + 1 < q) * (c + 1));
-    h.push_back(c + 1 < q);
-    Update(p), Rebalance(p);
+  int c = v[v[p].s[0]].c + 1;
+  if (c != q) {
+    Up(v[p].s[c < q], q - (c < q) * c);
+    h.push_back(c < q);
+    Rebalance(p);
   }
 }
 
