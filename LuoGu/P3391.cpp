@@ -6,8 +6,8 @@ using namespace std;
 
 struct V {
   bool b;
-  int v, c, s[2];
-} v[1001];
+  int v, c, s[2];  // 0:L 1:R
+} v[100001];
 int n, q, l, r, s = 1, _s;
 vector<bool> h;
 
