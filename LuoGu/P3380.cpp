@@ -108,24 +108,94 @@ struct B {  // Balance Tree
 struct S {  // Seg Tree
   vector<B> v = {{}};
 
-  int Modify(int p, int l, int r, int x, int k) {
-    if (l == r) {
-      // CHICK
-      return;
-    }
+  void Modify(int p, int l, int r, int x, int _k, int k) {
     int mid = (l + r) / 2;
     if (mid >= x) {
-      Modify(p * 2, l, mid, x, k);
+      Modify(p * 2, l, mid, x, _k, k);
     } else {
-      Modify(p * 2, mid + 1, r, x, k);
+      Modify(p * 2 + 1, mid + 1, r, x, _k, k);
     }
-    // CHICK
+    v[p].Delete(v[p].s, _k);
   }
-};
-int n, m;
+
+  int FindRank(int p, int l, int r, int _l, int _r, int k) {
+    if (l >= _l && r <= _r) {
+      return v[p].FindRank(v[p].s, k);
+    }
+    int mid = (l + r) / 2, ans = 0;
+    if (mid >= _l) {
+      ans += FindRank(p * 2, l, mid, _l, _r, k);
+    }
+    if (mid < _r) {
+      ans += FindRank(p * 2 + 1, mid + 1, r, _l, _r, k);
+    }
+    return ans;
+  }
+
+  int FindPast(int p, int l, int r, int _l, int _r, int k) {
+    if (l >= _l && r <= _r) {
+      return v[p].FindPast(v[p].s, k);
+    }
+    int mid = (l + r) / 2, ans = -2147483647;
+    if (mid >= _l) {
+      ans = max(ans, FindPast(p * 2, l, mid, _l, _r, k));
+    }
+    if (mid < r) {
+      ans = max(ans, FindPast(p * 2 + 1, mid + 1, r, _l, _r, k));
+    }
+    return ans;
+  }
+
+  int FindNext(int p, int l, int r, int _l, int _r, int k) {
+    if (l >= _l && r <= _r) {
+      return v[p].FindNext(v[p].s, k);
+    }
+    int mid = (l + r) / 2, ans = 2147483647;
+    if (mid >= _l) {
+      ans = min(ans, FindNext(p * 2, l, mid, _l, _r, k));
+    }
+    if (mid < r) {
+      ans = max(ans, FindNext(p * 2 + 1, mid + 1, r, _l, _r, k));
+    }
+    return ans;
+  }
+} s;
+int n, m, a[50001];
 
 int main() {
   srand(unsigned(time(0)));
-
+  cin >> n >> m;
+  for (int i = 1; i <= n; i++) {
+    cin >> a[i];
+    s.Modify(1, 1, n, i, 0, a[i]);
+  }
+  for (int i = 1, o, x, y, k; i <= m; i++) {
+    cin >> o >> x >> y;
+    if (o == 1) {
+      cin >> k;
+      cout << s.FindRank(1, 1, n, x, y, k) + 1 << '\n';
+    } else if (o == 2) {
+      cin >> k;
+      int l = 0, r = 1e8;
+      while (l <= r) {
+        int mid = (l + r) / 2, c = s.FindRank(1, 1, n, x, y, mid) + 1;
+        if (c >= k) {
+          r = mid - 1;
+        } else {
+          l = mid + 1;
+        }
+      }
+      cout << l << '\n';
+    } else if (o == 3) {
+      s.Modify(1, 1, n, x, a[x], y);
+      a[x] = y;
+    } else if (o == 4) {
+      cin >> k;
+      cout << s.FindPast(1, 1, n, x, y, k) << '\n';
+    } else {
+      cin >> k;
+      cout << s.FindNext(1, 1, n, x, y, k) << '\n';
+    }
+  }
   return 0;
 }
