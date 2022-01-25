@@ -5,12 +5,12 @@
 
 using namespace std;
 
-struct V1 {
+struct V {
   LL v, k, c, s[2];
 };
 struct B {  // Balance Tree
   LL s;
-  vector<V1> v = {{}};
+  vector<V> v = {{}};
 
   void Update(LL p) {
     v[p].c = v[v[p].s[0]].c + v[v[p].s[1]].c + (p > 0);
