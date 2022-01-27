@@ -12,7 +12,7 @@ LL n, m, mn, ans, a[101], d[2][9], f[101][101][9];
 int main() {
   cin >> n >> m;
   for (LL t = 1; n || m; t++) {
-    ans = kInf, mn = -1;
+    ans = kInf, mn = -1, f[0][0][0] = 0;
     fill(&d[0][0], &d[1][8] + 1, 0), fill(&f[0][0][1], &f[100][100][100] + 1, kInf);
     for (LL i = 1; i <= n; i++) {
       cin >> a[i];
@@ -21,7 +21,7 @@ int main() {
     for (LL i = 0; i < n; i++) {
       for (LL j = 0; j <= m; j++) {
         for (LL k = 0; k < 9; k++) {
-          LL c = f[i][j][k] + (!i || a[i + 1] - 24 != k);
+          LL c = f[i][j][k] + (a[i + 1] - 24 != k);
           if (c < f[i + 1][j][a[i + 1] - 24]) {
             f[i + 1][j][a[i + 1] - 24] = c;
             v[i + 1][j][a[i + 1] - 24] = {i, j, k};
@@ -34,7 +34,7 @@ int main() {
       }
     }
     for (LL i = 0; i < 9; i++) {
-      if (mn != -1 || f[n][m][i] < f[n][m][mn]) {
+      if (mn == -1 || f[n][m][i] < f[n][m][mn]) {
         mn = i, ans = f[n][m][i];
       }
     }
