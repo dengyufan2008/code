@@ -48,7 +48,7 @@ int main() {
     for (LL i = 1; i < 9; i++) {
       ans += d[0][i] && !d[1][i];
     }
-    cout << "Case " << t << ": " << ans << '\n\n';
+    cout << "Case " << t << ": " << ans << "\n\n";
     cin >> n >> m;
   }
   return 0;
