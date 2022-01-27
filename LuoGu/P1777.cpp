@@ -3,30 +3,52 @@
 
 using namespace std;
 
-const int kInf = 1e9;
-int n, m, ans, a[101], f[101][101][9];
+const LL kInf = 1e9;
+struct V {
+  LL i, j, k;
+} v[101][101][9];
+LL n, m, mn, ans, a[101], d[2][9], f[101][101][9];
 
 int main() {
   cin >> n >> m;
-  for (int t = 1; n || m; t++) {
-    ans = kInf, fill(&f[0][0][0], &f[0][100][100] + 1, 1), fill(&f[1][0][0], &f[100][100][100] + 1, kInf);
-    for (int i = 1; i <= n; i++) {
+  for (LL t = 1; n || m; t++) {
+    ans = kInf, mn = 0;
+    fill(&d[0][0], &d[1][8] + 1, 0), fill(&f[0][0][1], &f[100][100][100] + 1, kInf);
+    for (LL i = 1; i <= n; i++) {
       cin >> a[i];
+      d[0][a[i] - 24]++;
     }
-    for (int i = 0; i < n; i++) {
-      for (int j = 0; j <= m; j++) {
-        for (int k = 1; k < 9; k++) {
-          f[i + 1][j][k] = min(f[i + 1][j][k], f[i][j][k] + (a[i + 1] != k + 24));
-          if (j < m) {
-            f[i + 1][j + 1][a[i + 1] - 24] = min(f[i + 1][j + 1][a[i + 1] - 24], f[i][j][k]);
+    for (LL i = 0; i < n; i++) {
+      for (LL j = 0; j <= m; j++) {
+        for (LL k = 0; k < 9; k++) {
+          LL c = f[i][j][k] + (!i || a[i + 1] - 24 != k);
+          if (c < f[i + 1][j][a[i + 1] - 24]) {
+            f[i + 1][j][a[i + 1] - 24] = c;
+            v[i + 1][j][a[i + 1] - 24] = {i, j, k};
+          }
+          if (j < m && f[i][j][k] < f[i + 1][j + 1][k]) {
+            f[i + 1][j + 1][k] = f[i][j][k];
+            v[i + 1][j + 1][k] = {i, j, k};
           }
         }
       }
     }
-    for (int i = 1; i < 9; i++) {
-      ans = min(ans, f[n][m][i]);
+    for (LL i = 0; i < 9; i++) {
+      if (!mn || f[n][m][i] < f[n][m][mn]) {
+        mn = i, ans = f[n][m][i];
+      }
     }
-    cout << "Case " << t << ": " << ans << '\n';
+    for (LL i = n, j = m, k = mn; i;) {
+      V c = v[i][j][k];
+      if (j == c.j) {
+        d[1][k]++;
+      }
+      i = c.i, j = c.j, k = c.k;
+    }
+    for (LL i = 1; i < 9; i++) {
+      ans += d[0][i] && !d[1][i];
+    }
+    cout << "Case " << t << ": " << ans << '\n\n';
     cin >> n >> m;
   }
   return 0;
