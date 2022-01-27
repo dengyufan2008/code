@@ -3,50 +3,39 @@
 
 using namespace std;
 
-const LL kInf = 1e9;
-struct V {
-  LL i, j, k;
-} v[101][101][9];
-LL n, m, mn, ans, a[101], d[2][9], f[101][101][9];
+const int kInf = 1e9;
+int n, m, mn, d, ans, a[101], f[2][101][512][8];
 
 int main() {
   cin >> n >> m;
-  for (LL t = 1; n || m; t++) {
-    ans = kInf, mn = -1, f[0][0][0] = 0;
-    fill(&d[0][0], &d[1][8] + 1, 0), fill(&f[0][0][1], &f[100][100][100] + 1, kInf);
-    for (LL i = 1; i <= n; i++) {
+  for (int t = 1; n || m; t++) {
+    mn = -1, d = 0, ans = kInf;
+    fill(&f[0][0][0][0], &f[1][100][511][7] + 1, kInf), fill(&f[0][0][0][0], &f[0][0][0][7] + 1, 1);
+    for (int i = 1; i <= n; i++) {
       cin >> a[i];
-      d[0][a[i] - 24]++;
+      d |= 1 << (a[i] -= 25);
     }
-    for (LL i = 0; i < n; i++) {
-      for (LL j = 0; j <= m; j++) {
-        for (LL k = 0; k < 9; k++) {
-          LL c = f[i][j][k] + (a[i + 1] - 24 != k);
-          if (c < f[i + 1][j][a[i + 1] - 24]) {
-            f[i + 1][j][a[i + 1] - 24] = c;
-            v[i + 1][j][a[i + 1] - 24] = {i, j, k};
-          }
-          if (j < m && f[i][j][k] < f[i + 1][j + 1][k]) {
-            f[i + 1][j + 1][k] = f[i][j][k];
-            v[i + 1][j + 1][k] = {i, j, k};
+    for (int i = 0; i < n; i++) {
+      for (int j = 0; j <= m; j++) {
+        for (int k = 0; k < 512; k++) {
+          for (int l = 0; l < 8; l++) {
+            f[i & 1 ^ 1][j][k | 1 << a[i + 1]][a[i + 1]] = min(f[i & 1 ^ 1][j][k | 1 << a[i + 1]][a[i + 1]], f[i & 1][j][k][l] + (l != a[i + 1]));
+            if (j < m) {
+              f[i & 1 ^ 1][j + 1][k][l] = min(f[i & 1 ^ 1][j + 1][k][l], f[i & 1][j][k][l]);
+            }
           }
         }
       }
     }
-    for (LL i = 0; i < 9; i++) {
-      if (mn == -1 || f[n][m][i] < f[n][m][mn]) {
-        mn = i, ans = f[n][m][i];
+    for (int i = 0; i < 512; i++) {
+      for (int j = 0; j < 8; j++) {
+        if (mn == -1 || ans > f[n & 1][m][i][j]) {
+          ans = f[n & 1][m][mn = i][j];
+        }
       }
     }
-    for (LL i = n, j = m, k = mn; i;) {
-      V c = v[i][j][k];
-      if (j == c.j) {
-        d[1][k]++;
-      }
-      i = c.i, j = c.j, k = c.k;
-    }
-    for (LL i = 1; i < 9; i++) {
-      ans += d[0][i] && !d[1][i];
+    for (int i = 0; i < 8; i++) {
+      ans += ((d ^ mn) & 1 << i) > 0;
     }
     cout << "Case " << t << ": " << ans << "\n\n";
     cin >> n >> m;
