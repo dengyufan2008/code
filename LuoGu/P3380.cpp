@@ -11,7 +11,7 @@ struct H {
     int v, k, c, s[2];
   };
   int s;
-  vector<A> v;
+  vector<A> v = {{}};
 
   void Update(int p) {
     v[p].c = v[v[p].s[0]].c + v[v[p].s[1]].c + (p != 0);
@@ -34,7 +34,7 @@ struct H {
 
   void Insert(int &p, int x) {
     if (!p) {
-      p = v.size(), v.push_back({x, rand()});  // CHICK
+      p = v.size(), v.push_back({x, rand()});
     } else {
       Insert(v[p].s[v[p].v <= x], x);
     }
@@ -87,6 +87,12 @@ struct H {
   }
 } h[200001];
 int n, m, a[50001];
+
+void Init() {
+  for (int i = 1; i <= n * 4; i++) {
+    h[i].Insert(h[i].s, kInf), h[i].Insert(h[i].s, -kInf);
+  }
+}
 
 void Change(int p, int l, int r, int x, int y, bool b) {
   b ? h[p].Insert(h[p].s, y) : h[p].Delete(h[p].s, y);
@@ -145,6 +151,7 @@ int FindNext(int p, int l, int r, int _l, int _r, int k) {
 int main() {
   srand(unsigned(time(0)));
   cin >> n >> m;
+  Init();
   for (int i = 1; i <= n; i++) {
     cin >> a[i];
     Change(1, 1, n, i, a[i], 1);
@@ -159,13 +166,13 @@ int main() {
       int l = 0, r = 1e8, mid;
       while (l <= r) {
         mid = (l + r) / 2;
-        if (FindRank(1, 1, n, x, y, mid) + 1 >= k) {
-          r = mid - 1;
-        } else {
+        if (FindRank(1, 1, n, x, y, mid) <= k) {
           l = mid + 1;
+        } else {
+          r = mid - 1;
         }
       }
-      cout << l << '\n';
+      cout << r << '\n';
     } else if (o == 3) {
       Change(1, 1, n, x, a[x], 0), Change(1, 1, n, x, y, 1);
       a[x] = y;
