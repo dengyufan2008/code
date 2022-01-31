@@ -34,7 +34,7 @@ struct H {
 
   void Insert(int &p, int x) {
     if (!p) {
-      v.push_back({x, 1, rand()}), p = v.size();
+      p = v.size(), v.push_back({x, 1, rand()});
     } else {
       Insert(v[p].s[v[p].v <= x], x);
     }
@@ -94,16 +94,18 @@ struct H {
       return min(FindNext(v[p].s[0], x), v[p].v);
     }
   }
-} h[50001];
+} h[200001];
 int n, m, a[50001];
 
 void Change(int p, int l, int r, int x, int y, bool b) {
   b ? h[p].Insert(h[p].s, y) : h[p].Delete(h[p].s, y);
-  int mid = (l + r) / 2;
-  if (mid >= x) {
-    Change(p * 2, l, mid, x, y, b);
-  } else {
-    Change(p * 2 + 1, mid + 1, r, x, y, b);
+  if (l < r) {
+    int mid = (l + r) / 2;
+    if (mid >= x) {
+      Change(p * 2, l, mid, x, y, b);
+    } else {
+      Change(p * 2 + 1, mid + 1, r, x, y, b);
+    }
   }
 }
 
