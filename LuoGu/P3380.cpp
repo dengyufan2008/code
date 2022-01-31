@@ -5,15 +5,16 @@
 
 using namespace std;
 
+const int kInf = 2147483647;
 struct H {
   struct A {
-    int v, c, k, s[2];
+    int v, k, c, s[2];
   };
   int s;
   vector<A> v;
 
   void Update(int p) {
-    v[p].c = v[v[p].s[0]].c + v[v[p].s[1]].c + (p > 0);
+    v[p].c = v[v[p].s[0]].c + v[v[p].s[1]].c + (p != 0);
   }
 
   void Turn(int &p, bool b) {
@@ -24,17 +25,16 @@ struct H {
   }
 
   void Rebalance(int &p) {
-    if (v[p].k < v[v[p].s[0]].k) {
+    if (v[p].s[0] && v[p].k > v[v[p].s[0]].k) {
       Turn(p, 0);
-    } else if (v[p].k < v[v[p].s[1]].k) {
+    } else if (v[p].s[1] && v[p].k > v[v[p].s[1]].k) {
       Turn(p, 1);
     }
-    Update(p);
   }
 
   void Insert(int &p, int x) {
     if (!p) {
-      p = v.size(), v.push_back({x, 1, rand()});
+      p = v.size(), v.push_back({x, rand()});  // CHICK
     } else {
       Insert(v[p].s[v[p].v <= x], x);
     }
@@ -44,11 +44,11 @@ struct H {
   int Replace(int &p) {
     int t = v[p].v;
     if (!v[p].s[1]) {
-      p = 0;
+      p = v[p].s[0];
     } else {
       t = Replace(v[p].s[1]);
+      Update(p);
     }
-    Update(p);
     return t;
   }
 
@@ -66,33 +66,24 @@ struct H {
   }
 
   int FindRank(int p, int x) {
-    if (v[p].v == x) {
-      return v[v[p].s[0]].c;
-    } else if (v[p].v > x) {
-      return FindRank(v[p].s[0], x);
-    } else {
-      return FindRank(v[p].s[1], x) + v[v[p].s[0]].c + 1;
+    if (!p) {
+      return 0;
     }
+    return v[p].v >= x ? FindRank(v[p].s[0], x) : FindRank(v[p].s[1], x) + v[v[p].s[0]].c + 1;
   }
 
   int FindPast(int p, int x) {
     if (!p) {
-      return -2147483647;
-    } else if (v[p].v >= x) {
-      return FindPast(v[p].s[0], x);
-    } else {
-      return max(FindPast(v[p].s[1], x), v[p].v);
+      return -kInf;
     }
+    return v[p].v < x ? max(FindPast(v[p].s[1], x), v[p].v) : FindPast(v[p].s[0], x);
   }
 
   int FindNext(int p, int x) {
     if (!p) {
-      return 2147483647;
-    } else if (v[p].v <= x) {
-      return FindNext(v[p].s[1], x);
-    } else {
-      return min(FindNext(v[p].s[0], x), v[p].v);
+      return kInf;
     }
+    return v[p].v > x ? min(FindNext(v[p].s[0], x), v[p].v) : FindNext(v[p].s[1], x);
   }
 } h[200001];
 int n, m, a[50001];
