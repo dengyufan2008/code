@@ -5,45 +5,46 @@
 
 using namespace std;
 
-struct V {
-  LL v, k, c, s[2];
-};
-struct B {  // Balance Tree
-  LL s, n;
-  vector<V> v = {{}};
+struct H {
+  struct A {
+    int v, c, k, s[2];
+  };
+  int s;
+  vector<A> v;
 
-  void Update(LL p) {
+  void Update(int p) {
     v[p].c = v[v[p].s[0]].c + v[v[p].s[1]].c + (p > 0);
   }
 
-  void Turn(LL &p, bool b) {
-    LL q = v[p].s[!b];
-    v[p].s[!b] = v[q].s[b], v[q].s[b] = p;
+  void Turn(int &p, bool b) {
+    int q = v[p].s[b];
+    v[p].s[b] = v[q].s[!b], v[q].s[!b] = p;
     Update(p), Update(q);
     p = q;
   }
 
-  void Rebalance(LL &p) {
+  void Rebalance(int &p) {
     if (v[p].k < v[v[p].s[0]].k) {
-      Turn(p, 1);
-    } else if (v[p].k < v[v[p].s[1]].k) {
       Turn(p, 0);
-    }
-  }
-
-  void Insert(LL &p, LL x) {
-    if (!p) {
-      p = ++n, v.push_back({x, rand()});
-    } else {
-      Insert(v[p].s[v[p].v < x], x);
+    } else if (v[p].k < v[v[p].s[1]].k) {
+      Turn(p, 1);
     }
     Update(p);
   }
 
-  LL Replace(LL &p) {
-    LL t = v[p].v;
+  void Insert(int &p, int x) {
+    if (!p) {
+      v.push_back({x, 1, rand()}), p = v.size();
+    } else {
+      Insert(v[p].s[v[p].v <= x], x);
+    }
+    Update(p), Rebalance(p);
+  }
+
+  int Replace(int &p) {
+    int t = v[p].v;
     if (!v[p].s[1]) {
-      p = v[p].s[0];
+      p = 0;
     } else {
       t = Replace(v[p].s[1]);
     }
@@ -51,7 +52,7 @@ struct B {  // Balance Tree
     return t;
   }
 
-  void Delete(LL &p, LL x) {
+  void Delete(int &p, int x) {
     if (v[p].v == x) {
       if (!v[p].s[0] || !v[p].s[1]) {
         p = v[p].s[0] + v[p].s[1];
@@ -64,147 +65,123 @@ struct B {  // Balance Tree
     Update(p);
   }
 
-  LL FindRank(LL p, LL x) {
+  int FindRank(int p, int x) {
     if (v[p].v == x) {
       return v[v[p].s[0]].c;
-    } else if (v[p].v < x) {
+    } else if (v[p].v > x) {
       return FindRank(v[p].s[0], x);
     } else {
       return FindRank(v[p].s[1], x) + v[v[p].s[0]].c + 1;
     }
   }
 
-  LL FindPast(LL p, LL x) {
+  int FindPast(int p, int x) {
     if (!p) {
       return -2147483647;
-    } else if (v[p].v < x) {
-      return max(v[p].v, FindPast(v[p].s[1], x));
-    } else {
+    } else if (v[p].v >= x) {
       return FindPast(v[p].s[0], x);
+    } else {
+      return max(FindPast(v[p].s[1], x), v[p].v);
     }
   }
 
-  LL FindNext(LL p, LL x) {
+  int FindNext(int p, int x) {
     if (!p) {
       return 2147483647;
-    } else if (v[p].v > x) {
-      return min(v[p].v, FindNext(v[p].s[0], x));
-    } else {
+    } else if (v[p].v <= x) {
       return FindNext(v[p].s[1], x);
-    }
-  }
-} b;
-struct S {  // Seg Tree
-  B v[50001];
-
-  void Init(LL n) {
-    for (LL i = 1; i <= n * 4; i++) {
-      v[i].Insert(v[i].s, 0);
-    }
-  }
-
-  void Modify(LL p, LL l, LL r, LL x, LL _k, LL k) {
-    if (l == r) {
-      v[p].Delete(v[p].s, _k), v[p].Insert(v[p].s, k);
-      return;
-    }
-    LL mid = (l + r) / 2;
-    if (mid >= x) {
-      Modify(p * 2, l, mid, x, _k, k);
     } else {
-      Modify(p * 2 + 1, mid + 1, r, x, _k, k);
+      return min(FindNext(v[p].s[0], x), v[p].v);
     }
-    v[p].Delete(v[p].s, _k), v[p].Insert(v[p].s, k);
   }
+} h[50001];
+int n, m, a[50001];
 
-  LL FindRank(LL p, LL l, LL r, LL _l, LL _r, LL k) {
-    if (l >= _l && r <= _r) {
-      return v[p].FindRank(v[p].s, k) + 1;
-    }
-    LL mid = (l + r) / 2, ans = 0;
-    if (mid >= _l) {
-      ans += FindRank(p * 2, l, mid, _l, _r, k);
-    }
-    if (mid < _r) {
-      ans += FindRank(p * 2 + 1, mid + 1, r, _l, _r, k);
-    }
-    return ans;
+void Change(int p, int l, int r, int x, int y, bool b) {
+  b ? h[p].Insert(h[p].s, y) : h[p].Delete(h[p].s, y);
+  int mid = (l + r) / 2;
+  if (mid >= x) {
+    Change(p * 2, l, mid, x, y, b);
+  } else {
+    Change(p * 2 + 1, mid + 1, r, x, y, b);
   }
+}
 
-  LL FindPast(LL p, LL l, LL r, LL _l, LL _r, LL k) {
-    if (l >= _l && r <= _r) {
-      return v[p].FindPast(v[p].s, k);
-    }
-    LL mid = (l + r) / 2, ans = -2147483647;
-    if (mid >= _l) {
-      ans = max(ans, FindPast(p * 2, l, mid, _l, _r, k));
-    }
-    if (mid < r) {
-      ans = max(ans, FindPast(p * 2 + 1, mid + 1, r, _l, _r, k));
-    }
-    return ans;
+int FindRank(int p, int l, int r, int _l, int _r, int k) {
+  if (l >= _l && r <= _r) {
+    return h[p].FindRank(h[p].s, k);
   }
+  int mid = (l + r) / 2, ans = 0;
+  if (mid >= _l) {
+    ans += FindRank(p * 2, l, mid, _l, _r, k);
+  }
+  if (mid < _r) {
+    ans += FindRank(p * 2 + 1, mid + 1, r, _l, _r, k);
+  }
+  return ans;
+}
 
-  LL FindNext(LL p, LL l, LL r, LL _l, LL _r, LL k) {
-    if (l >= _l && r <= _r) {
-      return v[p].FindNext(v[p].s, k);
-    }
-    LL mid = (l + r) / 2, ans = 2147483647;
-    if (mid >= _l) {
-      ans = min(ans, FindNext(p * 2, l, mid, _l, _r, k));
-    }
-    if (mid < r) {
-      ans = max(ans, FindNext(p * 2 + 1, mid + 1, r, _l, _r, k));
-    }
-    return ans;
+int FindPast(int p, int l, int r, int _l, int _r, int k) {
+  if (l >= _l && r <= _r) {
+    return h[p].FindPast(h[p].s, k);
   }
-} s;
-LL n, m, a[50001];
+  int mid = (l + r) / 2, ans = -2147483647;
+  if (mid >= _l) {
+    ans = max(ans, FindPast(p * 2, l, mid, _l, _r, k));
+  }
+  if (mid < _r) {
+    ans = max(ans, FindPast(p * 2 + 1, mid + 1, r, _l, _r, k));
+  }
+  return ans;
+}
+
+int FindNext(int p, int l, int r, int _l, int _r, int k) {
+  if (l >= _l && r <= _r) {
+    return h[p].FindNext(h[p].s, k);
+  }
+  int mid = (l + r) / 2, ans = 2147483647;
+  if (mid >= _l) {
+    ans = min(ans, FindNext(p * 2, l, mid, _l, _r, k));
+  }
+  if (mid < _r) {
+    ans = min(ans, FindNext(p * 2 + 1, mid + 1, r, _l, _r, k));
+  }
+  return ans;
+}
 
 int main() {
   srand(unsigned(time(0)));
-  // cin >> n >> m;
-  // s.Init(n);
-  // for (LL i = 1; i <= n; i++) {
-  //   cin >> a[i];
-  //   s.Modify(1, 1, n, i, 0, a[i]);
-  // }
-  // for (LL i = 1, o, x, y, k; i <= m; i++) {
-  //   cin >> o >> x >> y;
-  //   if (o == 1) {
-  //     cin >> k;
-  //     cout << s.FindRank(1, 1, n, x, y, k) + 1 << '\n';
-  //   } else if (o == 2) {
-  //     cin >> k;
-  //     LL l = 0, r = 1e8;
-  //     while (l <= r) {
-  //       LL mid = (l + r) / 2, c = s.FindRank(1, 1, n, x, y, mid) + 1;
-  //       if (c >= k) {
-  //         r = mid - 1;
-  //       } else {
-  //         l = mid + 1;
-  //       }
-  //     }
-  //     cout << l << '\n';
-  //   } else if (o == 3) {
-  //     s.Modify(1, 1, n, x, a[x], y);
-  //     a[x] = y;
-  //   } else if (o == 4) {
-  //     cin >> k;
-  //     cout << s.FindPast(1, 1, n, x, y, k) << '\n';
-  //   } else {
-  //     cin >> k;
-  //     cout << s.FindNext(1, 1, n, x, y, k) << '\n';
-  //   }
-  // }
-  while (1) {
-    cin >> n >> m;
-    if (n == 1) {
-      b.Insert(b.s, m);
-    } else if (n == 2) {
-      b.Delete(b.s, m);
+  cin >> n >> m;
+  for (int i = 1; i <= n; i++) {
+    cin >> a[i];
+    Change(1, 1, n, i, a[i], 1);
+  }
+  for (int i = 1, o, x, y, k; i <= m; i++) {
+    cin >> o >> x >> y;
+    if (o == 1) {
+      cin >> k;
+      cout << FindRank(1, 1, n, x, y, k) + 1 << '\n';
+    } else if (o == 2) {
+      cin >> k;
+      int l = 0, r = 1e8, mid;
+      while (l <= r) {
+        mid = (l + r) / 2;
+        if (FindRank(1, 1, n, x, y, mid) + 1 >= k) {
+          r = mid - 1;
+        } else {
+          l = mid + 1;
+        }
+      }
+      cout << l << '\n';
+    } else if (o == 3) {
+      Change(1, 1, n, x, a[x], 0), Change(1, 1, n, x, y, 1);
+      a[x] = y;
+    } else if (o == 4) {
+      cin >> k;
+      cout << FindPast(1, 1, n, x, y, k) << '\n';
     } else {
-      cout << b.FindRank(b.s, m) + 1 << '\n';
+      cin >> k;
+      cout << FindNext(1, 1, n, x, y, k) << '\n';
     }
   }
   return 0;

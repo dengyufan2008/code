@@ -35,7 +35,7 @@ int main() {
       }
     }
     for (int i = 0; i < 8; i++) {
-      ans += ((d ^ mn) & 1 << i) > 0;
+      ans += ((d ^ mn) & (1 << i)) > 0;
     }
     cout << "Case " << t << ": " << ans << "\n\n";
     cin >> n >> m;
