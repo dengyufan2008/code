@@ -14,14 +14,14 @@ void Update(int &p) {
   v[p].s = v[v[p].l].s + v[v[p].r].s + (p != 0) * v[p].c;
 }
 
-void Left(int &p) {  // CHICK
+void Left(int &p) {
   int q = v[p].r;
   v[p].r = v[q].l, v[q].l = p;
   Update(p), Update(q);
   p = q;
 }
 
-void Right(int &p) {  // CHICK
+void Right(int &p) {
   int q = v[p].l;
   v[p].l = v[q].r, v[q].r = p;
   Update(p), Update(q);
