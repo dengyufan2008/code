@@ -6,96 +6,92 @@
 using namespace std;
 
 const int kInf = 2147483647;
-struct H {
-  struct A {
-    int v, k, c, s[2];
-  };
-  int s;
-  vector<A> v = {};
+struct V {
+  int v, k, c, s[2];
+} v[200001];
+int n, m, k, a[50001], s[200001];
 
-  void Update(int p) {
-    v[p].c = v[v[p].s[0]].c + v[v[p].s[1]].c + (p != 0);
+void BUpdate(int p) {
+  v[p].c = v[v[p].s[0]].c + v[v[p].s[1]].c + (p != 0);
+}
+
+void BTurn(int &p, bool b) {
+  int q = v[p].s[b];
+  v[p].s[b] = v[q].s[!b], v[q].s[!b] = p;
+  BUpdate(p), BUpdate(q);
+  p = q;
+}
+
+void BRebalance(int &p) {
+  if (v[p].s[0] && v[p].k > v[v[p].s[0]].k) {
+    BTurn(p, 0);
+  } else if (v[p].s[1] && v[p].k > v[v[p].s[1]].k) {
+    BTurn(p, 1);
   }
+}
 
-  void Turn(int &p, bool b) {
-    int q = v[p].s[b];
-    v[p].s[b] = v[q].s[!b], v[q].s[!b] = p;
-    Update(p), Update(q);
-    p = q;
+void BInsert(int &p, int x) {
+  if (!p) {
+    v[p = ++k] = {x, rand()};
+  } else {
+    BInsert(v[p].s[v[p].v <= x], x);
   }
+  BUpdate(p), BRebalance(p);
+}
 
-  void Rebalance(int &p) {
-    if (v[p].s[0] && v[p].k > v[v[p].s[0]].k) {
-      Turn(p, 0);
-    } else if (v[p].s[1] && v[p].k > v[v[p].s[1]].k) {
-      Turn(p, 1);
-    }
+int BReplace(int &p) {
+  int t = v[p].v;
+  if (!v[p].s[1]) {
+    p = v[p].s[0];
+  } else {
+    t = BReplace(v[p].s[1]);
+    BUpdate(p);
   }
+  return t;
+}
 
-  void Insert(int &p, int x) {
-    if (!p) {
-      p = v.size(), v.push_back({x, rand()});
+void BDelete(int &p, int x) {
+  if (v[p].v == x) {
+    if (!v[p].s[0] || !v[p].s[1]) {
+      p = v[p].s[0] + v[p].s[1];
     } else {
-      Insert(v[p].s[v[p].v <= x], x);
+      v[p].v = BReplace(v[p].s[0]);
     }
-    Update(p), Rebalance(p);
+  } else {
+    BDelete(v[p].s[v[p].v < x], x);
   }
+  BUpdate(p);
+}
 
-  int Replace(int &p) {
-    int t = v[p].v;
-    if (!v[p].s[1]) {
-      p = v[p].s[0];
-    } else {
-      t = Replace(v[p].s[1]);
-      Update(p);
-    }
-    return t;
+int BFindRank(int p, int x) {
+  if (!p) {
+    return 0;
   }
+  return v[p].v >= x ? BFindRank(v[p].s[0], x) : BFindRank(v[p].s[1], x) + v[v[p].s[0]].c + 1;
+}
 
-  void Delete(int &p, int x) {
-    if (v[p].v == x) {
-      if (!v[p].s[0] || !v[p].s[1]) {
-        p = v[p].s[0] + v[p].s[1];
-      } else {
-        v[p].v = Replace(v[p].s[0]);
-      }
-    } else {
-      Delete(v[p].s[v[p].v < x], x);
-    }
-    Update(p);
+int BFindPast(int p, int x) {
+  if (!p) {
+    return -kInf;
   }
+  return v[p].v < x ? max(BFindPast(v[p].s[1], x), v[p].v) : BFindPast(v[p].s[0], x);
+}
 
-  int FindRank(int p, int x) {
-    if (!p) {
-      return 0;
-    }
-    return v[p].v >= x ? FindRank(v[p].s[0], x) : FindRank(v[p].s[1], x) + v[v[p].s[0]].c + 1;
+int BFindNext(int p, int x) {
+  if (!p) {
+    return kInf;
   }
-
-  int FindPast(int p, int x) {
-    if (!p) {
-      return -kInf;
-    }
-    return v[p].v < x ? max(FindPast(v[p].s[1], x), v[p].v) : FindPast(v[p].s[0], x);
-  }
-
-  int FindNext(int p, int x) {
-    if (!p) {
-      return kInf;
-    }
-    return v[p].v > x ? min(FindNext(v[p].s[0], x), v[p].v) : FindNext(v[p].s[1], x);
-  }
-} h[200001];
-int n, m, a[50001];
+  return v[p].v > x ? min(BFindNext(v[p].s[0], x), v[p].v) : BFindNext(v[p].s[1], x);
+}
 
 void Init() {
   for (int i = 1; i <= n * 4; i++) {
-    h[i].Insert(h[i].s, kInf), h[i].Insert(h[i].s, -kInf);
+    BInsert(s[i], kInf), BInsert(s[i], -kInf);
   }
 }
 
 void Change(int p, int l, int r, int x, int y, bool b) {
-  b ? h[p].Insert(h[p].s, y) : h[p].Delete(h[p].s, y);
+  b ? BInsert(s[p], y) : BDelete(s[p], y);
   if (l < r) {
     int mid = (l + r) / 2;
     if (mid >= x) {
@@ -108,7 +104,7 @@ void Change(int p, int l, int r, int x, int y, bool b) {
 
 int FindRank(int p, int l, int r, int _l, int _r, int k) {
   if (l >= _l && r <= _r) {
-    return h[p].FindRank(h[p].s, k) - 1;  // 减去-kInf
+    return BFindRank(s[p], k) - 1;  // 减去-kInf
   }
   int mid = (l + r) / 2, ans = 0;
   if (mid >= _l) {
@@ -122,7 +118,7 @@ int FindRank(int p, int l, int r, int _l, int _r, int k) {
 
 int FindPast(int p, int l, int r, int _l, int _r, int k) {
   if (l >= _l && r <= _r) {
-    return h[p].FindPast(h[p].s, k);
+    return BFindPast(s[p], k);
   }
   int mid = (l + r) / 2, ans = -2147483647;
   if (mid >= _l) {
@@ -136,7 +132,7 @@ int FindPast(int p, int l, int r, int _l, int _r, int k) {
 
 int FindNext(int p, int l, int r, int _l, int _r, int k) {
   if (l >= _l && r <= _r) {
-    return h[p].FindNext(h[p].s, k);
+    return BFindNext(s[p], k);
   }
   int mid = (l + r) / 2, ans = 2147483647;
   if (mid >= _l) {
@@ -166,7 +162,7 @@ int main() {
       int l = 0, r = 1e8, mid;
       while (l <= r) {
         mid = (l + r) / 2;
-        if (FindRank(1, 1, n, x, y, mid) + 1 < k) {
+        if (FindRank(1, 1, n, x, y, mid) < k) {
           l = mid + 1;
         } else {
           r = mid - 1;
