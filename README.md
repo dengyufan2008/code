@@ -73,6 +73,4 @@ cout << "Runtime:" << clock() / 1000.0 << "s\n";
 ```
 *Still Updating*
 
-- - - - - -
-
 ## *Last Update : 2022.2.04*
