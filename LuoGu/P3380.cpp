@@ -1,6 +1,5 @@
 #include <ctime>
 #include <iostream>
-#include <vector>
 #define LL long long
 
 using namespace std;
@@ -8,7 +7,7 @@ using namespace std;
 const int kInf = 2147483647;
 struct V {
   int v, k, c, s[2];
-} v[4000001];
+} v[3200001];
 int n, m, k, a[50001], s[200001];
 
 void BUpdate(int p) {
