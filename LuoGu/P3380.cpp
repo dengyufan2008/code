@@ -108,7 +108,7 @@ void Change(int p, int l, int r, int x, int y, bool b) {
 
 int FindRank(int p, int l, int r, int _l, int _r, int k) {
   if (l >= _l && r <= _r) {
-    return h[p].FindRank(h[p].s, k);
+    return h[p].FindRank(h[p].s, k) - 1;  // 减去-kInf
   }
   int mid = (l + r) / 2, ans = 0;
   if (mid >= _l) {
@@ -166,7 +166,7 @@ int main() {
       int l = 0, r = 1e8, mid;
       while (l <= r) {
         mid = (l + r) / 2;
-        if (FindRank(1, 1, n, x, y, mid) <= k) {
+        if (FindRank(1, 1, n, x, y, mid) < k) {
           l = mid + 1;
         } else {
           r = mid - 1;
