@@ -1,13 +1,12 @@
 # *DengYufan's Blog*
 
-## *Writed in the First*
-- Nothing is better than fail, and nothing is better than success.
-- The mother of success is to be hard-working.
+## *Write In The First*
+- Star Me If You Like. It's Free, And Will Make Me Happy For A Long Time.
 
 ## *Important Time*
 - Start Coding : 2019.8.16
-- Registing in Luogu : 2019.9.15
-- Gold Name in Luogu : 2021.10.21
+- Sign Up In Luogu : 2019.9.15
+- Orange Name In Luogu : 2021.10.21
 - CSP Jenior Second Prize : 2020
 - CSP Jenior First Prize : 2021
 - CSP Senior Second Prize : 2021
@@ -19,7 +18,7 @@
 - Codeforces : dengyufan
 - Atcoder : dengyufan2008
 - Github : dengyufan2008
-- Focus on me if you like
+- Focus On Me If You Like
 
 ## *Websites*
 - [Luogu](http://www.luogu.com.cn)
@@ -35,7 +34,7 @@
 - Still Updating
 
 ## *Code*
-*Quick Read for integer*
+*Quick Read For Integer*
 ```c++
 int Read() {
   int f(1), x(0);
@@ -53,7 +52,7 @@ int Read() {
   return f * x;
 }
 ```
-*Quick Print for integer*
+*Quick Print For Integer*
 ```c++
 void Print(int x) {
   if (x < 0) {
@@ -76,4 +75,4 @@ cout << "Runtime:" << clock() / 1000.0 << "s\n";
 
 - - - - - -
 
-Last Update : 2021.10.23
+## *Last Update : 2022.2.04*
