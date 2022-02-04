@@ -11,7 +11,7 @@ struct H {
     int v, k, c, s[2];
   };
   int s;
-  vector<A> v = {};
+  vector<A> v = {{}};
 
   void Update(int p) {
     v[p].c = v[v[p].s[0]].c + v[v[p].s[1]].c + (p != 0);
@@ -166,7 +166,7 @@ int main() {
       int l = 0, r = 1e8, mid;
       while (l <= r) {
         mid = (l + r) / 2;
-        if (FindRank(1, 1, n, x, y, mid) < k) {
+        if (FindRank(1, 1, n, x, y, mid) + 1 < k) {
           l = mid + 1;
         } else {
           r = mid - 1;
