@@ -6,7 +6,7 @@ using namespace std;
 
 const int kInf = 1e9;
 struct V {
-  int c, v, s[2];
+  int v, c, s[2];
 } v[100001];
 int n, m, s;
 vector<bool> l;
@@ -16,8 +16,8 @@ void Update(int p) {
 }
 
 void Turn(int &p, bool b) {
-  int q = v[p].s[!b];
-  v[p].s[!b] = v[q].s[b], v[q].s[b] = p;
+  int q = v[p].s[b];
+  v[p].s[b] = v[q].s[!b], v[q].s[!b] = p;
   Update(p), Update(q);
   p = q;
 }
@@ -27,30 +27,22 @@ void Rebalance(int &p) {
     return;
   }
   if (l.front() != l.back()) {
-    Turn(v[p].s[l.back()], l.back());
+    Turn(v[p].s[l.back()], l.front());
   } else if (l.size() == 2) {
-    Turn(p, !l.back());
+    Turn(p, l.back());
   }
-  Turn(p, !l.back());
+  Turn(p, l.back());
   l.clear();
-}
-
-void Pushup(int &p, int x) {
-  int t = v[v[p].s[0]].c + 1;
-  if (t != x) {
-    Pushup(v[p].s[t < x], x - (t < x) * t);
-    l.push_back(t < x);
-    Rebalance(p);
-  }
 }
 
 void Insert(int &p, int x) {
   if (!p) {
-    v[p = ++m] = {1, x};
+    v[p = ++m] = {x, 1};
   } else {
     Insert(v[p].s[x >= v[p].v], x);
+    l.push_back(x >= v[p].v);
+    Update(p), Rebalance(p);
   }
-  Update(p);
 }
 
 int Replace(int &p) {
@@ -59,7 +51,8 @@ int Replace(int &p) {
     p = v[p].s[0];
   } else {
     t = Replace(v[p].s[1]);
-    Update(p);
+    l.push_back(1);
+    Update(p), Rebalance(p);
   }
   return t;
 }
@@ -68,41 +61,56 @@ void Delete(int &p, int x) {
   if (v[p].v == x) {
     if (!v[p].s[0] || !v[p].s[1]) {
       p = v[p].s[0] + v[p].s[1];
+      l.push_back(v[p].s[1]);
     } else {
       v[p].v = Replace(v[p].s[0]);
+      l.push_back(0);
     }
   } else {
     Delete(v[p].s[x > v[p].v], x);
+    l.push_back(x > v[p].v);
   }
-  Update(p);
+  Update(p), Rebalance(p);
 }
 
 int FindRank(int p, int x) {
   if (!p) {
     return 0;
   }
-  return FindRank(v[p].s[x > v[p].v], x) + (x > v[p].v) * (v[v[p].s[0]].c + 1);
+  int t = FindRank(v[p].s[x > v[p].v], x) + (x > v[p].v) * (v[v[p].s[0]].c + 1);
+  l.push_back(x > v[p].v);
+  Rebalance(p);
+  return t;
 }
 
 int FindVal(int p, int x) {
   if (v[v[p].s[0]].c + 1 == x) {
     return v[p].v;
   }
-  return FindVal(v[p].s[v[v[p].s[0]].c < x], x - (v[v[p].s[0]].c < x) * (v[v[p].s[0]].c + 1));
+  int t = FindVal(v[p].s[v[v[p].s[0]].c < x], x - (v[v[p].s[0]].c < x) * (v[v[p].s[0]].c + 1));
+  l.push_back(v[v[p].s[0]].c < x);
+  Rebalance(p);
+  return t;
 }
 
 int FindPast(int p, int x) {
   if (!p) {
     return -kInf;
   }
-  return v[p].v < x ? max(FindPast(v[p].s[1], x), v[p].v) : FindPast(v[p].s[0], x);
+  int t = v[p].v < x ? max(FindPast(v[p].s[1], x), v[p].v) : FindPast(v[p].s[0], x);
+  l.push_back(v[p].v < x);
+  Rebalance(p);
+  return t;
 }
 
 int FindNext(int p, int x) {
   if (!p) {
     return kInf;
   }
-  return v[p].v > x ? min(FindNext(v[p].s[0], x), v[p].v) : FindNext(v[p].s[1], x);
+  int t = v[p].v > x ? min(FindNext(v[p].s[0], x), v[p].v) : FindNext(v[p].s[1], x);
+  l.push_back(v[p].v <= x);
+  Rebalance(p);
+  return t;
 }
 
 int main() {
