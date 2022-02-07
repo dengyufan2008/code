@@ -10,7 +10,6 @@ struct V1 {
 } v1[501];
 struct V2 {
   int v;
-  vector<int> e;
 } v2[501];
 int n, m, e, ans;
 
