@@ -37,20 +37,20 @@ int main() {
     }
   }
   for (int i = 0; i < n; i++) {
-    for (int j = 0; j < n; j++) {
+    for (int j = 0; j < m; j++) {
       ans += T(i * 500 + j, i * 500 + j);
     }
   }
   cout << ans << '\n';
   for (int i = 0; i < n; i++) {
-    for (int j = 0; j < n; j++) {
+    for (int j = 0; j < m; j++) {
       if (v[i * 500 + j]) {
         int _i = v[i * 500 + j] / 500, _j = v[i * 500 + j] % 500;
-        if (abs(i - _i) > 1) {
-          cout << i + 1 << ' ' << j + 1 << " DOLJE\n";
+        if (i - _i > 1) {
+          cout << _i + 1 << ' ' << _j + 1 << " DOLJE\n";
         }
-        if (abs(j - _j) > 1) {
-          cout << _i + 1 << ' ' << _j + 1 << " DESNO\n";
+        if (_j - j > 1) {
+          cout << i + 1 << ' ' << j + 1 << " DESNO\n";
         }
       }
     }
