@@ -44,7 +44,7 @@ int main() {
   }
   for (int i = 0; i < n; i++) {
     for (int j = 0; j < m; j++) {
-      if (!a[i][j]) {
+      if (i & 1 && !a[i][j]) {
         ans += T(i * 200 + j, i * 200 + j);
       }
     }
