@@ -32,7 +32,7 @@ int main() {
     for (int j = 0; j < m; j++) {
       for (int k = 0; k < 8; k++) {
         int _i = i + kMove[k][0], _j = j + kMove[k][1];
-        if (_i < n && _j < n && _j >= 0 && !a[i][j] && !a[_i][_j]) {
+        if (_i < n && _j < m && _j >= 0 && !a[i][j] && !a[_i][_j]) {
           if (i & 1) {
             e[i * 200 + j].push_back(_i * 200 + _j);
           } else {
