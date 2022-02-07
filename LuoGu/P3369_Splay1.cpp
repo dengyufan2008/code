@@ -25,8 +25,7 @@ void Turn(int &p, bool b) {
 void Rebalance(int &p) {
   if (p != s && l.size() != 2) {
     return;
-  }
-  if (l.front() != l.back()) {
+  } else if (l.front() != l.back()) {
     Turn(v[p].s[l.back()], l.front());
   } else if (l.size() == 2) {
     Turn(p, l.back());
@@ -133,3 +132,10 @@ int main() {
   }
   return 0;
 }
+/*
+1 1
+1 2
+2 2
+
+s = 0
+*/
