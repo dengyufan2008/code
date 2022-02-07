@@ -47,10 +47,10 @@ int main() {
       if (v[i * 500 + j]) {
         int _i = v[i * 500 + j] / 500, _j = v[i * 500 + j] % 500;
         if (abs(i - _i) > 1) {
-          cout << _i + 1 << ' ' << _j + 1 << " DOLJE\n";
+          cout << i + 1 << ' ' << j + 1 << " DOLJE\n";
         }
         if (abs(j - _j) > 1) {
-          cout << i + 1 << ' ' << j + 1 << " DESNO\n";
+          cout << _i + 1 << ' ' << _j + 1 << " DESNO\n";
         }
       }
     }
