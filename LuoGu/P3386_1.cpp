@@ -31,7 +31,7 @@ int main() {
   cin >> n >> m >> e;
   for (int i = 1, x, y; i <= e; i++) {
     cin >> x >> y;
-    v1[x].e.push_back(y), v2[y].e.push_back(x);
+    v1[x].e.push_back(y);
   }
   for (int i = 1; i <= n; i++) {
     ans += T(i, i);
