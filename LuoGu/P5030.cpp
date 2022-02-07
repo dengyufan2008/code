@@ -27,8 +27,8 @@ int main() {
     cin >> x >> y;
     k -= b[x * 200 + y - 201] == kInf, b[x * 200 + y - 201] = kInf;
   }
-  for (int i = 0; i < n; i++) {
-    for (int j = 0; j < m; j++) {
+  for (int j = 0; j < m; j++) {
+    for (int i = 0; i < n; i++) {
       for (int k = 0; k < 4; k++) {
         int _i = i + kMove[k][0], _j = j + kMove[k][1];
         if (_i < n && _j < m && _j >= 0 && b[i * 200 + j] != kInf && b[_i * 200 + _j] != kInf) {
