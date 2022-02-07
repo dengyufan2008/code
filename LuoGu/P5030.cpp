@@ -4,7 +4,7 @@
 
 using namespace std;
 
-const int kMove[8][2] = {{1, 3}, {3, 1}, {1, -3}, {3, -1}, {-1, 3}, {-3, 1}, {-1, -3}, {-3, -1}};
+const int kMove[4][2] = {{1, 3}, {3, 1}, {3, -1}, {1, -3}};
 int n, m, k, ans, b[40000], v[40000];
 bool a[200][200];
 vector<int> e[40000];
@@ -30,7 +30,7 @@ int main() {
   }
   for (int i = 0; i < n; i++) {
     for (int j = 0; j < m; j++) {
-      for (int k = 0; k < 8; k++) {
+      for (int k = 0; k < 4; k++) {
         int _i = i + kMove[k][0], _j = j + kMove[k][1];
         if (_i < n && _j < m && _j >= 0 && !a[i][j] && !a[_i][_j]) {
           if (i & 1) {
