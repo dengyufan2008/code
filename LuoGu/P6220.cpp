@@ -5,6 +5,7 @@
 using namespace std;
 
 int n, m, ans, d[250000], b[250000], v[250000], c[250000];
+bool a[250000];
 char ch[500][500];
 vector<int> e[250000];
 
@@ -19,6 +20,19 @@ bool T(int x, int k) {
     }
   }
   return 0;
+}
+
+void M(int x) {
+  if (a[x]) {
+    return;
+  }
+  a[x] = 1;
+  for (int i : e[x]) {
+    if (v[i] && !a[i]) {
+      a[i] = 1, M(v[i]);
+      return;
+    }
+  }
 }
 
 int main() {
@@ -44,13 +58,20 @@ int main() {
       }
     }
   }
-  cout << ans << '\n';
   for (int i = 0; i < n; i++) {
     for (int j = 0; j < m; j++) {
       if (d[i * 500 + j] & 1 && !c[i * 500 + j]) {
+        M(i * 500 + j);
+      }
+    }
+  }
+  cout << ans << '\n';
+  for (int i = 0; i < n; i++) {
+    for (int j = 0; j < m; j++) {
+      if (d[i * 500 + j] & 1 && !a[i * 500 + j]) {
         cout << i + 1 << ' ' << j + 1 << " DESNO\n";
       }
-      if (d[i * 500 + j] & 2 && v[i * 500 + j]) {
+      if (d[i * 500 + j] & 2 && a[i * 500 + j]) {
         cout << i + 1 << ' ' << j + 1 << " DOLJE\n";
       }
     }
