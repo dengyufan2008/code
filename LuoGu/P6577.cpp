@@ -4,14 +4,14 @@
 
 using namespace std;
 
-const int kInf = 19980732;
+const LL kInf = 19980732;
 struct V {
-  int v, p, b, d;
-  vector<pair<int, int>> e;
+  LL v, p, b, d;
+  vector<pair<LL, LL>> e;
 } v[1001];
-int n, m, k, d, ans;
+LL n, m, k, d, ans;
 
-bool T(int x) {
+bool T(LL x) {
   if (v[x].b != k) {
     v[x].b = k;
     for (auto i : v[x].e) {
@@ -22,7 +22,7 @@ bool T(int x) {
           return 1;
         }
       } else {
-        v[i.first].d = min(v[i.first].d, i.second - v[x].v - v[i.first].v);
+        v[i.first].d = min(v[i.first].d, v[x].v + v[i.first].v - i.second);
       }
     }
   }
@@ -31,38 +31,38 @@ bool T(int x) {
 
 int main() {
   cin >> n >> m;
-  for (int i = 1; i <= n; i++) {
+  for (LL i = 1; i <= n; i++) {
     v[i].v = -kInf;
   }
-  for (int i = 1, x, y, z; i <= m; i++) {
+  for (LL i = 1, x, y, z; i <= m; i++) {
     cin >> x >> y >> z;
     v[x].e.push_back({y + n, z}), v[x].v = max(v[x].v, z);
   }
-  for (int i = 1; i <= n; i++) {
+  for (LL i = 1; i <= n; i++) {
     while (1) {
-      k++, d = kInf;
-      for (int j = n + 1; j <= n * 2; j++) {
-        v[j].d = kInf;
+      k++, d = kInf * n;
+      for (LL j = n + 1; j <= n * 2; j++) {
+        v[j].d = kInf * n;
       }
       if (T(i)) {
         break;
       }
-      for (int j = n + 1; j <= n * 2; j++) {
-        d = min(d, v[j].b == k ? kInf : v[j].d);
+      for (LL j = n + 1; j <= n * 2; j++) {
+        d = min(d, v[j].b == k ? kInf * n : v[j].d);
       }
-      for (int j = 1; j <= n; j++) {
+      for (LL j = 1; j <= n; j++) {
         v[j].v -= (v[j].b == k) * d;
       }
-      for (int j = n + 1; j <= n * 2; j++) {
+      for (LL j = n + 1; j <= n * 2; j++) {
         v[j].v += (v[j].b == k) * d;
       }
     }
   }
-  for (int i = 1; i <= n * 2; i++) {
+  for (LL i = 1; i <= n * 2; i++) {
     ans += v[i].v;
   }
   cout << ans << '\n';
-  for (int i = n + 1; i <= n * 2; i++) {
+  for (LL i = n + 1; i <= n * 2; i++) {
     cout << v[i].p << ' ';
   }
   return 0;
