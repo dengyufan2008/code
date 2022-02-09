@@ -5,7 +5,7 @@
 using namespace std;
 
 const int kD = 250000;
-int n, m, ans, b[250000], v[500000], c[250000];
+int n, m, ans, b[250000], v[500000];
 bool a[500000];
 char ch[500][500];
 vector<int> e[250000];
@@ -15,7 +15,7 @@ bool T(int x, int k) {
     b[x] = k;
     for (int i : e[x]) {
       if (!v[i] || T(v[i], k)) {
-        c[v[i]]--, c[v[i] = x]++;
+        v[i] = x, v[x] = i;
         return 1;
       }
     }
@@ -58,7 +58,7 @@ int main() {
   }
   for (int i = 0; i < n; i++) {
     for (int j = 0; j < m; j++) {
-      if (ch[i][j] == '1' && !c[i * 500 + j]) {
+      if (ch[i][j] == '1' && !v[i * 500 + j]) {
         M(i * 500 + j);
       }
     }
