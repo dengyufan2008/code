@@ -40,8 +40,8 @@ int main() {
     v[x].e.push_back({y + n, z}), v[x].v = max(v[x].v, z);
   }
   for (LL i = 1, x = 1; i <= n; x = ++i) {
+    k++;
     while (1) {
-      k++;
       for (LL j = n + 1; j <= n * 2; j++) {
         v[j].d = kInf * n;
       }
@@ -73,7 +73,7 @@ int main() {
       for (LL j = n + 1; j <= n * 2; j++) {
         v[j].v += (v[j].b == k) * v[x].d;
       }
-      x = v[x]._d;
+      v[x = v[x]._d].b = 0;
     }
     for (int i = n + 1; i <= n * 2; i++) {
       v[i].p = 0;
@@ -88,13 +88,3 @@ int main() {
   }
   return 0;
 }
-/*
-3 6
-1 1 3
-1 3 4
-2 1 2
-2 2 1
-2 3 3
-3 3 5
-
-*/
