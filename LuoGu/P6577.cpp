@@ -51,10 +51,8 @@ int main() {
         }
         x = v[x]._l;
         while (1) {
-          v[v[x].p].p = x;
-          x = v[x].p;
-          v[x].l = v[x].p;
-          v[v[x].p].l = x;
+          v[v[x].p].p = x, x = v[x].p;
+          v[x].l = v[x].p, v[v[x].p].l = x;
           if (x == i) {
             break;
           }
