@@ -24,13 +24,7 @@ void T(LL f, LL x) {
 }
 
 void R(LL f, LL x) {
-  v[x].l = ++c;
-  if (!v[x].h) {
-    v[x].h = x;
-  }
-  if (v[x].e.size() > 1 || v[x].e[0] != f) {
-    v[v[x].e[v[x].e[0] == f]].h = v[x].h;
-  }
+  v[x].l = ++c, v[x].h = f && v[f].e[v[f].e[0] == v[f].f] == x ? v[f].h : x;
   for (LL i : v[x].e) {
     if (f != i) {
       R(x, i);
