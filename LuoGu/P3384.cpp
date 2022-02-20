@@ -41,13 +41,11 @@ void R(LL f, LL x) {
 
 void Pushdown(LL p, LL l, LL r) {
   LL mid = l + r >> 1;
-  if (d[p].second) {
-    d[p * 2].first = (d[p * 2].first + d[p].second * (mid - l + 1)) % mod;
-    d[p * 2 + 1].first = (d[p * 2 + 1].first + d[p].second * (r - mid)) % mod;
-    d[p * 2].second = (d[p * 2].second + d[p].second) % mod;
-    d[p * 2 + 1].second = (d[p * 2 + 1].second + d[p].second) % mod;
-    d[p].second = 0;
-  }
+  d[p * 2].first = (d[p * 2].first + d[p].second * (mid - l + 1)) % mod;
+  d[p * 2 + 1].first = (d[p * 2 + 1].first + d[p].second * (r - mid)) % mod;
+  d[p * 2].second = (d[p * 2].second + d[p].second) % mod;
+  d[p * 2 + 1].second = (d[p * 2 + 1].second + d[p].second) % mod;
+  d[p].second = 0;
 }
 
 void Add(LL p, LL l, LL r, LL _l, LL _r, LL k) {
@@ -56,13 +54,14 @@ void Add(LL p, LL l, LL r, LL _l, LL _r, LL k) {
     return;
   }
   LL mid = l + r >> 1;
+  Pushdown(p, l, r);
   if (mid >= _l) {
     Add(p * 2, l, mid, _l, _r, k);
   }
   if (mid < _r) {
     Add(p * 2 + 1, mid + 1, r, _l, _r, k);
   }
-  d[p].first = (d[p * 2].first + d[p * 2 + 1].first + d[p].second) % mod;
+  d[p].first = (d[p * 2].first + d[p * 2 + 1].first) % mod;
 }
 
 LL Ask(LL p, LL l, LL r, LL _l, LL _r) {
