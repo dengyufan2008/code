@@ -41,11 +41,13 @@ void R(LL f, LL x) {
 
 void Pushdown(LL p, LL l, LL r) {
   LL mid = l + r >> 1;
-  d[p * 2].first = (d[p * 2].first + d[p].second * (mid - l + 1)) % mod;
-  d[p * 2 + 1].first = (d[p * 2 + 1].first + d[p].second * (r - mid)) % mod;
-  d[p * 2].second = (d[p * 2].second + d[p].second) % mod;
-  d[p * 2 + 1].second = (d[p * 2 + 1].second + d[p].second) % mod;
-  d[p].second = 0;
+  if (d[p].second) {
+    d[p * 2].first = (d[p * 2].first + d[p].second * (mid - l + 1)) % mod;
+    d[p * 2 + 1].first = (d[p * 2 + 1].first + d[p].second * (r - mid)) % mod;
+    d[p * 2].second = (d[p * 2].second + d[p].second) % mod;
+    d[p * 2 + 1].second = (d[p * 2 + 1].second + d[p].second) % mod;
+    d[p].second = 0;
+  }
 }
 
 void Add(LL p, LL l, LL r, LL _l, LL _r, LL k) {
@@ -61,7 +63,7 @@ void Add(LL p, LL l, LL r, LL _l, LL _r, LL k) {
   if (mid < _r) {
     Add(p * 2 + 1, mid + 1, r, _l, _r, k);
   }
-  d[p].first = (d[p * 2].first + d[p * 2 + 1].first) % mod;
+  d[p].first = (d[p * 2].first + d[p * 2 + 1].first + d[p].second) % mod;
 }
 
 LL Ask(LL p, LL l, LL r, LL _l, LL _r) {
@@ -91,7 +93,7 @@ int main() {
   }
   T(0, s), R(0, s);
   for (LL i = 1; i <= n; i++) {
-    Add(1, 1, n * 2, v[i].l, v[i].l, v[i].v);
+    Add(1, 1, n, v[i].l, v[i].l, v[i].v);
   }
   for (LL i = 1, o, x, y, z; i <= m; i++) {
     cin >> o >> x;
@@ -101,10 +103,10 @@ int main() {
         if (v[v[x].h].d < v[v[y].h].d) {
           swap(x, y);
         }
-        Add(1, 1, n * 2, v[v[x].h].l, v[x].l, z);
+        Add(1, 1, n, v[v[x].h].l, v[x].l, z);
         x = v[v[x].h].f;
       }
-      Add(1, 1, n * 2, min(v[x].l, v[y].l), min(v[x].l, v[y].l), z);
+      Add(1, 1, n, min(v[x].l, v[y].l), max(v[x].l, v[y].l), z);
     } else if (o == 2) {
       cin >> y;
       LL ans = 0;
@@ -112,15 +114,15 @@ int main() {
         if (v[v[x].h].d < v[v[y].h].d) {
           swap(x, y);
         }
-        ans = (ans + Ask(1, 1, n * 2, v[v[x].h].l, v[x].l)) % mod;
+        ans = (ans + Ask(1, 1, n, v[v[x].h].l, v[x].l)) % mod;
         x = v[v[x].h].f;
       }
-      cout << (ans + Ask(1, 1, n * 2, v[x].l, v[y].l)) % mod << '\n';
+      cout << (ans + Ask(1, 1, n, min(v[x].l, v[y].l), max(v[x].l, v[y].l))) % mod << '\n';
     } else if (o == 3) {
       cin >> z;
-      Add(1, 1, n * 2, v[x].l, v[x].l + v[x].s - 1, z);
+      Add(1, 1, n, v[x].l, v[x].l + v[x].s - 1, z);
     } else {
-      cout << Ask(1, 1, n * 2, v[x].l, v[x].l + v[x].s - 1) << '\n';
+      cout << Ask(1, 1, n, v[x].l, v[x].l + v[x].s - 1) << '\n';
     }
   }
   return 0;
