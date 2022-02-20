@@ -5,18 +5,18 @@
 using namespace std;
 
 struct V {
-  int v, f, h, s = 1;
+  int v, f, s = 1, d, h, l, r;
   vector<int> e;
 } v[100001];
 int n, m, s, p;
-vector<int> l;
-pair<int, int> d[401];
+vector<int> l = {0};
+pair<int, int> d[800001];
 
 void T(int f, int x) {
   for (int i = 0; i < v[x].e.size(); i++) {
     if (f != v[x].e[i]) {
       T(x, v[x].e[i]);
-      v[v[x].e[i]].f = x, v[x].s += v[v[x].e[i]].s;
+      v[v[x].e[i]].f = x, v[x].s += v[v[x].e[i]].s, v[v[x].e[i]].d = v[x].d + 1;
       if (v[v[x].e[i]].s > v[v[x].e[v[x].e[0] == f]].s) {
         swap(v[x].e[v[x].e[0] == f], v[x].e[i]);
       }
@@ -25,17 +25,19 @@ void T(int f, int x) {
 }
 
 void R(int f, int x) {
+  v[x].l = l.size(), l.push_back(x);
   if (!v[x].h) {
     v[x].h = x;
   }
-  if (v[x].e.size() > 1) {
-    v[v[x].e[v[x].e[0] == f]].h = v[x].h, l.push_back(x);
+  if (v[x].e.size() > 1 || v[x].e[0] != f) {
+    v[v[x].e[v[x].e[0] == f]].h = v[x].h;
   }
   for (int i : v[x].e) {
     if (f != i) {
       R(x, i);
     }
   }
+  v[x].r = l.size(), l.push_back(x);
 }
 
 void Pushdown(int p, int l, int r) {
@@ -90,16 +92,38 @@ int main() {
     v[x].e.push_back(y), v[y].e.push_back(x);
   }
   T(0, s), R(0, s);
+  for (int i = 1; i <= n; i++) {
+    Add(1, 1, n * 2, v[i].l, v[i].l, v[i].v);
+    Add(1, 1, n * 2, v[i].r, v[i].r, v[i].v);
+  }
   for (int i = 1, o, x, y, z; i <= m; i++) {
     cin >> o >> x;
     if (o == 1) {
       cin >> y >> z;
+      while (v[x].h != v[y].h) {
+        if (v[v[x].h].d < v[v[y].h].d) {
+          swap(x, y);
+        }
+        Add(1, 1, n * 2, v[v[x].h].l, v[x].l, z);
+        x = v[v[x].h].f;
+      }
+      Add(1, 1, n * 2, v[x].l, v[y].l, z);
     } else if (o == 2) {
       cin >> y;
+      int ans = 0;
+      while (v[x].h != v[y].h) {
+        if (v[v[x].h].d < v[v[y].h].d) {
+          swap(x, y);
+        }
+        ans += Ask(1, 1, n * 2, v[v[x].h].l, v[x].l);
+        x = v[v[x].h].f;
+      }
+      cout << ans + Ask(1, 1, n * 2, v[x].l, v[y].l) << '\n';
     } else if (o == 3) {
       cin >> z;
+      Add(1, 1, n * 2, v[x].l, v[x].r, z);
     } else {
-      ;
+      cout << Ask(1, 1, n * 2, v[x].l, v[x].r) << '\n';
     }
   }
   return 0;
