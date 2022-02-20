@@ -8,8 +8,7 @@ struct V {
   LL v, f, s = 1, d, h, l;
   vector<LL> e;
 } v[100001];
-LL n, m, s, mod;
-vector<LL> l = {0};
+LL n, m, s, c, mod;
 pair<LL, LL> d[400001];
 
 void T(LL f, LL x) {
@@ -25,7 +24,7 @@ void T(LL f, LL x) {
 }
 
 void R(LL f, LL x) {
-  v[x].l = l.size(), l.push_back(x);
+  v[x].l = ++c;
   if (!v[x].h) {
     v[x].h = x;
   }
