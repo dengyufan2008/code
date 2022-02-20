@@ -56,7 +56,7 @@ int main() {
   for (int i = 0; i < k; i++) {
     for (int j = 0; j <= n * 2; j++) {
       if (f[i][j]) {
-        f[i + 1][j + v[i].l - v[i].r] = f[i + 1][j - v[i].l + v[i].r] = p[i + 1][j + v[i].l - v[i].r] = 1;
+        f[i + 1][j + v[i + 1].l - v[i + 1].r] = f[i + 1][j - v[i + 1].l + v[i + 1].r] = p[i + 1][j + v[i + 1].l - v[i + 1].r] = 1;
       }
     }
   }
@@ -69,7 +69,7 @@ int main() {
         for (int i : v[x].d[1]) {
           ans[p[x][y]].push_back(i);
         }
-        y += (p[x][y] ? -1 : 1) * v[i].l - v[i].r;
+        y += (p[x][y] ? -1 : 1) * (v[x].l - v[x].r);
       }
       break;
     }
