@@ -14,8 +14,9 @@ pair<LL, LL> d[400001];
 void T(LL f, LL x) {
   for (LL i = 0; i < v[x].e.size(); i++) {
     if (f != v[x].e[i]) {
+      v[v[x].e[i]].d = v[x].d + 1;
       T(x, v[x].e[i]);
-      v[v[x].e[i]].f = x, v[x].s += v[v[x].e[i]].s, v[v[x].e[i]].d = v[x].d + 1;
+      v[v[x].e[i]].f = x, v[x].s += v[v[x].e[i]].s;
       if (v[v[x].e[i]].s > v[v[x].e[v[x].e[0] == f]].s) {
         swap(v[x].e[v[x].e[0] == f], v[x].e[i]);
       }
