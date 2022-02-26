@@ -6,23 +6,24 @@ using namespace std;
 
 const LL kInf = 19980732;
 struct V {
-  LL v, l, _l, b, d, _d, p;
+  LL v, p, b, d, _d, l;
   vector<pair<LL, LL>> e;
 } v[1001];
-LL n, m, k, ans;
+LL n, m, k = 1, ans;
 
 bool T(LL x) {
   if (v[x].b != k) {
     v[x].b = k;
     for (auto i : v[x].e) {
       if (v[x].v + v[i.first].v == i.second) {
-        v[i.first].b = k, v[i.first].p = v[i.first].p ? v[i.first].p : x;
-        if (!v[i.first].l || T(v[i.first].l)) {
-          v[i.first]._l = v[i.first].l, v[x]._l = v[x].l;
-          v[i.first].l = x, v[x].l = i.first;
-          return 1;
+        v[i.first].b = k;
+        if (v[x].p != i.first) {
+          v[x].l = i.first;
+          if (!v[i.first].p || T(v[i.first].p)) {
+            return 1;
+          }
         }
-      } else if (v[i.first].d >= v[x].v + v[i.first].v - i.second) {
+      } else if (v[i.first].d > v[x].v + v[i.first].v - i.second) {
         v[i.first].d = v[x].v + v[i.first].v - i.second, v[i.first]._d = x;
       }
     }
@@ -39,42 +40,31 @@ int main() {
     cin >> x >> y >> z;
     v[x].e.push_back({y + n, z}), v[x].v = max(v[x].v, z);
   }
-  for (LL i = 1, x = 1; i <= n; x = ++i) {
-    k++;
+  for (LL i = 1, d, x; (x = i) <= n; i++, k++) {
     while (1) {
+      d = kInf * n;
       for (LL j = n + 1; j <= n * 2; j++) {
         v[j].d = kInf * n;
       }
       if (T(x)) {
-        if (x == i) {
-          break;
-        }
-        x = v[x]._l;
-        while (1) {
-          v[v[x].p].p = x, x = v[x].p;
-          v[x].l = v[x].p, v[v[x].p].l = x;
-          if (x == i) {
-            break;
-          }
-          x = v[x].l;
+        for (LL j = i; j;) {
+          LL t = v[v[j].l].p;
+          v[v[j].l].p = j, v[j].p = v[j].l, v[j].l = 0, j = t;
         }
         break;
       }
       for (LL j = n + 1; j <= n * 2; j++) {
-        if (v[j].b != k && (x == i || v[x].d > v[j].d)) {
-          x = j;
+        if (v[j].b != k && v[j].d < d) {
+          d = v[j].d, x = v[j]._d;
         }
       }
       for (LL j = 1; j <= n; j++) {
-        v[j].v -= (v[j].b == k) * v[x].d;
+        v[j].v -= (v[j].b == k) * d;
       }
       for (LL j = n + 1; j <= n * 2; j++) {
-        v[j].v += (v[j].b == k) * v[x].d;
+        v[j].v += (v[j].b == k) * d;
       }
-      v[x = v[x]._d].b = 0;
-    }
-    for (int i = n + 1; i <= n * 2; i++) {
-      v[i].p = 0;
+      v[x].b = 0;
     }
   }
   for (LL i = 1; i <= n * 2; i++) {
@@ -82,7 +72,7 @@ int main() {
   }
   cout << ans << '\n';
   for (LL i = n + 1; i <= n * 2; i++) {
-    cout << v[i].l << ' ';
+    cout << v[i].p << ' ';
   }
   return 0;
 }
