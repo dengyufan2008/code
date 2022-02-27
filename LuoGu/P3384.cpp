@@ -57,7 +57,7 @@ void Add(LL p, LL l, LL r, LL _l, LL _r, LL k) {
   if (mid < _r) {
     Add(p * 2 + 1, mid + 1, r, _l, _r, k);
   }
-  d[p].first = (d[p * 2].first + d[p * 2 + 1].first + d[p].second) % mod;
+  d[p].first = (d[p * 2].first + d[p * 2 + 1].first) % mod;
 }
 
 LL Ask(LL p, LL l, LL r, LL _l, LL _r) {
