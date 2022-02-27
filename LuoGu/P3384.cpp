@@ -17,15 +17,15 @@ void T(LL f, LL x) {
       v[v[x].e[i]].d = v[x].d + 1;
       T(x, v[x].e[i]);
       v[v[x].e[i]].f = x, v[x].s += v[v[x].e[i]].s;
-      if (v[v[x].e[i]].s > v[v[x].e[v[x].e[0] == f]].s) {
-        swap(v[x].e[v[x].e[0] == f], v[x].e[i]);
+      if (v[x].e[0] == f || v[v[x].e[i]].s > v[v[x].e[0]].s) {
+        swap(v[x].e[0], v[x].e[i]);
       }
     }
   }
 }
 
 void R(LL f, LL x) {
-  v[x].l = ++c, v[x].h = f && v[f].e[v[f].e[0] == v[f].f] == x ? v[f].h : x;
+  v[x].l = ++c, v[x].h = f && v[f].e[0] == x ? v[f].h : x;
   for (LL i : v[x].e) {
     if (f != i) {
       R(x, i);
