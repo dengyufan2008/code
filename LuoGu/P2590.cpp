@@ -7,10 +7,10 @@ using namespace std;
 struct V {
   LL v, f, s = 1, d, h, l;
   vector<LL> e;
-} v[100001];
+} v[30001];
 struct D {
   int m, s, t;
-} d[400001];
+} d[120001];
 LL n, m, c;
 string s;
 
@@ -72,10 +72,12 @@ LL Ask(LL p, LL l, LL r, LL _l, LL _r, bool b) {
   LL mid = l + r >> 1, ans = 0;
   Pushdown(p, l, r);
   if (mid >= _l) {
-    ans += Ask(p * 2, l, mid, _l, _r, b);
+    LL t = Ask(p * 2, l, mid, _l, _r, b);
+    ans = b ? ans + t : max(ans, t);
   }
   if (mid < _r) {
-    ans += Ask(p * 2 + 1, mid + 1, r, _l, _r, b);
+    LL t = Ask(p * 2 + 1, mid + 1, r, _l, _r, b);
+    ans = b ? ans + t : max(ans, t);
   }
   return ans;
 }
@@ -104,10 +106,12 @@ int main() {
         if (v[v[x].h].d < v[v[y].h].d) {
           swap(x, y);
         }
-        ans += Ask(1, 1, n, v[v[x].h].l, v[x].l, s == "QSUM");
+        LL t = Ask(1, 1, n, v[v[x].h].l, v[x].l, s == "QSUM");
+        ans = s == "QSUM" ? ans + t : max(ans, t);
         x = v[v[x].h].f;
       }
-      cout << (ans + Ask(1, 1, n, min(v[x].l, v[y].l), max(v[x].l, v[y].l), s == "QSUM")) << '\n';
+      LL t = Ask(1, 1, n, min(v[x].l, v[y].l), max(v[x].l, v[y].l), s == "QSUM");
+      cout << (s == "QSUM" ? ans + t : max(ans, t)) << '\n';
     }
   }
   return 0;
