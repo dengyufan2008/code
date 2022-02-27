@@ -4,6 +4,7 @@
 
 using namespace std;
 
+const LL kInf = 1e9;
 struct V {
   LL v, f, s = 1, d, h, l;
   vector<LL> e;
@@ -69,7 +70,7 @@ LL Ask(LL p, LL l, LL r, LL _l, LL _r, bool b) {
   if (l >= _l && r <= _r) {
     return b ? d[p].s : d[p].m;
   }
-  LL mid = l + r >> 1, ans = 0;
+  LL mid = l + r >> 1, ans = !b * -kInf;
   Pushdown(p, l, r);
   if (mid >= _l) {
     LL t = Ask(p * 2, l, mid, _l, _r, b);
@@ -100,8 +101,9 @@ int main() {
     cin >> s >> x >> y;
     if (s == "CHANGE") {
       Add(1, 1, n, v[x].l, v[x].l, y - v[x].v);
+      v[x].v = y;
     } else {
-      LL ans = 0;
+      LL ans = (s != "QSUM") * -kInf;
       while (v[x].h != v[y].h) {
         if (v[v[x].h].d < v[v[y].h].d) {
           swap(x, y);
