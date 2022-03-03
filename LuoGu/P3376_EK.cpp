@@ -7,10 +7,10 @@ using namespace std;
 const LL kInf = 1e18;
 struct E {
   LL x, v, p;
-} e[40002];
+} e[10001];
 struct V {
   LL et, b, f;
-} v[20001];
+} v[201];
 LL n, m, s, t, k, mn, ans;
 
 bool Bfs() {
