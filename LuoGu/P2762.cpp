@@ -11,7 +11,7 @@ struct E {
 struct V {
   LL et, nt, d;
 } v[103];
-LL n, m, c, tot, ans;
+LL n, m, c = 1, tot, ans;
 
 void AddE(LL x, LL y, LL z) {
   e[++c] = {y, z, v[x].et}, v[x].et = c;
