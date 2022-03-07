@@ -22,7 +22,7 @@ bool Bfs() {
     int c = q.front();
     for (LL i = v[c].et; i; i = e[i].p) {
       if (e[i].v && !v[e[i].x].d) {
-        v[e[i].x].d = v[c].d + 1, q.push({e[i].x});
+        v[e[i].x].d = v[c].d + 1, q.push(e[i].x);
       }
     }
   }
@@ -37,7 +37,7 @@ LL Dfs(LL x, LL in) {
   for (LL &i = v[x].n; i && in; in && (i = e[i].p)) {
     if (e[i].v && v[e[i].x].d == v[x].d + 1) {
       LL t = Dfs(e[i].x, min(in, e[i].v));
-      e[i].v -= min(in, t), e[i ^ 1].v += min(in, t);
+      e[i].v -= t, e[i ^ 1].v += t;
       in -= t, out += t;
     }
   }
