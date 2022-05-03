@@ -1,14 +1,15 @@
 #include <cmath>
 #include <complex>
+#include <cstring>
 #include <iostream>
 #define CD complex<double>
 
 using namespace std;
 
 const double kPi = acos(-1.0);
-int n, k, r[1000001], ans[1000001];
-CD a[1000001], b[1000001];
-string s1, s2;
+int n, k, l1, l2, r[3000001], ans[3000001];
+char s1[3000001], s2[3000001];
+CD a[3000001], b[3000001];
 
 void FFT(CD a[], int n, int b) {
   for (int i = 0; i < n; i++) {
@@ -34,14 +35,15 @@ void FFT(CD a[], int n, int b) {
 }
 
 int main() {
-  cin >> s1 >> s2;
-  for (int i = 0; i < s1.size(); i++) {
-    a[i] = double(s1[s1.size() - i - 1] - '0');
+  scanf("%s %s", s1, s2);
+  l1 = strlen(s1), l2 = strlen(s2);
+  for (int i = 0; i < l1; i++) {
+    a[i] = double(s1[l1 - i - 1] - '0');
   }
-  for (int i = 0; i < s2.size(); i++) {
-    b[i] = double(s2[s2.size() - i - 1] - '0');
+  for (int i = 0; i < l2; i++) {
+    b[i] = double(s2[l2 - i - 1] - '0');
   }
-  k = max(int(ceil(log2(s1.size() + s2.size() - 1))), 1);
+  k = max(int(ceil(log2(l1 + l2 - 1))), 1);
   n = 1 << k;
   for (int i = 0; i < n; i++) {
     r[i] = (r[i >> 1] >> 1) | ((i & 1) << (k - 1));
@@ -59,10 +61,10 @@ int main() {
   for (; n > -1 && !ans[n]; n--) {
   }
   if (n == -1) {
-    cout << 0;
+    putchar('0');
   } else {
     for (int i = n; i >= 0; i--) {
-      cout << ans[i];
+      putchar(ans[i] + '0');
     }
   }
   return 0;
