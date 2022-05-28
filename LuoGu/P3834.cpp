@@ -5,8 +5,8 @@
 using namespace std;
 
 struct V {
-  int a[201], l[201];
-} v[19];
+  int a[200001], l[200001];
+} v[21];
 int n, m;
 
 void Build(int l, int r, int d) {
@@ -35,9 +35,9 @@ int Ask(int l, int r, int d, int _l, int _r, int k) {
   }
   int mid = l + r >> 1, num = v[d].l[_r] - v[d].l[_l - 1];
   if (k <= num) {
-    return Ask(l, mid, d + 1, l + v[d].l[_l - 1], l + v[d].l[_l - 1], k);
+    return Ask(l, mid, d + 1, max(l, min(mid, l + v[d].l[_l - 1] - v[d].l[l - 1])), max(l, min(mid, l + v[d].l[_r - 1] - v[d].l[l - 1])), k);
   } else {
-    return Ask(mid + 1, r, d + 1, mid + _l - v[d].l[_l - 1], mid + _r - v[d].l[_r - 1], k - num);
+    return Ask(mid + 1, r, d + 1, max(mid + 1, min(r, mid + _l - l + 1 - v[d].l[_l - 1] + v[d].l[l - 1])), max(mid + 1, min(r, mid + _r - l + 1 - v[d].l[_r - 1] + v[d].l[l - 1])), k - num);
   }
 }
 
@@ -55,8 +55,4 @@ int main() {
   }
   return 0;
 }
-/*
-5 1
-3 1 2 4 5 
-4 5 1
-*/
+// A Failed Solution of Huafenshu
