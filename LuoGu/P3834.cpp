@@ -35,7 +35,7 @@ int Ask(int l, int r, int d, int _l, int _r, int k) {
   }
   int mid = l + r >> 1, num = v[d].l[_r] - v[d].l[_l - 1];
   if (k <= num) {
-    return Ask(l, mid, d + 1, l + v[d].l[_l] - v[d].l[l - 1], l + v[d].l[_r - 1] - v[d].l[l - 1], k);
+    return Ask(l, mid, d + 1, l + v[d].l[_l - 1], l + v[d].l[_l - 1], k);
   } else {
     return Ask(mid + 1, r, d + 1, mid + _l - v[d].l[_l - 1], mid + _r - v[d].l[_r - 1], k - num);
   }
