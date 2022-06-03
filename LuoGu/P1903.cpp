@@ -28,7 +28,15 @@ int main() {
     }
   }
   l = round(pow(n, 2.0 / 3.0));
-  sort(v + 1, v + _v + 1, [](V i, V j) { return (i.l - 1) / l == (j.l - 1) / l && (i.r - 1) / l == (j.r - 1) / l ? i.t < j.t : i.l < j.l || i.l == j.l && i.r < j.r; });
+  sort(v + 1, v + _v + 1, [](V i, V j) {
+    if ((i.l - 1) / l != (j.l - 1) / l) {
+      return i.l < j.l;
+    } else if ((i.r - 1) / l != (j.r - 1) / l) {
+      return i.r  < j.r;
+    } else {
+      return i.t < j.t;
+    }
+  });
   for (LL i = 1, x = v[1].l, y = v[1].l - 1, t = _e; i <= _v; i++) {
     ans[v[i].d] = ans[v[i - 1].d];
     for (; x < v[i].l; ans[v[i].d] -= !--c[a[x++]]) {
