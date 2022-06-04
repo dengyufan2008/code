@@ -73,6 +73,18 @@
     "valarray": "cpp",
     "span": "cpp",
     "ranges": "cpp",
-    "variant": "cpp"
+    "variant": "cpp",
+    "any": "cpp",
+    "barrier": "cpp",
+    "bit": "cpp",
+    "compare": "cpp",
+    "concepts": "cpp",
+    "coroutine": "cpp",
+    "source_location": "cpp",
+    "latch": "cpp",
+    "numbers": "cpp",
+    "semaphore": "cpp",
+    "stop_token": "cpp",
+    "syncstream": "cpp"
   },
 }
