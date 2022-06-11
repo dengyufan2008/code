@@ -5,54 +5,57 @@
 using namespace std;
 
 struct V {
-  int a[200001], l[200001];
-} v[21];
-int n, m;
+  int l, r, v, d;
+} v[1600001];
+int n, m, k, a[200001], b[200001], l[200001], h[200001];
 
-void Build(int l, int r, int d) {
+void Copy(int &p) {
+  v[++k] = v[p];
+  p = k;
+}
+
+void Insert(int &p, int l, int r, int x) {
+  Copy(p);
   if (l == r) {
     return;
   }
-  int mid = l + r >> 1, num = mid - l + 1, _l = l, _r = mid + 1;
-  for (int i = l; i <= r; i++) {
-    num -= v[d].a[i] < v[0].a[mid];
+  int mid = l + r >> 1;
+  if (x <= mid) {
+    Insert(v[p].l, l, mid, x);
+  } else {
+    Insert(v[p].l, mid + 1, r, x);
   }
-  for (int i = l; i <= r; i++) {
-    if (v[d].a[i] < v[0].a[mid] || v[d].a[i] == v[0].a[mid] && num-- > 0) {
-      v[d + 1].a[_l++] = v[d].a[i];
-      v[d].l[i] = v[d].l[i - 1] + 1;
-    } else {
-      v[d + 1].a[_r++] = v[d].a[i];
-      v[d].l[i] = v[d].l[i - 1];
-    }
-  }
-  Build(l, mid, d + 1), Build(mid + 1, r, d + 1);
+  v[p].d = v[v[p].l].d + v[v[p].r].d;
 }
 
-int Ask(int l, int r, int d, int _l, int _r, int k) {
-  if (_l == _r) {
-    return v[d].a[_l];
+int Ask(int p, int q, int l, int r, int x) {
+  if (l == r) {
+    return l;
   }
-  int mid = l + r >> 1, num = v[d].l[_r] - v[d].l[_l - 1];
-  if (k <= num) {
-    return Ask(l, mid, d + 1, max(l, min(mid, l + v[d].l[_l - 1] - v[d].l[l - 1])), max(l, min(mid, l + v[d].l[_r - 1] - v[d].l[l - 1])), k);
+  int mid = l + r >> 1;
+  if (x <= v[v[q].l].d - v[v[p].l].d) {
+    return Ask(v[p].l, v[q].l, l, mid, x);
   } else {
-    return Ask(mid + 1, r, d + 1, max(mid + 1, min(r, mid + _l - l + 1 - v[d].l[_l - 1] + v[d].l[l - 1])), max(mid + 1, min(r, mid + _r - l + 1 - v[d].l[_r - 1] + v[d].l[l - 1])), k - num);
+    return Ask(v[p].r, v[q].r, mid + 1, r, x - (v[v[q].l].d - v[v[p].l].d));
   }
 }
 
 int main() {
   cin >> n >> m;
   for (int i = 1; i <= n; i++) {
-    cin >> v[0].a[i];
-    v[1].a[i] = v[0].a[i];
+    cin >> a[i];
+    l[i] = i;
   }
-  sort(v[0].a + 1, v[0].a + n + 1);
-  Build(1, n, 1);
-  for (int i = 1, l, r, k; i <= m; i++) {
-    cin >> l >> r >> k;
-    cout << Ask(1, n, 1, l, r, k) << '\n';
+  sort(l + 1, l + n + 1, [](int i, int j) { return a[i] < a[j]; });
+  for (int i = 1; i <= n; i++) {
+    b[l[i]] = b[l[i - 1]] + (a[l[i]] != a[l[i - 1]]);
+  }
+  for (int i = 1; i <= n; i++) {
+    Insert(h[i] = h[i - 1], 1, n, b[i]);
+  }
+  for (int i = 1, x, y, k; i <= m; i++) {
+    cin >> x >> y >> k;
+    cout << a[l[Ask(h[x - 1], h[y], 1, n, k)]] << '\n';
   }
   return 0;
 }
-// A Failed Solution of Huafenshu
