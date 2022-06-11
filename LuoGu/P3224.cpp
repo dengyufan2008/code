@@ -14,10 +14,7 @@ int GetRoot(int x) {
 }
 
 void Insert(int &p, int l, int r, int x) {
-  if (!p) {
-    p = ++k;
-  }
-  v[p].d++;
+  v[p ? p : p = ++k].d++;
   if (l == r) {
     return;
   }
@@ -29,7 +26,7 @@ void Insert(int &p, int l, int r, int x) {
   }
 }
 
-void Merge(int &p, int &q, int l, int r) {
+void Merge(int &p, int q, int l, int r) {
   if (!p || !q) {
     p = p ? p : q;
     return;
@@ -44,7 +41,9 @@ void Merge(int &p, int &q, int l, int r) {
 }
 
 int Ask(int p, int l, int r, int x) {
-  if (l == r) {
+  if (!p) {
+    return -1;
+  } else if (l == r) {
     return b[l];
   }
   int mid = l + r >> 1;
@@ -72,7 +71,7 @@ int main() {
   for (int i = 1, x, y; i <= q; i++) {
     cin >> ch >> x >> y;
     if (ch == 'Q') {
-      cout << (v[GetRoot(x)].d < y ? -1 : Ask(s[GetRoot(x)], 1, n, y)) << '\n';
+      cout << Ask(s[GetRoot(x)], 1, n, y) << '\n';
     } else if (GetRoot(x) != GetRoot(y)) {
       Merge(s[GetRoot(x)], s[GetRoot(y)], 1, n);
       f[GetRoot(y)] = GetRoot(x);
