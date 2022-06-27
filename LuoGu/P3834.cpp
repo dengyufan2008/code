@@ -5,34 +5,33 @@
 using namespace std;
 
 struct V {
-  int l, r, v, d;
-} v[161];
-int n, m, k, a[21], b[21], l[21], h[21];
+  LL l, r, d;
+} v[6400001];
+LL n, m, k, a[200001], b[200001], l[200001], h[200001];
 
-void Copy(int &p) {
+void Copy(LL &p) {
   v[++k] = v[p];
   p = k;
 }
 
-void Insert(int &p, int l, int r, int x) {
-  v[p ? p : p = ++k].d++;
-  if (l == r) {
+void Insert(LL &p, LL l, LL r, LL x) {
+  Copy(p), v[p].d++;
+  if (l >= r) {
     return;
   }
-  int mid = l + r >> 1;
+  LL mid = l + r >> 1;
   if (x <= mid) {
     Insert(v[p].l, l, mid, x);
   } else {
     Insert(v[p].r, mid + 1, r, x);
   }
-  v[p].d = v[v[p].l].d + v[v[p].r].d;
 }
 
-int Ask(int p, int q, int l, int r, int x) {
-  if (l == r) {
+LL Ask(LL p, LL q, LL l, LL r, LL x) {
+  if (l >= r) {
     return l;
   }
-  int mid = l + r >> 1;
+  LL mid = l + r >> 1;
   if (x <= v[v[q].l].d - v[v[p].l].d) {
     return Ask(v[p].l, v[q].l, l, mid, x);
   } else {
@@ -42,19 +41,18 @@ int Ask(int p, int q, int l, int r, int x) {
 
 int main() {
   cin >> n >> m;
-  for (int i = 1; i <= n; i++) {
+  for (LL i = 1; i <= n; i++) {
     cin >> a[i];
     l[i] = i;
   }
-  sort(l + 1, l + n + 1, [](int i, int j) { return a[i] < a[j]; });
-  for (int i = 1; i <= n; i++) {
-    b[l[i]] = b[l[i - 1]] + (a[l[i]] != a[l[i - 1]]);
+  sort(l + 1, l + n + 1, [](LL i, LL j) { return a[i] < a[j]; });
+  for (LL i = 1; i <= n; i++) {
+    b[l[i]] = a[l[i]] == a[l[i - 1]] ? b[l[i - 1]] : i;
   }
-  for (int i = 1; i <= n; i++) {
-    v[k + 1] = v[h[i - 1]];
-    Insert(h[i], 1, n, b[i]);
+  for (LL i = 1; i <= n; i++) {
+    Insert(h[i] = h[i - 1], 1, n, b[i]);
   }
-  for (int i = 1, x, y, k; i <= m; i++) {
+  for (LL i = 1, x, y, k; i <= m; i++) {
     cin >> x >> y >> k;
     cout << a[l[Ask(h[x - 1], h[y], 1, n, k)]] << '\n';
   }
