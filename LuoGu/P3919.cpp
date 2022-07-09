@@ -6,7 +6,7 @@ using namespace std;
 struct V {
   int l, r, v;
 } v[32000001];
-int n, m, k1, k2, a[1000001], h[1000001];
+int n, m, k, a[1000001], h[1000001];
 
 int Read() {
   int x = 0, f = 1;
@@ -25,12 +25,12 @@ int Read() {
 }
 
 void Copy(int &p) {
-  v[++k1] = v[p];
-  p = k1;
+  v[++k] = v[p];
+  p = k;
 }
 
 void Build(int &p, int l, int r) {
-  p = ++k1;
+  p = ++k;
   if (l == r) {
     v[p].v = a[l];
     return;
@@ -75,9 +75,9 @@ int main() {
     x = Read(), o = Read(), y = Read();
     if (o == 1) {
       z = Read();
-      Change(h[++k2] = h[x], 1, n, y, z);
+      Change(h[i] = h[x], 1, n, y, z);
     } else {
-      cout << Ask(h[++k2] = h[x], 1, n, y) << '\n';
+      cout << Ask(h[i] = h[x], 1, n, y) << '\n';
     }
   }
   return 0;
