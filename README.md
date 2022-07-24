@@ -5,34 +5,53 @@
 
 ## *Important Time*
 - Start Coding : 2019.8.16
+
 - Sign Up In Luogu : 2019.9.15
+
 - Orange Name In Luogu : 2021.10.21
+
 - CSP Jenior Second Prize : 2020
+
 - CSP Jenior First Prize : 2021
+
 - CSP Senior Second Prize : 2021
+
+- First AC of Black Problem:2022.7.24
 
 ## *Accounts*
 - Luogu : dengyufan
+
 - USACO : dengyuf1
+
 - Codeforces : dengyufan
+
 - Atcoder : dengyufan2008
+
 - Github : dengyufan2008
+
 - Focus On Me If You Like
 
 ## *Websites*
 - [Luogu](http://www.luogu.com.cn)
+
 - [USACO](https://train.usaco.org)
+
 - [Codeforces](https://codeforces.com)
+
 - [AtCoder](https://atcoder.jp)
+
 - [C++Info](https://zh.cppreference.com/w/%E9%A6%96%E9%A1%B5)
+
 - [Github](https://github.com)
+
+- [OI-Wiki](https://oiwiki.com)
 
 ## *Economic Things*
 - C++14 Compile : g++ -std=c++14 -Wl, --stack=0x10000000 -o code.cpp code.exe
 
 ## *Code*
+- Quick Read For Integer
 ```c++
-// Quick Read For Integer
 int Read() {
   int f(1), x(0);
   char ch(getchar());
@@ -49,8 +68,9 @@ int Read() {
   return f * x;
 }
 ```
+
+- Quick Print For Integer
 ```c++
-// Quick Print For Integer
 void Print(int x) {
   if (x < 0) {
     putchar('-');
@@ -62,14 +82,16 @@ void Print(int x) {
   putchar(x % 10 + 48);
 }
 ```
+
+- Runtime
 ```c++
-// Runtime
 #include <ctime>
 
 cout << "Runtime:" << clock() / 1000.0 << "s\n";
 ```
+
+- SegTree
 ```c++
-// SegTree
 pair<LL, LL> a[400001];
 
 void Pushdown(LL p, LL l, LL r) {
@@ -112,8 +134,9 @@ LL Ask(LL p, LL l, LL r, LL _l, LL _r) {
   return ans;
 }
 ```
+
+- Treap
 ```c++
-// Treap
 const int kInf = 1000000000;
 struct V {
   int d, s, k, l, r;
@@ -208,4 +231,4 @@ int FindNext(int &p, int x) {
 }
 ```
 
-## *Last Update : 2022.2.04*
+## *Last Update : 2022.7.24*
