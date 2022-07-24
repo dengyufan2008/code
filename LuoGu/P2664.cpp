@@ -12,7 +12,7 @@ struct V {
 int n, s, r, t, b[100001], c[100001];
 
 void GetRoot(int f, int x) {
-  v[x].s = 1, v[x].w = 0;
+  v[x].s = 1, v[x].w = 0, c[v[x].c] = 0;
   for (int i : v[x].e) {
     if (i != f && !v[i].b) {
       GetRoot(x, i);
