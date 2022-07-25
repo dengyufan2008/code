@@ -9,8 +9,8 @@ using namespace std;
 struct V {
   int d, l, r;
   vector<int> e;
-} v[1214];
-int t, n, m, _m, k, l, d[2][201];
+} v[340001];
+int t, n, m, _m, k, l, d[2][607];
 bool ans;
 PII a[607];
 vector<PII> c;
@@ -42,7 +42,7 @@ int main() {
   cin >> t;
   while (t--) {
     k = l = _m = 0, ans = 1, c.clear();
-    fill(&v[1], &v[1214], v[0]);
+    fill(&v[1], &v[340001], v[0]);
     cin >> n >> m;
     if (m > n * 3 + 6) {
       cout << "NO\n";
