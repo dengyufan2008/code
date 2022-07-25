@@ -9,7 +9,7 @@ using namespace std;
 struct V {
   int d, l, r;
   vector<int> e;
-} v[340001];
+} v[340001];  // CHICK
 int t, n, m, _m, k, l, d[2][607];
 bool ans;
 PII a[607];
