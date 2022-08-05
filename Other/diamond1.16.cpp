@@ -35,7 +35,7 @@ void Output(__int128_t x) {
 }
 
 int main() {
-  cout << "Please input the seed of the map." << endl;
+  cout << "Please input the seed of the world." << endl;
   s[0] = Input();
   cout << "Please input x and z of the chunk." << endl;
   x = Input(), z = Input();
@@ -50,7 +50,7 @@ int main() {
   for (int i = 1; i <= 2; i++) {
     _s[i] = (_s[i - 1] * kMul + 11) & kMask;
   }
-  cout << "The diamond is at x:", Output((_s[1] >> 44) + 16 * x), cout << " z:", Output((_s[2] >> 44) + 16 * z), cout << endl;
+  cout << "The diamonds is at x:", Output((_s[1] >> 44) + 16 * x), cout << " z:", Output((_s[2] >> 44) + 16 * z), cout << endl;
   system("pause");
   // cout << "Runtime:" << (double)clock() / 1000.0 << "s" << endl;
    return 0;
