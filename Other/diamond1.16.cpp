@@ -37,7 +37,7 @@ void Output(__int128_t x) {
 int main() {
   cout << "Please input the seed of the map." << endl;
   s[0] = Input();
-  cout << "Please input x and z of the block." << endl;
+  cout << "Please input x and z of the chunk." << endl;
   x = Input(), z = Input();
   s[1] = s[0] ^ kMul & kMask;
   for (int i = 2; i <= 5; i++) {
