@@ -33,8 +33,7 @@ void Turn(int &p, bool b) {  // 0:L 1:R
 void Rebalance(int &p) {
   if (p != _s && h.size() != 2) {
     return;
-  }
-  if (h.back() != h.front()) {
+  } else  if (h.back() != h.front()) {
     Turn(v[p].s[h.back()], h.back());
   } else if (h.size() == 2) {
     Turn(p, !h.back());
