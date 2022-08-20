@@ -31,25 +31,15 @@ void Rebalance(int &p, int x) {
   }
 }
 
-void Insert(int &p, int x) {  // CHICK
-  if (!p) {
-    v[p = ++m] = {x, 1};
-    Rebalance(s, v[p].v);
-  } else if (v[p].v == x) {
-    v[p].c++;
+void Insert(int &p, int x) {
+  if (!p || v[p].v == x) {
+    !p && (p = ++m);
+    v[p].v = x, v[p].d++;
     Rebalance(s, v[p].v);
   } else {
-    Insert(v[p].s[x >= v[p].v], x);
+    Insert(v[p].s[x > v[p].v], x);
   }
   Update(p);
-  // if (!p || v[p].v == x) {
-  //   !p && (p = ++m);
-  //   v[p].v = x, v[p].d++;
-  //   Rebalance(s, v[p].v);
-  // } else {
-  //   Insert(v[p].s[x >= v[p].v], x);
-  // }
-  // Update(p);
 }
 
 int Replace(int &p) {
@@ -93,7 +83,7 @@ int FindVal(int p, int x) {
     Rebalance(s, v[p].v);
     return v[p].v;
   }
-  return FindVal(v[p].s[v[v[p].s[0]].c + v[p].d < x], x - (v[v[p].s[0]].c + v[p].d < x) * (v[v[p].s[0]].c + 1));
+  return FindVal(v[p].s[v[v[p].s[0]].c + v[p].d < x], x - (v[v[p].s[0]].c + v[p].d < x) * (v[v[p].s[0]].c + v[p].d));
 }
 
 int FindPast(int p, int x) {
@@ -111,8 +101,6 @@ int FindNext(int p, int x) {
 }
 
 int main() {
-  // freopen("P3369_6.in", "r", stdin);
-  // freopen("P3369_6.out", "w", stdout);
   cin >> n;
   for (int i = 1, o, x; i <= n; i++) {
     cin >> o >> x;
