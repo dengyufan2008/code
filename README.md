@@ -137,98 +137,103 @@ LL Ask(LL p, LL l, LL r, LL _l, LL _r) {
 
 - Treap
 ```c++
-const int kInf = 1000000000;
-struct V {
-  int d, s, k, l, r;
-} v[100001];
-int m, s;
-
-void Update(int &p) {
-  v[p].s = v[v[p].l].s + v[v[p].r].s + (p != 0);
-}
-
-void Left(int &p) {
-  int q = v[p].r;
-  v[p].r = v[q].l, v[q].l = p;
-  Update(p), Update(q);
-  p = q;
-}
-
-void Right(int &p) {
-  int q = v[p].l;
-  v[p].l = v[q].r, v[q].r = p;
-  Update(p), Update(q);
-  p = q;
-}
-
-void Rebalance(int &p) {
-  if (v[p].l && v[v[p].l].k < v[p].k) {
-    Right(p);
-  } else if (v[p].r && v[v[p].r].k < v[p].k) {
-    Left(p);
+template <class T, int kMaxN>  // You SHOULD call the function Init() before using the treap.
+class Treap {
+ private:
+  struct V {
+    int s, k, l, r;
+    T d;
+  } v[kMaxN];
+  int n, m, s;
+  T mx, mn;
+  void Update(int &p) {
+    v[p].s = v[v[p].l].s + v[v[p].r].s + (p != 0);
   }
-}
-
-void Insert(int &p, int x) {
-  if (!p) {
-    v[p = ++m].d = x, v[p].k = rand();
-  } else {
-    Insert(v[p].d > x ? v[p].l : v[p].r, x);
+  void Left(int &p) {
+    int q = v[p].r;
+    v[p].r = v[q].l, v[q].l = p;
+    Update(p), Update(q);
+    p = q;
   }
-  Update(p), Rebalance(p);
-}
-
-int Replace(int &p) {
-  int c = v[p].d;
-  if (!v[p].r) {
-    p = v[p].l;
-  } else {
-    c = Replace(v[p].r);
+  void Right(int &p) {
+    int q = v[p].l;
+    v[p].l = v[q].r, v[q].r = p;
+    Update(p), Update(q);
+    p = q;
+  }
+  void Rebalance(int &p) {
+    if (v[p].l && v[v[p].l].k < v[p].k) {
+      Right(p);
+    } else if (v[p].r && v[v[p].r].k < v[p].k) {
+      Left(p);
+    }
+  }
+  void Insert(int &p, T x) {
+    if (!p) {
+      v[p = ++m].d = x, v[p].k = rand();
+    } else {
+      Insert(x < v[p].d ? v[p].l : v[p].r, x);
+    }
+    Update(p), Rebalance(p);
+  }
+  T Replace(int &p) {
+    T c = v[p].d;
+    if (!v[p].r) {
+      p = v[p].l;
+    } else {
+      c = Replace(v[p].r);
+      Update(p);
+    }
+    return c;
+  }
+  void Delete(int &p, T x) {
+    if (v[p].d == x) {
+      if (!v[p].l || !v[p].r) {
+        p = v[p].l + v[p].r;
+      } else {
+        v[p].d = Replace(v[p].l);
+      }
+    } else {
+      Delete(x < v[p].d ? v[p].l : v[p].r, x);
+    }
     Update(p);
   }
-  return c;
-}
-
-void Delete(int &p, int x) {
-  if (v[p].d == x) {
-    if (!v[p].l || !v[p].r) {
-      p = v[p].l + v[p].r;
-    } else {
-      v[p].d = Replace(v[p].l);
+  int FindRank(int &p, T x) {
+    if (!p) {
+      return 0;
     }
-  } else {
-    Delete(v[p].d > x ? v[p].l : v[p].r, x);
+    return v[p].d < x ? FindRank(v[p].r, x) + v[v[p].l].s + 1 : FindRank(v[p].l, x);
   }
-  Update(p);
-}
+  T FindVal(int &p, int x) {
+    if (v[v[p].l].s + 1 == x) {
+      return v[p].d;
+    }
+    return v[v[p].l].s < x ? FindVal(v[p].r, x - v[v[p].l].s - 1) : FindVal(v[p].l, x);
+  }
+  T FindLast(int &p, T x) {
+    if (!p) {
+      return mn;
+    }
+    return v[p].d < x ? max(v[p].d, FindLast(v[p].r, x)) : FindLast(v[p].l, x);
+  }
+  T FindNext(int &p, T x) {
+    if (!p) {
+      return mx;
+    }
+    return x < v[p].d ? min(v[p].d, FindNext(v[p].l, x)) : FindNext(v[p].r, x);
+  }
 
-int FindRank(int &p, int x) {
-  if (!p) {
-    return 0;
-  }
-  return v[p].d >= x ? FindRank(v[p].l, x) : FindRank(v[p].r, x) + v[v[p].l].s + 1;
-}
-
-int FindVal(int &p, int x) {
-  if (v[v[p].l].s + 1 == x) {
-    return v[p].d;
-  }
-  return v[v[p].l].s >= x ? FindVal(v[p].l, x) : FindVal(v[p].r, x - v[v[p].l].s - 1);
-}
-
-int FindLast(int &p, int x) {
-  if (!p) {
-    return -kInf;
-  }
-  return v[p].d < x ? max(v[p].d, FindLast(v[p].r, x)) : FindLast(v[p].l, x);
-}
-
-int FindNext(int &p, int x) {
-  if (!p) {
-    return kInf;
-  }
-  return v[p].d > x ? min(v[p].d, FindNext(v[p].l, x)) : FindNext(v[p].r, x);
-}
+ public:
+  const T operator[](int x) { return FindVal(s, x); }
+  void Init(T minv, T maxv) { srand(time(0)), mn = minv, mx = maxv; }
+  void Insert(T x) { Insert(s, x); }
+  void Delete(T x) { Delete(s, x); }
+  int FindRank(T x) { return FindRank(s, x) + 1; }
+  T FindLast(T x) { return FindLast(s, x); }
+  T FindNext(T x) { return FindNext(s, x); }
+  bool Empty() { return !n; }
+  int Size() { return n; }
+};
 ```
 
-## *Last Update : 2022.7.24*
+## *Last Update : 2022.8.17*
