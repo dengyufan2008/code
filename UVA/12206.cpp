@@ -4,59 +4,47 @@
 
 using namespace std;
 
-LL n, m, l, r, ans;
+LL n, m, l, r, ans1, ans2;
+unsigned LL d[40001] = {1}, t[40001];
 pair<unsigned LL, LL> a[40001];
 string s;
 
-unsigned LL Pow(unsigned LL a, LL x) {
-  unsigned LL ans = 1;
-  for (LL i = 1; i <= x; i <<= 1) {
-    if (i & x) {
-      ans = ans * a;
-    }
-    a = a * a;
-  }
-  return ans;
-}
-
 LL C(LL x) {
-  unsigned LL h = 0, t = Pow(26, x - 1);
   LL ans = -1;
-  for (LL i = 0; i < x; i++) {
-    h = h * 26 + s[i] - 'a';
+  for (LL i = 0; i + x - 1 < n; i++) {
+    a[i] = {t[i + x - 1] - t[i - 1] * d[x], i};
   }
-  a[1] = {h, 0};
-  for (LL i = x; i < n; i++) {
-    a[i - x + 2] = {h = (h - t * (s[i - x] - 'a')) * 26 + s[i] - 'a', i - x + 1};
-  }
-  sort(a + 1, a + n - x + 2);
-  for (LL i = 1, j = 0; i <= n - x + 1; i++) {
-    if (a[i].first == a[i - 1].first) {
-      if (++j >= m) {
-        ans = max(ans, a[i].second);
-      }
-    } else {
-      j = 1;
+  sort(a, a + n - x + 1);
+  for (LL i = 0, j = 0; i < n - x + 1; i++) {
+    j = (a[i].first == a[i - 1].first) * j + 1;
+    if (j >= m) {
+      ans = max(ans, a[i].second);
     }
   }
   return ans;
 }
 
 int main() {
+  for (LL i = 1; i <= 40000; i++) {
+    d[i] = d[i - 1] * 131;
+  }
   cin >> m;
   while (m) {
     cin >> s;
-    n = s.size(), l = 0, r = n, ans = -1;
+    n = s.size(), l = 1, r = n, ans2 = -1;
+    for (LL i = 0; i < n; i++) {
+      t[i] = t[i - 1] * 131 + s[i];
+    }
     while (l <= r) {
       LL mid = l + r >> 1, c = C(mid);
       if (c >= 0) {
-        l = mid + 1, ans = c;
+        l = mid + 1, ans1 = mid, ans2 = c;
       } else {
         r = mid - 1;
       }
     }
-    if (ans >= 0) {
-      cout << r << ' ' << ans << '\n';
+    if (ans2 >= 0) {
+      cout << ans1 << ' ' << ans2 << '\n';
     } else {
       cout << "none\n";
     }
