@@ -62,7 +62,7 @@ class HELP {
       if (opt.size() > 4) {
         cout << "I Think That You Mean \"help\".\n";
       }
-      cout << "For More Information On A Specific Command, Type \"HELP COMMAND-NAME\".\n[0]  HELP         Check Out Command List.\n[1]  SNAKE        Try Finding Out All Mines!\n                  Wait For Designer To Play It!\n[2]  TETRIS       Keep Survive To Get Longer!\n                  Wait For Designer To Play It!\n[3]  MINESWEEPER  Clear Blocks As Much As You Can!\n                  Now Available!\n";
+      cout << "For More Information On A Specific Command, Type \"HELP COMMAND-NAME\".\n[0]  HELP         Check Out Command List.\n[1]  EXIT          Exit The Program.\n[2]  SNAKE        Try Finding Out All Mines!\n                  Wait For Designer To Play It!\n[3]  TETRIS       Keep Survive To Get Longer!\n                  Wait For Designer To Play It!\n[4]  MINESWEEPER  Clear Blocks As Much As You Can!\n                  Now Available!\n";
     }
   }
 } help;
