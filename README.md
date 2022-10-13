@@ -1,4 +1,8 @@
-# *DengYufan's Blog*
+![](https://count.getloli.com/get/@748437?theme=gelbooru)
+![](https://www.ipip5.com/ipimg/)
+![](https://luogu.wao3.cn/api/practice?id=250810&dark_mode=true)
+![](https://luogu.wao3.cn/api/guzhi?id=250810&scores=100,29,4,93,30&dark_mode=true)
+# *DengYufan's Introduction*
 
 ## *Write In The First*
 - Star Me If You Like. It's Free, And Will Make Me Happy For A Long Time.
@@ -17,6 +21,8 @@
 - CSP Senior Second Prize : 2021
 
 - First AC of Black Problem:2022.7.24
+
+- Red Name in LuoGu:2022.9.7
 
 ## *Accounts*
 - Luogu : dengyufan
@@ -351,4 +357,4 @@ class Splay {
 };
 ```
 
-## *Last Update : 2022.8.17*
+## *Last Update : 2022.10.13*
