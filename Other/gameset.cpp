@@ -424,8 +424,7 @@ class MINESWEEPER {
       Print(1);
       func.Pause();
     }
-    getchar();
-    system("cls");
+    getchar(), system("cls");
     cout << "LunarPursuer Gameset [Version 10.0.22621.608]\n(c) Seek Lunar Corporation. All Rights Reserved.\nType \"help\" To Check Out Command List.\n输入 \"help\" 以查看命令列表.\n";
     fill(&a[0][0], &a[100][100] + 1, 0);
     fill(&b[0][0], &b[100][100] + 1, 0);
@@ -476,8 +475,7 @@ int main() {
   cout << "LunarPursuer Gameset [Version 10.0.22621.608]\n(c) Seek Lunar Corporation. All Rights Reserved.\nType \"help\" To Check Out Command List.\n输入 \"help\" 以查看命令列表.\n";
   while (1) {
     cout << '\n' << path << "> ";
-    opt = "";
-    getline(cin, opt);
+    opt = "", getline(cin, opt);
     if (opt != "") {
       cout << '\n';
       if (func.Chick("help")) {
