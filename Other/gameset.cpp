@@ -62,6 +62,7 @@ class FUNCTION {
   }
 } func;
 class HELP {
+ private:
  public:
   void Main() {
     if (func.Chick("exit", 5)) {
@@ -244,7 +245,8 @@ class SNAKE {
 
   void Playing() {
     for (k = 0;; k++) {
-      Print(), D();
+      Print();
+      D();
       Sleep(100 + speed * 100);
       if (Move()) {
         while (kbhit()) {
@@ -286,12 +288,13 @@ class MINESWEEPER {
   queue<A> q;
 
   void Bfs(int _x, int _y) {
+    b[_x][_y] = 1, k--;
     for (q.push({_x, _y}); !q.empty(); q.pop()) {
       A c = q.front();
-      if (c.x < 1 || c.y < 1 || c.x > x || c.y > y || a[c.x][c.y] == 9 || b[c.x][c.y] || _b[c.x][c.y]) {
+      if (c.x < 1 || c.y < 1 || c.x > x || c.y > y || a[c.x][c.y] == 9 || b[c.x][c.y] && (c.x != _x || c.y != _y) || _b[c.x][c.y]) {
         continue;
       }
-      b[c.x][c.y] = 1, k--;
+      b[c.x][c.y] = 1, k -= c.x != _x || c.y != _y;
       if (!a[c.x][c.y]) {
         for (int i = 0; i <= 7; i++) {
           q.push({c.x + kMove[i][0], c.y + kMove[i][1]});
@@ -343,6 +346,7 @@ class MINESWEEPER {
     system("cls");
     func.SetColor(11, 0);
     cout << "Spawning The Map...\n";
+    Sleep(300);
     for (int i = 1, _x, _y; i <= n;) {
       _x = rand() % x + 1, _y = rand() % y + 1;
       if (a[_x][_y] != 9) {
@@ -405,7 +409,6 @@ class MINESWEEPER {
       cout << "You Have Found Some Mines!\nGame Over!\n";
       return;
     }
-    func.SetColor(11, 0);
     for (int i = 1; i <= x; i++) {
       for (int j = 1; j <= y; j++) {
         if (_b[i][j] && a[i][j] != 9) {
@@ -418,16 +421,13 @@ class MINESWEEPER {
   }
 
   void Ending() {
-    bool flag;
-    cout << "Want To Watch The Map?\nYes = 1, No = 0\n";
-    cin >> flag;
-    if (flag) {
-      system("cls");
-      fill(&b[0][0], &b[100][100] + 1, 1);
-      Print(1);
-      func.Pause();
-    }
-    getchar(), system("cls");
+    func.Pause();
+    system("cls");
+    fill(&b[0][0], &b[100][100] + 1, 1);
+    Print(1);
+    func.Pause();
+    system("cls");
+    getch();
     cout << "LunarPursuer Gameset [Version 10.0.22621.608]\n(c) Seek Lunar Corporation. All Rights Reserved.\nType \"help\" To Check Out Command List.\n输入 \"help\" 以查看命令列表.\n";
     fill(&a[0][0], &a[100][100] + 1, 0), fill(&b[0][0], &b[100][100] + 1, 0), fill(&_b[0][0], &_b[100][100] + 1, 0);
   }
