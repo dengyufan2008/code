@@ -10,7 +10,6 @@ using namespace std;
 
 string path, opt;
 class FUNCTION {
- private:
  public:
   char SmallWrite(char ch) {
     return ch >= 'A' && ch <= 'Z' ? ch + 32 : ch;
@@ -190,7 +189,7 @@ class SNAKE {
       SpawnFood();
     } else {
       if (b[x][y] == 3) {
-        s += 25 - k + t;
+        s += t - k + 26;
         EraseSuperFood();
       }
       Push(x, y);
@@ -455,6 +454,11 @@ class MINESWEEPER {
       func.ShowMouse();
       return;
     }
+    if (x * y <= n || !n) {
+      cout << "Are You Silly?\nThat's A Really Big Mistake!\n";
+      func.ShowMouse();
+      return;
+    }
     Prepare();
     Playing();
     Ending();
@@ -471,7 +475,7 @@ int main() {
   func.SetColor(11, 0);
   cout << "LunarPursuer Gameset [Version 10.0.22621.608]\n(c) Seek Lunar Corporation. All Rights Reserved.\nType \"help\" To Check Out Command List.\n输入 \"help\" 以查看命令列表.\n";
   while (1) {
-    cout << "\n" + path + "> ";
+    cout << '\n' << path << "> ";
     opt = "";
     getline(cin, opt);
     if (opt != "") {
@@ -484,6 +488,8 @@ int main() {
         snake.Main();
       } else if (func.Chick("minesweeper")) {
         minesweeper.Main();
+      } else if (func.Chick("fuckccf")) {
+        cout << "Great Saying!\n";
       } else {
         cout << "Incorrect Command!\nType \"help\" To Check Out Command List.\n输入 \"help\" 以查看命令列表.\n";
       }
