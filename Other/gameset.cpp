@@ -95,9 +95,10 @@ class SNAKE {
   void Print() {
     func.SetColor(11, 0);
     for (int i = 1; i <= n; i++) {
+      func.SetColor(11, 0);
       for (int j = 1; j <= m; j++) {
         if (b[i][j] != _b[i][j] || b[i][j] == 4) {
-          func.Goto(i, j);
+          func.Goto(i + 1, j + 1);
           if (b[i][j] == 0) {
             cout << ' ';
           } else if (b[i][j] == 1) {
@@ -115,14 +116,13 @@ class SNAKE {
           }
         }
       }
-      cout << '\n';
     }
     func.SetColor(11, 0);
     copy(&b[0][0], &b[101][0], &_b[0][0]);
   }
 
   void D() {
-    while (kbhit()) {
+    if (kbhit()) {
       ch = getch();
       if (func.SmallWrite(ch) == 'w') {
         if (d != 1) {
@@ -223,6 +223,19 @@ class SNAKE {
     }
     Push(2, 13), Push(2, 14), Push(2, 15), Push(2, 16);
     SpawnFood(), t = k + rand() % 25 + 1;
+    func.SetColor(11, 0);
+    for (int i = 1; i <= n; i++) {
+      func.Goto(i + 1, 1);
+      cout << '|';
+      func.Goto(i + 1, m + 2);
+      cout << '|';
+    }
+    for (int i = 1; i <= m; i++) {
+      func.Goto(1, i + 1);
+      cout << '-';
+      func.Goto(n + 2, i + 1);
+      cout << '-';
+    }
   }
 
   void Playing() {
