@@ -17,8 +17,11 @@ class FUNCTION {
   }
 
   void HideMouse() {
-    CONSOLE_CURSOR_INFO cursor_info = {1, 0};
-    SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursor_info);
+    printf("\033[?25l");
+  }
+
+  void ShowMouse() {
+    printf("\033[?25h");
   }
 
   void SetColor(int ForgC, int BackC) {
@@ -77,7 +80,7 @@ class HELP {
 class SNAKE {
  private:
   const int kMove[4][2] = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
-  int n, m, s, d, t, k, b[101][101], _b[101][101];
+  int n, m, s, d, t, _t, k, b[101][101], _b[101][101];
   bool speed;
   char ch;
   queue<PII> l;
@@ -118,6 +121,8 @@ class SNAKE {
       }
     }
     func.SetColor(11, 0);
+    func.Goto(n + 3, 15), cout << (speed ? "Slow" : "Fast");
+    func.Goto(n + 3, 40), cout << s;
     copy(&b[0][0], &b[101][0], &_b[0][0]);
   }
 
@@ -165,7 +170,7 @@ class SNAKE {
   }
 
   void EraseSuperFood() {
-    t = k + rand() % 25 + 1;
+    t = k + rand() % 25 + 1, _t = rand() % 25 + 1;
     for (int i = 1; i <= n; i++) {
       for (int j = 1; j <= m; j++) {
         if (b[i][j] == 3) {
@@ -185,7 +190,7 @@ class SNAKE {
       SpawnFood();
     } else {
       if (b[x][y] == 3) {
-        s += 11 - k + t;
+        s += 25 - k + t;
         EraseSuperFood();
       }
       Push(x, y);
@@ -196,6 +201,7 @@ class SNAKE {
 
   void Prepare() {
     bool flag;
+    func.HideMouse();
     system("cls");
     func.SetColor(11, 0);
     cout << "Press WASD To Change Your Direction.\n按下 WASD 以改变移动方向.\nPress F To Change Your Speed.\n按下 F 以切换移动速度.\n";
@@ -222,26 +228,25 @@ class SNAKE {
       l.pop();
     }
     Push(2, 13), Push(2, 14), Push(2, 15), Push(2, 16);
-    SpawnFood(), t = k + rand() % 25 + 1;
+    SpawnFood(), t = k + rand() % 25 + 1, _t = rand() % 25 + 1;
     func.SetColor(11, 0);
-    for (int i = 1; i <= n; i++) {
-      func.Goto(i + 1, 1);
-      cout << '|';
-      func.Goto(i + 1, m + 2);
-      cout << '|';
+    for (int i = 1; i <= n + 2; i++) {
+      func.Goto(i + 1, 1), cout << '|';
+      func.Goto(i + 1, m + 2), cout << '|';
     }
     for (int i = 1; i <= m; i++) {
-      func.Goto(1, i + 1);
-      cout << '-';
-      func.Goto(n + 2, i + 1);
-      cout << '-';
+      func.Goto(1, i + 1), cout << '-';
+      func.Goto(n + 2, i + 1), cout << '-';
+      func.Goto(n + 4, i + 1), cout << '-';
     }
+    func.Goto(n + 3, 8), cout << "Speed: Slow";
+    func.Goto(n + 3, 33), cout << "Score: 0";
   }
 
   void Playing() {
     for (k = 0;; k++) {
-      Sleep(100 + speed * 100);
       Print(), D();
+      Sleep(100 + speed * 100);
       if (Move()) {
         while (kbhit()) {
           getch();
@@ -249,7 +254,7 @@ class SNAKE {
         return;
       } else if (k == t) {
         SpawnSuperFood();
-      } else if (k == t + 25) {
+      } else if (k == t + _t) {
         EraseSuperFood();
       }
     }
@@ -261,6 +266,7 @@ class SNAKE {
     func.Pause();
     system("cls");
     cout << "LunarPursuer Gameset [Version 10.0.22621.608]\n(c) Seek Lunar Corporation. All Rights Reserved.\nType \"help\" To Check Out Command List.\n输入 \"help\" 以查看命令列表.\n";
+    func.ShowMouse();
   }
 
  public:
@@ -429,30 +435,34 @@ class MINESWEEPER {
 
  public:
   void Main() {
+    func.HideMouse();
     PII p;
     p = func.Read(p.second);
     if ((x = p.first) == -1) {
       cout << "Incorrect Command!\nType \"help minesweeper\" To Check Out Regular.\n输入 \"help minesweeper\" 以查看语法.\n";
+      func.ShowMouse();
       return;
     }
     p = func.Read(p.second);
     if ((y = p.first) == -1) {
       cout << "Incorrect Command!\nType \"help minesweeper\" To Check Out Regular.\n输入 \"help minesweeper\" 以查看语法.\n";
+      func.ShowMouse();
       return;
     }
     p = func.Read(p.second);
     if ((n = p.first) == -1) {
       cout << "Incorrect Command!\nType \"help minesweeper\" To Check Out Regular.\n输入 \"help minesweeper\" 以查看语法.\n";
+      func.ShowMouse();
       return;
     }
     Prepare();
     Playing();
     Ending();
+    func.ShowMouse();
   }
 } minesweeper;
 
 int main() {
-  func.HideMouse();
   srand(time(0));
   system("title Gameset");
   system("cls");
