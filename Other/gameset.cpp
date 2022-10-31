@@ -87,13 +87,11 @@ class SNAKE {
   queue<PII> l;
 
   void Push(int x, int y) {
-    b[x][y] = 4;
-    l.push({x, y});
+    b[x][y] = 4, l.push({x, y});
   }
 
   void Pop() {
-    b[l.front().first][l.front().second] = 0;
-    l.pop();
+    b[l.front().first][l.front().second] = 0, l.pop();
   }
 
   void Print() {
@@ -191,7 +189,7 @@ class SNAKE {
       SpawnFood();
     } else {
       if (b[x][y] == 3) {
-        s += t - k + 26;
+        s += t - k + 29 >> 2;
         EraseSuperFood();
       }
       Push(x, y);
@@ -284,13 +282,13 @@ class MINESWEEPER {
     int x, y;
   };
   int n, x, y, k, _k, a[101][101];
-  bool b[101][101], _b[101][101];
+  bool shit, b[101][101], _b[101][101];
   queue<A> q;
 
   void Bfs(int _x, int _y) {
     for (q.push({_x, _y}); !q.empty(); q.pop()) {
       A c = q.front();
-      if (c.x < 1 || c.y < 1 || c.x > x || c.y > y || b[c.x][c.y] || _b[c.x][c.y]) {
+      if (c.x < 1 || c.y < 1 || c.x > x || c.y > y || a[c.x][c.y] == 9 || b[c.x][c.y] || _b[c.x][c.y]) {
         continue;
       }
       b[c.x][c.y] = 1, k--;
@@ -332,6 +330,11 @@ class MINESWEEPER {
       }
     }
     cout << "\n\n";
+    func.SetColor(10, 0);
+    if (shit) {
+      cout << "It's Lucky For You To Find A None-Mine Place!\nWe Mined The Place Around Automatically.\n\n";
+    }
+    shit = 0;
     func.SetColor(11, 0);
     return flag;
   }
@@ -340,12 +343,10 @@ class MINESWEEPER {
     system("cls");
     func.SetColor(11, 0);
     cout << "Spawning The Map...\n";
-    Sleep(500);
     for (int i = 1, _x, _y; i <= n;) {
       _x = rand() % x + 1, _y = rand() % y + 1;
       if (a[_x][_y] != 9) {
-        a[_x][_y] = 9;
-        i++;
+        a[_x][_y] = 9, i++;
         for (int j = 0; j <= 7; j++) {
           if (a[_x + kMove[j][0]][_y + kMove[j][1]] != 9) {
             a[_x + kMove[j][0]][_y + kMove[j][1]]++;
@@ -360,8 +361,8 @@ class MINESWEEPER {
 
   void Playing() {
     int _x, _y, c;
-    k = x * y, _k = n;
     bool flag = 0;
+    k = x * y, _k = n;
     while (k > _k && _k > 0) {
       if (Print(0)) {
         cout << "You Have Found Some Mines!\nGame Over!\n";
@@ -370,7 +371,7 @@ class MINESWEEPER {
       cout << "Please Input Command.\n0/1 For Mine/Mark One Place, x And y For The Coordinate Of The Place.\nFor Example: 0 1 1.\n             挖开坐标为(1, 1)的地方.\nFor Example: 1 1 1.\n             标记坐标为(1, 1)的地方.\n";
       cin >> c >> _x >> _y;
       if (!c) {
-        Bfs(_x, _y);
+        shit = !a[_x][_y], Bfs(_x, _y);
       } else if (c == 1 && !b[_x][_y]) {
         _b[_x][_y] ^= 1, k -= _b[_x][_y] ? 1 : -1, _k -= _b[_x][_y] ? 1 : -1;
       } else if (c == 2) {
@@ -407,7 +408,7 @@ class MINESWEEPER {
     func.SetColor(11, 0);
     for (int i = 1; i <= x; i++) {
       for (int j = 1; j <= y; j++) {
-        if (!_b[i][j] && a[i][j] == 9 || _b[i][j] && a[i][j] != 9) {
+        if (_b[i][j] && a[i][j] != 9) {
           cout << "You Have Marked Some Wrong Mines!\nGame Over!\n";
           return;
         }
@@ -434,8 +435,7 @@ class MINESWEEPER {
  public:
   void Main() {
     func.HideMouse();
-    PII p;
-    p = func.Read(p.second);
+    PII p = func.Read(p.second);
     if ((x = p.first) == -1) {
       cout << "Incorrect Command!\nType \"help minesweeper\" To Check Out Regular.\n输入 \"help minesweeper\" 以查看语法.\n";
       func.ShowMouse();
