@@ -35,7 +35,7 @@ class FUNCTION {
   }
 
   bool Chick(string s, int x = 0) {
-    for (; opt[x] == ' '; x++) {
+    for (; x < opt.size() && opt[x] == ' '; x++) {
     }
     if (opt.size() - x < s.size()) {
       return 0;
@@ -53,30 +53,37 @@ class HELP {
   void Main() {
     // if (func.Chick("snake", 5)) {
     //   ;
-    // } else if (func.Chick("tetris", 5)) {
-    //   ;
     // } else
-    if (func.Chick("minesweeper", 5)) {
-      cout << "MINESWEEPER line col mine\n\n  line  The Number Of Lines.\n  col   The Number Of Columns.\n  mine  The Number Of Mines.\n";
+    if (func.Chick("minesweeper", 4)) {
+      cout << "MINESWEEPER line col mine\n\n  line  The Number Of Lines.\n  col   The Number Of Columns.\n  mine  The Number Of Mines.\n\nFor example: MINESWEEPER 10 10 5\n生成一个10*10的地图 其中有5个雷.\n";
     } else {
       if (opt.size() > 4) {
         cout << "I Think That You Mean \"help\".\n";
       }
-      cout << "For More Information On A Specific Command, Type \"HELP COMMAND-NAME\".\n[0]  HELP         Check Out Command List.\n[1]  EXIT         Exit The Program.\n[2]  SNAKE        Try Finding Out All Mines!\n                  Wait For Designer To Play It!\n[3]  TETRIS       Keep Survive To Get Longer!\n                  Wait For Designer To Play It!\n[4]  MINESWEEPER  Clear Blocks As Much As You Can!\n                  Now Available!\n";
+      cout << "For More Information On A Specific Command, Type \"HELP COMMAND-NAME\".\n[0]  HELP         Check Out Command List.\n[1]  EXIT         Exit The Program.\n[2]  SNAKE        Keep Survive To Get Longer!\n[3]  MINESWEEPER  Try Finding Out All Mines!\n                  For Example: MINESWEEPER 10 10 5\n                  生成一个10*10的地图 其中有5个雷.\n";
     }
   }
 } help;
+class SNAKE {
+ private:
+  ;
+
+ public:
+  void Main() {
+    ;
+  }
+} snake;
 class MINESWEEPER {
  private:
   const int kMove[8][2] = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
-  int n, x, y, k, a[101][101];
+  struct A {
+    int x, y;
+  };
+  int n, x, y, k, _k, a[101][101];
   bool b[101][101], _b[101][101];
+  queue<A> q;
 
   void Bfs(int _x, int _y) {
-    struct A {
-      int x, y;
-    };
-    queue<A> q;
     for (q.push({_x, _y}); !q.empty(); q.pop()) {
       A c = q.front();
       if (c.x < 1 || c.y < 1 || c.x > x || c.y > y || b[c.x][c.y] || _b[c.x][c.y]) {
@@ -149,19 +156,19 @@ class MINESWEEPER {
 
   void Playing() {
     int _x, _y, c;
-    k = x * y;
+    k = x * y, _k = n;
     bool flag = 0;
-    while (k) {
+    while (k > _k && _k > 0) {
       if (Print(0)) {
         cout << "You Have Found Some Mines!\nGame Over!\n";
         return;
       }
-      cout << "Please Input Command.\n0/1/2/3 For Mine/Mark/Quick Mine/Quick Mark One Place, x And y For The Coordinate Of The Place.\n";
+      cout << "Please Input Command.\n0/1 For Mine/Mark One Place, x And y For The Coordinate Of The Place.\nFor Example: 0 1 1.\n             挖开坐标为(1, 1)的地方.\nFor Example: 1 1 1.\n             标记坐标为(1, 1)的地方.\n";
       cin >> c >> _x >> _y;
       if (!c) {
         Bfs(_x, _y);
       } else if (c == 1 && !b[_x][_y]) {
-        _b[_x][_y] ^= 1, k -= _b[_x][_y] ? 1 : -1;
+        _b[_x][_y] ^= 1, k -= _b[_x][_y] ? 1 : -1, _k -= _b[_x][_y] ? 1 : -1;
       } else if (c == 2) {
         int d = 0;
         for (int i = 0; i <= 7; i++) {
@@ -196,7 +203,7 @@ class MINESWEEPER {
     func.SetColor(11, 0);
     for (int i = 1; i <= x; i++) {
       for (int j = 1; j <= y; j++) {
-        if (!_b[_x][_y] && a[_x][_y] == 9 || _b[_x][_y] && a[_x][_y] != 9) {
+        if (!_b[i][j] && a[i][j] == 9 || _b[i][j] && a[i][j] != 9) {
           cout << "You Have Marked Some Wrong Mines!\nGame Over!\n";
           return;
         }
@@ -218,7 +225,7 @@ class MINESWEEPER {
     }
     getchar();
     system("cls");
-    cout << "LunarPursuer Gameset [Version 10.0.22621.608]\n(c) Seek Lunar Corporation. All Rights Reserved.\n";
+    cout << "LunarPursuer Gameset [Version 10.0.22621.608]\n(c) Seek Lunar Corporation. All Rights Reserved.\nType \"help\" To Check Out Command List.\n输入 \"help\" 以查看命令列表.\n";
     fill(&a[0][0], &a[100][100] + 1, 0);
     fill(&b[0][0], &b[100][100] + 1, 0);
     fill(&_b[0][0], &_b[100][100] + 1, 0);
@@ -229,17 +236,17 @@ class MINESWEEPER {
     pair<int, int> p;
     p = func.Read(p.second);
     if ((x = p.first) == -1) {
-      cout << "Incorrect Command!\nType \"help minesweeper\" To Check Out Regular.\n";
+      cout << "Incorrect Command!\nType \"help minesweeper\" To Check Out Regular.\n输入 \"help minesweeper\" 以查看语法.\n";
       return;
     }
     p = func.Read(p.second);
     if ((y = p.first) == -1) {
-      cout << "Incorrect Command!\nType \"help minesweeper\" To Check Out Regular.\n";
+      cout << "Incorrect Command!\nType \"help minesweeper\" To Check Out Regular.\n输入 \"help minesweeper\" 以查看语法.\n";
       return;
     }
     p = func.Read(p.second);
     if ((n = p.first) == -1) {
-      cout << "Incorrect Command!\nType \"help minesweeper\" To Check Out Regular.\n";
+      cout << "Incorrect Command!\nType \"help minesweeper\" To Check Out Regular.\n输入 \"help minesweeper\" 以查看语法.\n";
       return;
     }
     Prepare();
@@ -255,9 +262,10 @@ int main() {
   cin.tie(0), cout.tie(0);
   path = string(getcwd(NULL, 0));
   func.SetColor(11, 0);
-  cout << "LunarPursuer Gameset [Version 10.0.22621.608]\n(c) Seek Lunar Corporation. All Rights Reserved.\n";
+  cout << "LunarPursuer Gameset [Version 10.0.22621.608]\n(c) Seek Lunar Corporation. All Rights Reserved.\nType \"help\" To Check Out Command List.\n输入 \"help\" 以查看命令列表.\n";
   while (1) {
     cout << "\n" + path + "> ";
+    opt = "";
     getline(cin, opt);
     if (opt != "") {
       cout << '\n';
@@ -265,16 +273,12 @@ int main() {
         help.Main();
       } else if (func.Chick("exit")) {
         break;
-      }
-      //  else if (func.Chick("snake")) {
-      //    ;
-      //  } else if (func.Chick("tetris")) {
-      //    ;
-      //  }
-      else if (func.Chick("minesweeper")) {
+      } else if (func.Chick("snake")) {
+        snake.Main();
+      } else if (func.Chick("minesweeper")) {
         minesweeper.Main();
       } else {
-        cout << "Incorrect Command!\nType \"help\" To Check Out Command List.\n";
+        cout << "Incorrect Command!\nType \"help\" To Check Out Command List.\nType \"help\" To Check Out Command List.\n输入 \"help\" 以查看命令列表.\n";
       }
     }
   }
@@ -282,8 +286,3 @@ int main() {
   getch();
   return 0;
 }
-/*
-Game List:
-Snake
-Tetris
-*/
