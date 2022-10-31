@@ -64,8 +64,10 @@ class FUNCTION {
 class HELP {
  public:
   void Main() {
-    if (func.Chick("snake", 5)) {
-      cout << "You Can Type \" SNAKE \" Simply.\n";
+    if (func.Chick("exit", 5)) {
+      cout << "You Can Type \"EXIT\" Simply.\n";
+    } else if (func.Chick("snake", 5)) {
+      cout << "You Can Type \"SNAKE\" Simply.\n";
     } else if (func.Chick("minesweeper", 4)) {
       cout << "MINESWEEPER line col mine\n\n  line  The Number Of Lines.\n  col   The Number Of Columns.\n  mine  The Number Of Mines.\n\nFor example: MINESWEEPER 10 10 5\n生成一个10*10的地图 其中有5个雷.\n";
     } else {
@@ -426,9 +428,7 @@ class MINESWEEPER {
     }
     getchar(), system("cls");
     cout << "LunarPursuer Gameset [Version 10.0.22621.608]\n(c) Seek Lunar Corporation. All Rights Reserved.\nType \"help\" To Check Out Command List.\n输入 \"help\" 以查看命令列表.\n";
-    fill(&a[0][0], &a[100][100] + 1, 0);
-    fill(&b[0][0], &b[100][100] + 1, 0);
-    fill(&_b[0][0], &_b[100][100] + 1, 0);
+    fill(&a[0][0], &a[100][100] + 1, 0), fill(&b[0][0], &b[100][100] + 1, 0), fill(&_b[0][0], &_b[100][100] + 1, 0);
   }
 
  public:
@@ -470,11 +470,11 @@ int main() {
   system("title Gameset");
   system("cls");
   cin.tie(0), cout.tie(0);
-  path = string(getcwd(NULL, 0));
+  path = '\n' + string(getcwd(NULL, 0)) + "> ";
   func.SetColor(11, 0);
   cout << "LunarPursuer Gameset [Version 10.0.22621.608]\n(c) Seek Lunar Corporation. All Rights Reserved.\nType \"help\" To Check Out Command List.\n输入 \"help\" 以查看命令列表.\n";
   while (1) {
-    cout << '\n' << path << "> ";
+    cout << path;
     opt = "", getline(cin, opt);
     if (opt != "") {
       cout << '\n';
