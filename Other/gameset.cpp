@@ -245,9 +245,7 @@ class SNAKE {
 
   void Playing() {
     for (k = 0;; k++) {
-      Print();
-      D();
-      Sleep(100 + speed * 100);
+      Print(), D(), Sleep(100 + speed * 100);
       if (Move()) {
         while (kbhit()) {
           getch();
@@ -374,32 +372,34 @@ class MINESWEEPER {
       }
       cout << "Please Input Command.\n0/1 For Mine/Mark One Place, x And y For The Coordinate Of The Place.\nFor Example: 0 1 1.\n             挖开坐标为(1, 1)的地方.\nFor Example: 1 1 1.\n             标记坐标为(1, 1)的地方.\n";
       cin >> c >> _x >> _y;
-      if (!c) {
-        shit = !a[_x][_y], Bfs(_x, _y);
-      } else if (c == 1 && !b[_x][_y]) {
-        _b[_x][_y] ^= 1, k -= _b[_x][_y] ? 1 : -1, _k -= _b[_x][_y] ? 1 : -1;
-      } else if (c == 2) {
-        int d = 0;
-        for (int i = 0; i <= 7; i++) {
-          if (_x + kMove[i][0] && _y + kMove[i][1] && _x + kMove[i][0] <= x && _y + kMove[i][1] <= y) {
-            d += _b[_x + kMove[i][0]][_y + kMove[i][1]];
+      if (_x >= 1 && _y >= 1 && _x <= x && _y <= y) {
+        if (!c) {
+          shit = !a[_x][_y], Bfs(_x, _y);
+        } else if (c == 1 && !b[_x][_y]) {
+          _b[_x][_y] ^= 1, k -= _b[_x][_y] ? 1 : -1, _k -= _b[_x][_y] ? 1 : -1;
+        } else if (c == 2) {
+          int d = 0;
+          for (int i = 0; i <= 7; i++) {
+            if (_x + kMove[i][0] && _y + kMove[i][1] && _x + kMove[i][0] <= x && _y + kMove[i][1] <= y) {
+              d += _b[_x + kMove[i][0]][_y + kMove[i][1]];
+            }
           }
-        }
-        for (int i = 0; i <= 7; i++) {
-          if (d == a[_x][_y] && b[_x][_y] && _x + kMove[i][0] && _y + kMove[i][1] && _x + kMove[i][0] <= x && _y + kMove[i][1] <= y) {
-            Bfs(_x + kMove[i][0], _y + kMove[i][1]);
+          for (int i = 0; i <= 7; i++) {
+            if (d == a[_x][_y] && b[_x][_y] && _x + kMove[i][0] && _y + kMove[i][1] && _x + kMove[i][0] <= x && _y + kMove[i][1] <= y) {
+              Bfs(_x + kMove[i][0], _y + kMove[i][1]);
+            }
           }
-        }
-      } else if (c == 3) {
-        int d = 0;
-        for (int i = 0; i <= 7; i++) {
-          if (_x + kMove[i][0] && _y + kMove[i][1] && _x + kMove[i][0] <= x && _y + kMove[i][1] <= y) {
-            d += !b[_x + kMove[i][0]][_y + kMove[i][1]];
+        } else if (c == 3) {
+          int d = 0;
+          for (int i = 0; i <= 7; i++) {
+            if (_x + kMove[i][0] && _y + kMove[i][1] && _x + kMove[i][0] <= x && _y + kMove[i][1] <= y) {
+              d += !b[_x + kMove[i][0]][_y + kMove[i][1]];
+            }
           }
-        }
-        for (int i = 0; i <= 7; i++) {
-          if (d == a[_x][_y] && b[_x][_y] && !b[_x + kMove[i][0]][_y + kMove[i][1]] && _x + kMove[i][0] && _y + kMove[i][1] && _x + kMove[i][0] <= x && _y + kMove[i][1] <= y) {
-            _b[_x + kMove[i][0]][_y + kMove[i][1]] = 1, k--;
+          for (int i = 0; i <= 7; i++) {
+            if (d == a[_x][_y] && b[_x][_y] && !b[_x + kMove[i][0]][_y + kMove[i][1]] && _x + kMove[i][0] && _y + kMove[i][1] && _x + kMove[i][0] <= x && _y + kMove[i][1] <= y) {
+              _b[_x + kMove[i][0]][_y + kMove[i][1]] = 1, k--;
+            }
           }
         }
       }
@@ -426,8 +426,8 @@ class MINESWEEPER {
     fill(&b[0][0], &b[100][100] + 1, 1);
     Print(1);
     func.Pause();
+    getchar();
     system("cls");
-    getch();
     cout << "LunarPursuer Gameset [Version 10.0.22621.608]\n(c) Seek Lunar Corporation. All Rights Reserved.\nType \"help\" To Check Out Command List.\n输入 \"help\" 以查看命令列表.\n";
     fill(&a[0][0], &a[100][100] + 1, 0), fill(&b[0][0], &b[100][100] + 1, 0), fill(&_b[0][0], &_b[100][100] + 1, 0);
   }
@@ -486,7 +486,7 @@ int main() {
         snake.Main();
       } else if (func.Chick("minesweeper")) {
         minesweeper.Main();
-      } else if (func.Chick("fuckccf")) {
+      } else if (func.Chick("fuckccf") || func.Chick("fuckzyq") || func.Chick("zyqakioi")) {
         cout << "Great Saying!\n";
       } else {
         cout << "Incorrect Command!\nType \"help\" To Check Out Command List.\n输入 \"help\" 以查看命令列表.\n";
