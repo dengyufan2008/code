@@ -86,6 +86,11 @@
     "semaphore": "cpp",
     "stop_token": "cpp",
     "syncstream": "cpp",
-    "queue": "cpp"
+    "queue": "cpp",
+    "netfwd": "cpp",
+    "rope": "cpp",
+    "slist": "cpp",
+    "*.idl": "cpp"
   },
+  "git.ignoreLimitWarning": true,
 }
