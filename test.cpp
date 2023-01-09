@@ -1,9 +1,6 @@
-#include <fstream>
+#include <iostream>
 
 using namespace std;
-
-ifstream fin("CON");
-ofstream fout("CON");
 
 int main() {
   
