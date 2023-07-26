@@ -51,7 +51,7 @@ int main() {
       for (; h < t && v[i] * q[t].first < -kEps; t--) {
       }
       t++, q[t] = {q[t - 1].second + v[i], v[i]};
-      for (; h + 1 < t && q[t].second * q[h + 1].first < kEps; h++) {
+      for (; h + 1 < t && q[t].second * q[h + 1].first < -kEps; h++) {
       }
     }
   }
