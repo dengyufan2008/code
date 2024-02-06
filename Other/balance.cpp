@@ -4,23 +4,24 @@
 
 using namespace std;
 
-CD kBaseH = 15552, kBaseA = 715, kH2A = 0.0626;
+CD kBaseH = 15552, kBaseA = 715;
+CD kH2A = 0.0626;                               // 10级E
 CD kHPerC = 0.04955, kMPerC = 19.815, kCPPerC = 0.03305, kCDPerC = 0.06605;
-CD kMaxCC = 26.183835327556961445009856507587;
-CD kCC = 19.515152;    // 0 为无限制
-CD kExtraH1 = 1.45;    // 护摩1
-CD kExtraH2 = 4778.6;  // 花
-CD kExtraH3 = 2091.3;  // 小生命
-CD kExtraA1 = 1.4;     // 宗室 + 千岩
-CD kExtraA2 = 0.041;   // 大攻击
-CD kExtraA3 = 310.8;   // 羽
-CD kExtraA4 = 13.6;    // 小攻击
-CD kExtraM0 = 186.5;   // 沙
-CD kExtraM1 = 306.5;   // 沙 + 教官(按持续时间为 E 的一半计)
-CD kExtraM2 = 1.15;    // 魔女
-CD kExtraCP = 0.361;   // 基础 + 头
-CD kExtraCD = 1.546;   // 基础 + 突破 + 护摩
-CD kExtraH2A = 0.018;  // 护摩1
+CD kMaxCC = 26.183835327556961445009856507587;  // 能百暴还能配平? 去死吧你
+CD kCC = 19.515152;                             // 0 为无限制
+CD kExtraH1 = 1.45;                             // 护摩1
+CD kExtraH2 = 4778.6;                           // 花
+CD kExtraH3 = 2091.3;                           // 小生命
+CD kExtraA1 = 1.4;                              // 宗室 + 千岩
+CD kExtraA2 = 0.041;                            // 大攻击
+CD kExtraA3 = 310.8;                            // 羽
+CD kExtraA4 = 13.6;                             // 小攻击
+CD kExtraM0 = 186.5;                            // 沙
+CD kExtraM1 = 306.5;                            // 沙 + 教官(按持续时间为 E 的一半计)
+CD kExtraM2 = 1.15;                             // 魔女
+CD kExtraCP = 0.361;                            // 基础 + 头
+CD kExtraCD = 1.546;                            // 基础 + 突破 + 护摩
+CD kExtraH2A = 0.018;                           // 护摩1
 CD kN = 29.7, kEps = 1e-2;
 double ansch, anscm, ans;
 
