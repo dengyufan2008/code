@@ -17,7 +17,7 @@ CD kExtraCp = 0.05;                 // 基础
 CD kExtraCd = 0.5 + 0.384 + 0.662;  // 基础 + 突破 + 护摩
 struct T {
   double H, h, A, a, m, Cp, Cd;
-  int c;
+  int c;  // 是否是散件
 
   T() : H(0.0), h(0.0), A(0.0), a(0.0), m(0.0), Cp(0.0), Cd(0.0), c(0) {}
 
