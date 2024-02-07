@@ -6,7 +6,7 @@ using namespace std;
 
 CD kBaseH = 15552, kBaseA = 715;
 CD kH2A = 0.0626;  // 10级E
-CD kHPerC = 0.04955, kMPerC = 19.815, kCPPerC = 0.03305, kCDPerC = 0.06605;
+CD kHPerC = 0.04955, kMPerC = 19.815, kCpPerC = 0.03305, kCdPerC = 0.06605;
 CD kMaxCC = 26.183;                 // 能百暴还能配平? 去死吧你
 CD kCC = 19.515152;                 // 0 为无限制
 CD kExtraH0 = 1.0 + 0.2;            // 护摩1
@@ -20,8 +20,8 @@ CD kExtraA3 = 13.6;                 // 小攻击
 CD kExtraM0 = 186.5;                // 沙
 CD kExtraM1 = 120;                  // 教官(按持续时间为 E 的 60% 计)
 CD kExtraM2 = 1.0 + 0.15;           // 魔女4
-CD kExtraCP = 0.05 + 0.311;         // 基础 + 头
-CD kExtraCD = 0.5 + 0.384 + 0.662;  // 基础 + 突破 + 护摩
+CD kExtraCp = 0.05 + 0.311;         // 基础 + 头
+CD kExtraCd = 0.5 + 0.384 + 0.662;  // 基础 + 突破 + 护摩
 CD kExtraH2A = 0.018;               // 半血护摩1
 CD kN = 29.7, kEps = 1e-2;
 double ansch, anscm, ans;
@@ -40,7 +40,7 @@ int main() {
         double m0 = (kExtraM0 + kMPerC * cm) / (kExtraM0 + kMPerC * cm + 1400.0);
         double m1 = (kExtraM0 + kExtraM1 + kMPerC * cm) / (kExtraM0 + kExtraM1 + kMPerC * cm + 1400.0);
         double m = (m0 * 0.4 + m1 * 0.6) * 25.0 / 6.0 + kExtraM2 * 1.5;
-        double c = Sqr(kCPPerC * kCDPerC * cc + kCPPerC * kExtraCD + kCDPerC * kExtraCP) / (kCPPerC * kCDPerC * 4.0) + 1.0;
+        double c = Sqr(kCpPerC * kCdPerC * cc + kCpPerC * kExtraCd + kCdPerC * kExtraCp) / (kCpPerC * kCdPerC * 4.0) + 1.0;
         double s = a * m * c;
         if (s > ans) {
           ans = s, ansch = ch, anscm = cm;
@@ -49,18 +49,18 @@ int main() {
     }
   }
   double anscc = kN - ansch - anscm;
-  double t = (kCPPerC * kCDPerC * anscc + kCPPerC * kExtraCD + kCDPerC * kExtraCP) * 0.5;
+  double t = (kCpPerC * kCdPerC * anscc + kCpPerC * kExtraCd + kCdPerC * kExtraCp) * 0.5;
   cout << "Self:\n";
   cout << fixed << setprecision(6) << "H:  " << kBaseH * (kExtraH0 + kHPerC * ansch) + kExtraH2 + kExtraH3 << '\n';
   cout << fixed << setprecision(6) << "A:  " << kBaseA * kExtraA0 + kExtraA2 + kExtraA3 << '\n';
   cout << fixed << setprecision(6) << "M:  " << kExtraM0 + kMPerC * anscm << '\n';
-  cout << fixed << setprecision(6) << "CP: " << t / kCDPerC * 100.0 << "%\n";
-  cout << fixed << setprecision(6) << "CD: " << t / kCPPerC * 100.0 << "%\n";
+  cout << fixed << setprecision(6) << "CP: " << t / kCdPerC * 100.0 << "%\n";
+  cout << fixed << setprecision(6) << "CD: " << t / kCpPerC * 100.0 << "%\n";
   cout << "Team:\n";
   cout << fixed << setprecision(6) << "H:  " << kBaseH * (kExtraH0 + kExtraH1 + kHPerC * ansch) + kExtraH2 + kExtraH3 << '\n';
   cout << fixed << setprecision(6) << "A:  " << kBaseA * (kExtraA0 + kExtraA1) + kExtraA2 + kExtraA3 << '\n';
   cout << fixed << setprecision(6) << "M:  " << kExtraM0 + kExtraM1 + kMPerC * anscm << '\n';
-  cout << fixed << setprecision(6) << "CP: " << t / kCDPerC * 100.0 << "%\n";
-  cout << fixed << setprecision(6) << "CD: " << t / kCPPerC * 100.0 << "%\n";
+  cout << fixed << setprecision(6) << "CP: " << t / kCdPerC * 100.0 << "%\n";
+  cout << fixed << setprecision(6) << "CD: " << t / kCpPerC * 100.0 << "%\n";
   return 0;
 }

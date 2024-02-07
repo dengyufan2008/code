@@ -13,12 +13,12 @@ CD kLS = 90;                                                 // 90级堂主
 CD kLE = 90;                                                 // 90级怪, 默认没有无视防 & 加减防
 CD kD = 0.1;                                                 // 小宝元素抗性为 10%
 CD kOffD = -0.2;                                             // 钟离盾
-CD kM1 = 120;                                                // 教官 (60%)
+CD kM1 = 120;                                                // 教官 (60% 覆盖率)
 CD kH = 34120.969760;
 CD kA = 1354.715000;
 CD kM0 = 267.345200;
-CD kCP = 88.986058;
-CD kCD = 177.837493;
+CD kCp = 88.986058;
+CD kCd = 177.837493;
 
 int main() {
   cin.tie(0), cout.tie(0);
@@ -31,7 +31,7 @@ int main() {
   } else {
     t /= 1.0 + (kD + kOffD) * 4.0;
   }
-  cout << "Expect:   " << fixed << setprecision(6) << t * (kCP * kCD * 0.0001 + 1.0) << '\n';
-  cout << "Critical: " << fixed << setprecision(6) << t * (kCD * 0.01 + 1.0) << '\n';
+  cout << "Expect:   " << fixed << setprecision(6) << t * (kCp * kCd * 0.0001 + 1.0) << '\n';
+  cout << "Critical: " << fixed << setprecision(6) << t * (kCd * 0.01 + 1.0) << '\n';
   return 0;
 }

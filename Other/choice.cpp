@@ -11,7 +11,7 @@ CD kH2A = 0.0626;                   // 10级E
 CD kExtraH2A = 0.018;               // 半血护摩1
 CD kExtraH = 1.0 + 0.2 + 0.25;      // 护摩1 + 双水
 CD kExtraA = 1.0 + 0.2 + 0.2;       // 宗室 + 千岩
-CD kExtraM = 120;                   // 教官 (60% 覆盖率)
+CD kExtraM0 = 120;                   // 教官 (60% 覆盖率)
 CD kExtraM1 = 1.0 + 0.15;           // 魔女4
 CD kExtraCp = 0.05;                 // 基础
 CD kExtraCd = 0.5 + 0.384 + 0.662;  // 基础 + 突破 + 护摩
@@ -62,7 +62,7 @@ struct T {
   double Calc() {
     double ansh = kBaseH * (kExtraH + H) + h;
     double ansa = kBaseA * (kExtraA + A) + a + ansh * (kExtraH2A + kH2A);
-    double ansm = (m / (m + 1400.0) * 0.4 + (m + kExtraM) / (m + kExtraM + 1400.0) * 0.6) * 25.0 / 6.0 + kExtraM1 * 1.5;
+    double ansm = (m / (m + 1400.0) * 0.4 + (m + kExtraM0) / (m + kExtraM0 + 1400.0) * 0.6) * 25.0 / 6.0 + kExtraM1 * 1.5;
     double ansc = (kExtraCp + Cp) * (kExtraCd + Cd) + 1.0;
     return ansa * ansm * ansc;
   }
