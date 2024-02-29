@@ -1,7 +1,7 @@
 #include <iomanip>
 #include <iostream>
 #include <vector>
-#define CD constexpr double
+#define CD constexpr long double
 
 using namespace std;
 

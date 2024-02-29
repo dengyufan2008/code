@@ -1,6 +1,6 @@
 #include <iomanip>
 #include <iostream>
-#define CD constexpr double
+#define CD constexpr long double
 
 using namespace std;
 

@@ -1,26 +1,27 @@
 #include <iomanip>
 #include <iostream>
-#define CD constexpr double
+#define CD constexpr long double
 
 using namespace std;
 
+constexpr bool kTeam = 1;  // 是否是队伍伤害
 CD kBaseH = 15552, kBaseA = 715;
 CD kA2D = 2.426;
-CD kH2A = 0.0626 + 0.018;                                    // 10级E + 半血护摩1
-CD kExtraH = 1.0 + 0.25;                                     // 双水 (护摩1一般计算在面板内)
-CD kExtraA = 1.0 + 0.2 + 0.2;                                // 宗室 + 千岩
-CD kExtraD = 1.0 + 0.33 + 0.466 + 0.15 + 0.075 + 0.3 + 0.2;  // 半血加成 + 火伤杯 + 魔女2 + 魔女4 1层 + 夜兰(平均) + 芙宁娜(平均)
-CD kExtraM = 1.0 + 0.15;                                     // 魔女4
-CD kLS = 90;                                                 // 90级堂主
-CD kLE = 90;                                                 // 90级怪, 默认没有无视防 & 加减防
-CD kD = 0.1;                                                 // 小宝元素抗性为 10%
-CD kOffD = -0.2;                                             // 钟离盾
-CD kM1 = 120;                                                // 教官 (60% 覆盖率)
-CD kH = 29339;
-CD kA = 1118.9;
-CD kM0 = 202.8;
-CD kCp = 79.6;
-CD kCd = 205.8;
+CD kH2A = 0.0626 + 0.018;                                              // 10级E + 半血护摩1
+CD kExtraH = 1.0 + kTeam * (0.25);                                     // 双水 (护摩1一般计算在面板内)
+CD kExtraA = 1.0 + kTeam * (0.2 + 0.2);                                // 宗室 + 千岩
+CD kExtraD = 1.0 + 0.33 + 0.466 + 0.15 + 0.075 + kTeam * (0.3 + 0.2);  // 半血加成 + 火伤杯 + 魔女2 + 魔女4 1层 + 夜兰(平均) + 芙宁娜(平均)
+CD kExtraM = 1.0 + 0.15;                                               // 魔女4
+CD kLS = 90;                                                           // 90级堂主
+CD kLE = 91;                                                           // 怪物等级, 默认没有无视防 & 加减防
+CD kD = 0.1;                                                           // 小宝元素抗性为 10%
+CD kOffD = kTeam * (-0.2);                                             // 钟离盾
+CD kM1 = kTeam * (120);                                                // 教官 (60% 覆盖率)
+CD kH = 30787.9;
+CD kA = 1103.7;
+CD kM0 = 239.8;
+CD kCp = 87.4;
+CD kCd = 187.2;
 
 int main() {
   cin.tie(0), cout.tie(0);
