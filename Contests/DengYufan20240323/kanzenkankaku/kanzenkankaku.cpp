@@ -6,7 +6,8 @@ using namespace std;
 ifstream cin("kanzenkankaku.in");
 ofstream cout("kanzenkankaku.out");
 
-const int kMaxN = 3001;
+// const int kMaxN = 3001;
+const int kMaxN = 13;
 int n, m, ans, a[kMaxN];
 priority_queue<int, vector<int>, less<int>> q1;
 priority_queue<int, vector<int>, greater<int>> q2;
