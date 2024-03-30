@@ -10,17 +10,17 @@ const int kMaxN = 1001;
 int t, n, m, k;
 class G {
   int s, w, c[kMaxN], b[kMaxN];
-  bool d[kMaxN], t[kMaxN], e[kMaxN][kMaxN], ans[kMaxN];
-  static vector<int> l;
-  static vector<vector<int>> r;
+  bool d[kMaxN], t[kMaxN], ans[kMaxN];
+  vector<int> l, e[kMaxN];
+  vector<vector<int>> r;
 
   int T(int x) {
     if (b[x] == 1) {
       return 0;
     }
     int o = b[x] = 1;
-    for (int i = 1; i <= n; i++) {
-      if (e[x][i] && c[i]) {
+    for (int i : e[x]) {
+      if (c[i]) {
         o += T(i);
       }
     }
@@ -32,8 +32,8 @@ class G {
       return;
     }
     t[x] |= o;
-    for (int i = 1; i <= n; i++) {
-      if (e[x][i] && c[i]) {
+    for (int i : e[x]) {
+      if (c[i]) {
         S(i, o ^ 1);
       }
     }
@@ -43,18 +43,13 @@ class G {
   void Clear() {
     w = kMaxN, l.clear();
     for (int i = 1; i <= n; i++) {
-      c[i] = d[i] = ans[i] = 0;
-      for (int j = 1; j <= n; j++) {
-        e[i][j] = 0;
-      }
+      c[i] = d[i] = ans[i] = 0, e[i].clear();
     }
   }
 
   void AddEdge(int x, int y) {
-    if (!e[x][y]) {
-      e[x][y] = e[y][x] = 1;
-      c[x]++, c[y]++;
-    }
+    e[x].push_back(y), e[y].push_back(x);
+    c[x]++, c[y]++;
   }
 
   bool Check() {
@@ -109,20 +104,20 @@ class G {
     return x;
   }
 
-  void Delete(int x, vector<int> &v = l) {
-    s++, d[x] = 1, v.push_back(x);
-    for (int i = 1; i <= n; i++) {
-      if (e[x][i] && !d[i]) {
+  void Delete(int x) {
+    s++, d[x] = 1, l.push_back(x);
+    for (int i : e[x]) {
+      if (!d[i]) {
         c[x]--, c[i]--;
       }
     }
   }
 
-  void Undo(vector<int> &v = l) {
-    int x = v.back();
-    s--, d[x] = 0, v.pop_back();
-    for (int i = 1; i <= n; i++) {
-      if (e[x][i] && !d[i]) {
+  void Undo() {
+    int x = l.back();
+    s--, d[x] = 0, l.pop_back();
+    for (int i : e[x]) {
+      if (!d[i]) {
         c[x]++, c[i]++;
       }
     }
@@ -130,20 +125,21 @@ class G {
 
   void Delete2(int x) {
     static vector<int> v;
-    v.clear();
-    for (int i = 1; i <= n; i++) {
-      if (e[x][i] && !d[i]) {
-        Delete(i, v);
+    v.clear(), v.swap(l);
+    for (int i : e[x]) {
+      if (!d[i]) {
+        Delete(i);
       }
     }
-    r.push_back(v);
+    v.swap(l), r.push_back(v);
   }
 
   void Undo2() {
     static vector<int> v;
     v.swap(r.back()), r.pop_back();
-    for (; !v.empty(); Undo(v)) {
+    for (v.swap(l); !l.empty(); Undo()) {
     }
+    v.swap(l);
   }
 
   void Print() {
