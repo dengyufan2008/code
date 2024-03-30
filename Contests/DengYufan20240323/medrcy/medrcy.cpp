@@ -31,7 +31,7 @@ class G {
     if (b[x] == 2) {
       return;
     }
-    t[x] |= o;
+    t[x] |= o, b[x] = 2;
     for (int i : e[x]) {
       if (c[i]) {
         S(i, o ^ 1);
@@ -88,7 +88,7 @@ class G {
       }
     }
     for (int i = 1; i <= n; i++) {
-      ans[i] |= t[i];
+      ans[i] |= t[i] || d[i];
     }
   }
 
