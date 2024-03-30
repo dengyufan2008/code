@@ -6,50 +6,56 @@ using namespace std;
 ifstream cin("kanzenkankaku.in");
 ofstream cout("kanzenkankaku.out");
 
-const int kMaxN = 3001;
-int n, m, ans, a[kMaxN], b[kMaxN];
-priority_queue<int, vector<int>, greater<int>> q;
+const int kMaxN = 3002;
+int n, m, ans, a[kMaxN], b[kMaxN], c[kMaxN], d[kMaxN];
 
-int Calc(int l, int r, bool b) {
-  int p = l - 1, ans = 0, w = 0;
-  while (!q.empty()) {
-    q.pop();
-  }
-  for (; p >= 1 && a[p] >= a[p + 1]; p--) {
-  }
-  for (; r <= n && l > p; r++) {
-    q.push(a[r]);
-    if (q.top() < a[l]) {
-      if (q.top() == w || b) {
-        w = q.top(), q.pop(), ans++, b = 0;
-      } else {
-        return ans;
-      }
-    }
-    while (!q.empty() && q.top() == a[l]) {
-      ans += (l != r) + 1, l--, q.pop();
-    }
-  }
-  if (q.empty() && l >= 1 && r <= n && a[l] == a[r]) {
-    for (; l >= 1 && r <= n; l--, r++) {
-      if (a[l] == a[r]) {
-        ans += (l != r) + 1;
-      } else {
+int Calc(int l, int r, bool o) {
+  int s = 0, w = 0, mx = 0, h = 1, t = m, u = 0, _l = l, _r = r;
+  fill(&b[1], &b[m] + 1, 0);
+  fill(&c[1], &c[m] + 1, 0);
+  fill(&d[1], &d[n] + 2, 0);
+  if (o) {
+    for (int i = r; i <= n; i++) {
+      if (a[i] < a[l]) {
+        u = a[i];
         break;
       }
     }
-  } else {
-    for (; r <= n; r++) {
-      if (a[r] < a[l]) {
-        if (a[r] == w) {
-          ans++;
-        } else {
-          break;
+  }
+  for (; _l >= 1 && _r <= n;) {
+    for (; _r <= n && a[_r] == u; _r++) {
+    }
+    _l--, _r++;
+  }
+  for (_r--; _r >= r;) {
+    if (a[_r] == a[++_l]) {
+      d[_r] = d[_r + 1] + 1;
+    }
+    for (_r--; _r >= r && a[_r] == u; _r--) {
+      d[_r] = d[_r + 1];
+    }
+  }
+  l >= 1 && (b[a[l]]++);
+  for (int i = l - 1; i >= 1 && a[i] >= a[i + 1]; b[a[i--]]++) {
+  }
+  for (int i = r; i <= n; i++) {
+    if (a[i] == u) {
+      s++;
+    } else if (a[i] <= t) {
+      c[a[i]]++;
+      if (c[a[i]] > b[a[i]]) {
+        t = a[i];
+        for (; h > t; w -= min(b[h], c[h]), h--) {
+        }
+      } else {
+        w += a[i] <= h;
+        for (; h <= t && b[h] == c[h]; h++, w += min(b[h], c[h])) {
         }
       }
     }
+    mx = max(mx, s + w * 2 + (s + w == i - r + 1 ? d[i + 1] * 2 : 0));
   }
-  return ans;
+  return mx;
 }
 
 int main() {
@@ -63,7 +69,7 @@ int main() {
   for (int u : {0, 1}) {
     for (int i = 1; i <= n; i++) {
       for (int o : {0, 1}) {
-        int l = 1, k = min(i, n - i - o);
+        int l = 1, k = min(i, n - i + o);
         for (; l <= k; l++) {
           if (a[i - l + 1] != a[i + l - o]) {
             break;
