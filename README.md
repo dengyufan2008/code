@@ -22,25 +22,6 @@
 ![](https://luogu.wao3.cn/api/guzhi?id=250810&scores=100,26,0,55,60&dark_mode=true)
 # *DengYufan's Introduction*
 
-## *Important Time*
-- Start Coding : 2019.8.16
-
-- Sign Up In Luogu : 2019.9.15
-
-- Orange Name In Luogu : 2021.10.21
-
-- CSP Jenior Second Prize : 2020
-
-- CSP Jenior First Prize : 2021
-
-- CSP Senior Second Prize : 2021
-
-- First AC of Black Problem:2022.7.24
-
-- Red Name in LuoGu:2022.9.7
-
-- 50 Acceptance of Purple Problem:2022.10.18
-
 ## *Accounts*
 - Luogu : dengyufan
 
