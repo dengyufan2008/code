@@ -165,7 +165,7 @@ void S() {
   if (g.Check()) {
     g.Update();
     return;
-  } else if (g.Size() == k) {
+  } else if (g.Size() >= k) {
     return;
   }
   int x = g.FindMax();
