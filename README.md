@@ -1,14 +1,18 @@
-见区间思考有包含关系的区间能否去掉其一。（考过三次还不会的套路）
+见区间思考有包含关系的区间能否去掉其一.(考过三次还不会的套路)
 
-[同余最短路数组居然还能换模数。（P4156）](https://www.luogu.com.cn/problem/P4156)
+[同余最短路数组居然还能换模数. (P4156)](https://www.luogu.com.cn/problem/P4156)
 
-搜连通块：Dfs 时维护可扩展的格子序列，保证每次选的是递增的。
+搜连通块: Dfs 时维护可扩展的格子序列, 保证每次选的是递增的.
+
+判断最小割中一条边是否被割掉: 从源点开始搜, 只走非满的边.
 
 ----
 
 [我准 **备** 用来 **忘** 记的 **箓**](https://www.luogu.com.cn/paste/lvmrhjxm)
 
 [考逝总结](https://www.luogu.com.cn/paste/j2ee18mi)
+
+[讲课总结](https://www.luogu.com.cn/paste/jab35jlk)
 
 [To Do Lists](https://www.luogu.com.cn/paste/lcysbo18)
 
@@ -61,4 +65,4 @@
 
 - [Dinic](https://www.luogu.com.cn/paste/1ltjkyl7)
 
-## *Last Update : 2024.2.14*
+## *Last Update : 2024.4.7*
