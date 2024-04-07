@@ -12,7 +12,7 @@
 
 [考逝总结](https://www.luogu.com.cn/paste/j2ee18mi)
 
-[讲课总结](https://www.luogu.com.cn/paste/jab35jlk)
+[讲氪总结](https://www.luogu.com.cn/paste/jab35jlk)
 
 [To Do Lists](https://www.luogu.com.cn/paste/lcysbo18)
 
