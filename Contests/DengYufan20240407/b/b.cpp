@@ -6,8 +6,7 @@ using namespace std;
 ifstream cin("b.in");
 ofstream cout("b.out");
 
-// const int kMaxN = 8e5 + 1, kMod = 998244353;
-const int kMaxN = 10 + 1, kMod = 998244353;
+const int kMaxN = 8e5 + 1, kMod = 998244353;
 int t, n, m, k, a[kMaxN], b[kMaxN], c[kMaxN];
 LL ans, f[kMaxN], g[kMaxN], h[kMaxN], fact[kMaxN], _fact[kMaxN];
 
@@ -48,13 +47,13 @@ void Init() {
 void Ntt(LL *f, bool b) {
   static int r[kMaxN] = {};
   for (int i = 1; i < k; i++) {
-    r[i] = r[i >> 1] >> 1 | i & 1 ? k >> 1 : 0;
+    r[i] = (r[i >> 1] >> 1) | (i & 1 ? k >> 1 : 0);
     if (i < r[i]) {
       swap(f[i], f[r[i]]);
     }
   }
   for (int i = 1; i < k; i <<= 1) {
-    LL g = Pow(3, (kMod - 1) / (i + i) * (b * (i + i - 1)));
+    LL g = Pow(3, (kMod - 1) / (i + i) * (b ? i + i - 1 : 1));
     for (int j = 0; j < k; j += i + i) {
       LL w = 1;
       for (int l = j; l < j + i; l++) {
@@ -95,7 +94,7 @@ void Calc() {
   for (int i = 0; i < k; i++) {
     f[i] = f[i] * h[i] % kMod;
   }
-  Ntt(f, 1), fill(&f[n] + 1, &f[kMaxN], 0);
+  Ntt(f, 1), fill(&f[n] + 1, &f[kMaxN], 0), fill(&h[1], &h[kMaxN], 0);
   swap(n, m), swap(a, b), swap(f, g);
 }
 
