@@ -41,7 +41,7 @@ class Seg {
   struct V {
     Lst lst;
     int chk[2] = {kInf, -kInf};
-    LL tag1, tag2;
+    LL tag1, tag20, tag21;
     bool o;
   } v[kMaxN << 2];
   int p[kMaxN];
@@ -56,21 +56,49 @@ class Seg {
     Init(p << 1, l, mid), Init(p << 1 | 1, mid + 1, r);
   }
 
-  void Tag1(int p, LL w) { v[p].tag1 += w; }
-
-  void Pushdown(int p) {  // CHICK
+  void Tag20(int p, int l, int r, LL tag2) {  // CHICK
     ;
   }
 
-  void Pushup(int p) {  // CHICK
+  void Tag21(int p, int l, int r, LL tag2) {  // CHICK
     ;
+  }
+
+  void Tag1(int p, int l, int r, LL tag1) {  // CHICK
+    if (l == r) {
+      ;
+    }
+  }
+
+  void Pushdown(int p, int l, int r) {
+    int mid = l + r >> 1;
+    if (v[p].tag1) {
+      Tag1(p << 1 | 1, mid + 1, r, v[p].tag1), v[p].tag1 = 0;
+    }
+    if (v[p].tag20) {
+      Tag20(p << 1 | 1, mid + 1, r, v[p].tag20), v[p].tag20 = 0;
+    }
+    if (v[p].tag21) {
+      Tag21(p << 1 | 1, mid + 1, r, v[p].tag21), v[p].tag21 = 0;
+    }
+  }
+
+  void Pushup(int p) {
+    v[p].lst = {}, v[p].chk[0] = kInf, v[p].chk[1] = -kInf;
+    for (int q : {p << 1, p << 1 | 1}) {
+      if (v[q].o) {
+        v[p].lst = min(v[p].lst, v[q].lst);
+        v[p].chk[0] = min(v[p].chk[0], v[q].chk[0]);
+        v[p].chk[1] = max(v[p].chk[1], v[q].chk[1]);
+      }
+    }
   }
 
   bool Check(int p, int d) {
-    ;
+    return q[d].o ? v[p].chk[0] <= q[d].w : v[p].chk[1] >= q[d].w;
   }
 
-  int FindP(int p, int l, int r, int d) {  // CHICK
+  int FindP(int p, int l, int r, int d) {
     if (!Check(p, d)) {
       return 0;
     } else if (l == r) {
@@ -80,17 +108,39 @@ class Seg {
     if (mid > d) {
       int t = FindP(p << 1, l, mid, d);
       return t ? t : FindP(p << 1 | 1, mid + 1, r, d);
-    } else if (mid < d + 1) {
+    } else {
       return FindP(p << 1 | 1, mid + 1, r, d);
     }
   }
 
-  int CalcLst(int p, int l, int r, int d) {  // CHICK
-    ;
+  int CalcLst(int p, int l, int r, int d) {
+    if (!Check(p, d)) {
+      return 0;
+    } else if (l == r) {
+      return l;
+    }
+    int mid = l + r >> 1;
+    if (mid >= d - 1) {
+      return CalcLst(p << 1, l, mid, d);
+    } else {
+      int t = CalcLst(p << 1 | 1, mid + 1, r, d);
+      return t ? t : CalcLst(p << 1, l, mid, d);
+    }
   }
 
-  void ChangeLst(int p, int l, int r, int d, int lst, bool o) {  // CHICK
-    ;
+  void ChangeLst(int p, int l, int r, int d, int lst, bool o) {
+    if (l == r) {
+      v[p].lst.w = o ? lst : max(v[p].lst.w, lst);
+      return;
+    }
+    Pushdown(p, l, r);
+    int mid = l + r >> 1;
+    if (mid >= d) {
+      ChangeLst(p << 1, l, mid, d, lst, o);
+    } else {
+      ChangeLst(p << 1 | 1, mid + 1, r, d, lst, o);
+    }
+    Pushup(p);
   }
 
   void Add(int p, int l, int r, int d, int lst) {
@@ -98,7 +148,7 @@ class Seg {
       v[p].lst.w = lst, v[p].o = 1;
       return;
     }
-    Pushdown(p);
+    Pushdown(p, l, r);
     int mid = l + r >> 1;
     if (mid >= d) {
       Add(p << 1, l, mid, d, lst);
@@ -113,7 +163,7 @@ class Seg {
       v[p].o = 0;
       return;
     }
-    Pushdown(p);
+    Pushdown(p, l, r);
     int mid = l + r >> 1;
     if (mid >= d) {
       Remove(p << 1, l, mid, d);
@@ -129,7 +179,7 @@ class Seg {
 
  public:
   void Init() { Init(1, 1, n); }
-  void Tag() { Tag1(1, 1); }
+  void Tag() { Tag1(1, 1, n, 1); }
 
   void Add(int d) {
     Add(1, 1, n, d, CalcLst(1, 1, n, d));
