@@ -7,7 +7,7 @@ using namespace std;
 ifstream cin("f.in");
 ofstream cout("f.out");
 
-const int kMaxN = 1e5 + 1, kInf = 1e9;
+const int kMaxN = 2000 + 1, kInf = 1e9;
 int n, m;
 struct Q {
   int w;
@@ -36,7 +36,7 @@ class Seg {
     int w, p, chk0, chk1;
     bool o;
 
-    Lst() : w(0), p(0), chk0(kInf), chk1(-kInf), o(0) {}
+    Lst() : w(0), p(kInf), chk0(kInf), chk1(-kInf), o(0) {}
 
     Lst(int _w, int _p, int _chk0, int _chk1, bool _o)
         : w(_w), p(_p), chk0(_chk0), chk1(_chk1), o(_o) {}
@@ -100,7 +100,7 @@ class Seg {
 
   void Tag1(int p, int l, int r, Lst lst, LL tag1) {
     if (l == r) {
-      return ans.Add(p, tag1 * lst.Calc());
+      return ans.Add(p, tag1 * (lst + v[p].lst).Calc());
     }
     int mid = l + r >> 1;
     if (v[p << 1].lst < lst) {
@@ -134,6 +134,7 @@ class Seg {
 
   void Pushup(int p) {
     v[p].lst = Lst(), v[p].chk0 = kInf, v[p].chk1 = -kInf;
+    v[p].o = v[p << 1].o || v[p << 1 | 1].o;
     if (v[p << 1].o && v[p << 1 | 1].o) {
       v[p].lst = v[p << 1].lst + v[p << 1 | 1].lst;
       v[p].chk0 = min(v[p << 1].chk0, v[p << 1 | 1].chk0);
@@ -188,7 +189,9 @@ class Seg {
     if (l == r) {
       ~o && (v[p].o = o);
       if (forced || v[p].lst.w < lst) {
-        v[p].lst.w = lst, v[p].lst.chk0 = chk0, v[p].lst.chk1 = chk1;
+        v[p].lst.w = lst;
+        v[p].lst.chk0 = min(chk0, v[p].chk0);
+        v[p].lst.chk1 = max(chk1, v[p].chk1);
       }
       return;
     }
@@ -197,7 +200,7 @@ class Seg {
     if (mid >= d) {
       ChangeLst(p << 1, l, mid, d, o, lst, chk0, chk1, forced);
     } else {
-      if (lst <= l && v[p << 1].o) {
+      if (lst < l && v[p << 1].o) {
         chk0 = min(chk0, v[p << 1].chk0), chk1 = max(chk1, v[p << 1].chk1);
       }
       ChangeLst(p << 1 | 1, mid + 1, r, d, o, lst, chk0, chk1, forced);
@@ -253,10 +256,11 @@ class Op {
       seg.Add(i);
     }
     if (l == r) {
-      return seg.Tag();
+      seg.Tag();
+    } else {
+      int mid = l + r >> 1;
+      Calc(p << 1, l, mid), Calc(p << 1 | 1, mid + 1, r);
     }
-    int mid = l + r >> 1;
-    Calc(p << 1, l, mid), Calc(p << 1 | 1, mid + 1, r);
     for (int i = v[p].size() - 1; i >= 0; i--) {
       seg.Remove(v[p][i]);
     }
