@@ -46,10 +46,7 @@ class Seg {
     bool operator<(Lst x) { return w < x.w || w == x.w && p > x.p; }
 
     Lst operator+(Lst x) {
-      if (w > x.w || w == x.w && p < x.p) {
-        return Lst(w, p, min(chk0, x.chk0), max(chk1, x.chk1), o);
-      }
-      return x;
+      return *this < x ? x : Lst(w, p, min(chk0, x.chk0), max(chk1, x.chk1), o);
     }
   };
   struct V {
