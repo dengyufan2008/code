@@ -18,7 +18,7 @@ class Ans {
 
   void Print(int p, int l, int r, LL w) {
     if (l == r) {
-      cout << w + v[p] << " \n"[l == n];
+      cout << w + v[p] << " \n"[l == m];
       return;
     }
     int mid = l + r >> 1;
@@ -29,7 +29,7 @@ class Ans {
  public:
   void Add(int p, LL w) { v[p] += w; }
 
-  void Print() { Print(1, 1, n, 0); }
+  void Print() { Print(1, 1, m, 0); }
 } ans;
 class Seg {
   struct Lst {
@@ -183,8 +183,8 @@ class Seg {
     }
   }
 
-  void ChangeLst(int p, int l, int r, int d, int o = -1,
-                 int lst, int chk0 = kInf, int chk1 = -kInf, bool forced) {
+  void ChangeLst(int p, int l, int r, int d, int o,
+                 int lst, int chk0, int chk1, bool forced) {
     if (l == r) {
       ~o && (v[p].o = o);
       if (forced || v[p].lst.w < lst) {
@@ -214,21 +214,23 @@ class Seg {
   }
 
  public:
-  void Init() { Init(1, 1, n); }
+  void Init() { Init(1, 1, m); }
 
-  void Tag() { Tag1(1, 1, n, Lst(), 1); }
+  void Tag() { Tag1(1, 1, m, Lst(), 1); }
 
   void Add(int d) {
-    ChangeLst(1, 1, n, d, 1, CalcLst(1, 1, n, d), 1);
-    (p[d] = FindP(1, 1, n, d)) ? ChangeLst(1, 1, n, p[d], d, 0) : void();
+    ChangeLst(1, 1, m, d, 1, CalcLst(1, 1, m, d), kInf, -kInf, 1);
+    if (p[d] = FindP(1, 1, m, d)) {
+      ChangeLst(1, 1, m, p[d], -1, d, kInf, -kInf, 0);
+    }
   }
 
   void Remove(int d) {
-    ChangeLst(1, 1, n, d, 0, 0, 1);
-    ChangeLst(1, 1, n, p[d], CalcLst(1, 1, n, p[d]), 1);
+    ChangeLst(1, 1, m, d, 0, 0, kInf, -kInf, 1);
+    ChangeLst(1, 1, m, p[d], -1, CalcLst(1, 1, m, p[d]), kInf, -kInf, 1);
   }
 
-  void Recover() { Recover(1, 1, n); }
+  void Recover() { Recover(1, 1, m); }
 } seg;
 class Op {
   vector<int> v[kMaxN << 2];
