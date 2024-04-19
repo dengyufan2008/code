@@ -262,6 +262,7 @@ class Op {
 
  public:
   void Add(int l, int r, int d) { Add(1, 1, n, l, r, d); }
+
   void Calc() { Calc(1, 1, n), seg.Recover(); }
 } op;
 
