@@ -36,7 +36,7 @@ class Seg {
     int w, p, chk0, chk1;
     bool o;
 
-    Lst() : w(0), p(kInf), chk0(kInf), chk1(-kInf), o(0) {}
+    Lst() : w(0), p(0), chk0(kInf), chk1(-kInf), o(0) {}
 
     Lst(int _w, int _p, int _chk0, int _chk1, bool _o)
         : w(_w), p(_p), chk0(_chk0), chk1(_chk1), o(_o) {}
@@ -44,10 +44,6 @@ class Seg {
     LL Calc() { return 1LL * w * (o ? chk1 : chk0); }
 
     bool operator<(Lst x) { return w < x.w || w == x.w && p > x.p; }
-
-    Lst operator+(Lst x) {
-      return *this < x ? x : Lst(w, p, min(chk0, x.chk0), max(chk1, x.chk1), o);
-    }
   };
   struct V {
     Lst lst;
@@ -56,6 +52,16 @@ class Seg {
     bool o;
   } v[kMaxN << 2];
   int p[kMaxN];
+
+  Lst Merge(Lst x, int y) {
+    if (x < v[y].lst) {
+      return v[y].lst;
+    } else if (v[y].o) {
+      x.chk0 = min(x.chk0, v[y].chk0);
+      x.chk1 = max(x.chk1, v[y].chk1);
+    }
+    return x;
+  }
 
   void Init(int p, int l, int r) {
     v[p].chk0 = kInf, v[p].chk1 = -kInf;
@@ -69,8 +75,10 @@ class Seg {
   }
 
   void Tag20(int p, int l, int r, int chk0, LL tag20) {
-    if (l == r) {
-      return ans.Add(p, tag20 * min(chk0, v[p].chk0));
+    if (!tag20) {
+      return;
+    } else if (l == r) {
+      return ans.Add(p, tag20 * (v[p].o ? min(chk0, v[p].chk0) : chk0));
     }
     int mid = l + r >> 1;
     if (v[p].chk0 > chk0) {
@@ -83,8 +91,10 @@ class Seg {
   }
 
   void Tag21(int p, int l, int r, int chk1, LL tag21) {
-    if (l == r) {
-      return ans.Add(p, tag21 * max(chk1, v[p].chk1));
+    if (!tag21) {
+      return;
+    } else if (l == r) {
+      return ans.Add(p, tag21 * (v[p].o ? max(chk1, v[p].chk1) : chk1));
     }
     int mid = l + r >> 1;
     if (v[p].chk1 < chk1) {
@@ -96,20 +106,22 @@ class Seg {
     }
   }
 
-  void Tag1(int p, int l, int r, Lst lst, LL tag1) {
-    if (l == r) {
-      return ans.Add(p, tag1 * (lst + v[p].lst).Calc());
+  void Tag1(int p, int l, int r, Lst lst, bool o, LL tag1) {
+    if (!tag1) {
+      return;
+    } else if (l == r) {
+      return ans.Add(p, tag1 * (v[p].o ? Merge(lst, p).Calc() : lst.Calc()));
     }
     int mid = l + r >> 1;
-    if (v[p << 1].lst < lst) {
+    if (o && (!v[p << 1].o || v[p << 1].lst < lst)) {
       if (lst.o) {
         Tag21(p << 1, l, mid, lst.chk1, tag1 * lst.w);
       } else {
         Tag20(p << 1, l, mid, lst.chk0, tag1 * lst.w);
       }
-      Tag1(p << 1 | 1, mid + 1, r, lst + v[p << 1].lst, tag1);
+      Tag1(p << 1 | 1, mid + 1, r, Merge(lst, p << 1), o || v[p << 1].o, tag1);
     } else {
-      Tag1(p << 1, l, mid, lst, tag1);
+      Tag1(p << 1, l, mid, lst, o, tag1);
       v[p].tag1 += tag1;
     }
   }
@@ -125,7 +137,7 @@ class Seg {
       v[p].tag21 = 0;
     }
     if (v[p].tag1) {
-      Tag1(p << 1 | 1, mid + 1, r, v[p << 1].lst, v[p].tag1);
+      Tag1(p << 1 | 1, mid + 1, r, v[p << 1].lst, v[p << 1].o, v[p].tag1);
       v[p].tag1 = 0;
     }
   }
@@ -134,7 +146,7 @@ class Seg {
     v[p].lst = Lst(), v[p].chk0 = kInf, v[p].chk1 = -kInf;
     v[p].o = v[p << 1].o || v[p << 1 | 1].o;
     if (v[p << 1].o && v[p << 1 | 1].o) {
-      v[p].lst = v[p << 1].lst + v[p << 1 | 1].lst;
+      v[p].lst = Merge(v[p << 1].lst, p << 1 | 1);
       v[p].chk0 = min(v[p << 1].chk0, v[p << 1 | 1].chk0);
       v[p].chk1 = max(v[p << 1].chk1, v[p << 1 | 1].chk1);
     } else if (v[p << 1].o) {
@@ -185,11 +197,15 @@ class Seg {
   void ChangeLst(int p, int l, int r, int d, int o,
                  int lst, int chk0, int chk1, bool forced) {
     if (l == r) {
-      ~o && (v[p].o = o);
-      if (forced || v[p].lst.w < lst) {
-        v[p].lst.w = lst;
-        v[p].lst.chk0 = min(chk0, v[p].chk0);
-        v[p].lst.chk1 = max(chk1, v[p].chk1);
+      if (o == 0) {
+        v[p].o = 0, v[p].lst = Lst(0, l, chk0, chk1, q[l].o);
+      } else {
+        v[p].o |= o == 1;
+        if (forced || v[p].lst.w < lst) {
+          v[p].lst.w = lst;
+          v[p].lst.chk0 = min(chk0, v[p].chk0);
+          v[p].lst.chk1 = max(chk1, v[p].chk1);
+        }
       }
       return;
     }
@@ -217,7 +233,7 @@ class Seg {
  public:
   void Init() { Init(1, 1, m); }
 
-  void Tag() { Tag1(1, 1, m, Lst(), 1); }
+  void Tag() { Tag1(1, 1, m, Lst(), 0, 1); }
 
   void Add(int d) {
     ChangeLst(1, 1, m, d, 1, CalcLst(1, 1, m, d), kInf, -kInf, 1);
@@ -259,6 +275,8 @@ class Op {
     }
     if (l == r) {
       seg.Tag();
+      // seg.Recover();  // CHICK
+      // ans.Print();    // CHICK
     } else {
       int mid = l + r >> 1;
       Calc(p << 1, l, mid), Calc(p << 1 | 1, mid + 1, r);

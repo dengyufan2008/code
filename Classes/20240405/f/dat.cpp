@@ -7,7 +7,7 @@ using namespace std;
 ifstream cin("CON");
 ofstream cout("f.in");
 
-const int kN = 10, kM = 10, kV = 30;
+const int kN = 5, kM = 5, kV = 10;
 mt19937 Rand(chrono::steady_clock().now().time_since_epoch().count());
 
 int main() {
