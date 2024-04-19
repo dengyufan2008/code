@@ -54,13 +54,14 @@ class Seg {
   };
   struct V {
     Lst lst;
-    int chk0 = kInf, chk1 = -kInf;
+    int chk0, chk1;
     LL tag1, tag20, tag21;
     bool o;
   } v[kMaxN << 2];
   int p[kMaxN];
 
   void Init(int p, int l, int r) {
+    v[p].chk0 = kInf, v[p].chk1 = -kInf;
     if (l == r) {
       v[p].lst.p = l, v[p].lst.o = q[l].o;
       q[l].o ? v[p].chk1 = q[l].w : v[p].chk0 = q[l].w;
@@ -223,14 +224,18 @@ class Seg {
 
   void Add(int d) {
     ChangeLst(1, 1, m, d, 1, CalcLst(1, 1, m, d), kInf, -kInf, 1);
-    if (p[d] = FindP(1, 1, m, d)) {
+    p[d] = FindP(1, 1, m, d);
+    if (p[d]) {
       ChangeLst(1, 1, m, p[d], -1, d, kInf, -kInf, 0);
     }
   }
 
   void Remove(int d) {
     ChangeLst(1, 1, m, d, 0, 0, kInf, -kInf, 1);
-    ChangeLst(1, 1, m, p[d], -1, CalcLst(1, 1, m, p[d]), kInf, -kInf, 1);
+    if (p[d]) {
+      ChangeLst(1, 1, m, p[d], -1, CalcLst(1, 1, m, p[d]), kInf, -kInf, 1);
+      p[d] = 0;
+    }
   }
 
   void Recover() { Recover(1, 1, m); }
