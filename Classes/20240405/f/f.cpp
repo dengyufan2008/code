@@ -28,6 +28,7 @@ class Ans {
 
  public:
   void Add(int p, LL w) { v[p] += w; }
+
   void Print() { Print(1, 1, n, 0); }
 } ans;
 class Seg {
@@ -39,6 +40,10 @@ class Seg {
 
     Lst(int _w, int _p, int _chk0, int _chk1, bool _o)
         : w(_w), p(_p), chk0(_chk0), chk1(_chk1), o(_o) {}
+
+    LL Calc() { return 1LL * w * (o ? chk1 : chk0); }
+
+    bool operator<(Lst x) { return w < x.w || w == x.w && p > x.p; }
 
     Lst operator+(Lst x) {
       if (w > x.w || w == x.w && p < x.p) {
@@ -65,33 +70,65 @@ class Seg {
     Init(p << 1, l, mid), Init(p << 1 | 1, mid + 1, r);
   }
 
-  void Tag20(int p, int l, int r, LL tag2) {  // CHICK
-    ;
-  }
-
-  void Tag21(int p, int l, int r, LL tag2) {  // CHICK
-    ;
-  }
-
-  void Tag1(int p, int l, int r, Lst lst, LL tag1) {  // CHICK
+  void Tag20(int p, int l, int r, int chk0, LL tag20) {
     if (l == r) {
-      ;
+      return ans.Add(p, tag20 * min(chk0, v[p].chk0));
+    }
+    int mid = l + r >> 1;
+    if (v[p].chk0 > chk0) {
+      ans.Add(p << 1, tag20 * chk0);
+      Tag20(p << 1 | 1, mid + 1, r, min(chk0, v[p << 1].chk0), tag20);
+    } else {
+      Tag20(p << 1, l, mid, chk0, tag20);
+      v[p].tag20 += tag20;
     }
   }
 
-  void Pushdown(int p, int l, int r) {  // CHICK
-    int mid = l + r >> 1;
-    if (v[p].tag1) {
-      Tag1(p << 1 | 1, mid + 1, r, v[p << 1].lst, v[p].tag1);
-      v[p].tag1 = 0;
+  void Tag21(int p, int l, int r, int chk1, LL tag21) {
+    if (l == r) {
+      return ans.Add(p, tag21 * max(chk1, v[p].chk1));
     }
+    int mid = l + r >> 1;
+    if (v[p].chk1 < chk1) {
+      ans.Add(p << 1, tag21 * chk1);
+      Tag21(p << 1 | 1, mid + 1, r, max(chk1, v[p << 1].chk1), tag21);
+    } else {
+      Tag21(p << 1, l, mid, chk1, tag21);
+      v[p].tag21 += tag21;
+    }
+  }
+
+  void Tag1(int p, int l, int r, Lst lst, LL tag1) {
+    if (l == r) {
+      return ans.Add(p, tag1 * lst.Calc());
+    }
+    int mid = l + r >> 1;
+    if (v[p << 1].lst < lst) {
+      if (lst.o) {
+        Tag21(p << 1, l, mid, lst.chk1, tag1 * lst.w);
+      } else {
+        Tag20(p << 1, l, mid, lst.chk0, tag1 * lst.w);
+      }
+      Tag1(p << 1 | 1, mid + 1, r, lst + v[p << 1].lst, tag1);
+    } else {
+      Tag1(p << 1, l, mid, lst, tag1);
+      v[p].tag1 += tag1;
+    }
+  }
+
+  void Pushdown(int p, int l, int r) {
+    int mid = l + r >> 1;
     if (v[p].tag20) {
-      Tag20(p << 1 | 1, mid + 1, r, v[p].tag20);
+      Tag20(p << 1 | 1, mid + 1, r, v[p << 1].chk0, v[p].tag20);
       v[p].tag20 = 0;
     }
     if (v[p].tag21) {
-      Tag21(p << 1 | 1, mid + 1, r, v[p].tag21);
+      Tag21(p << 1 | 1, mid + 1, r, v[p << 1].chk1, v[p].tag21);
       v[p].tag21 = 0;
+    }
+    if (v[p].tag1) {
+      Tag1(p << 1 | 1, mid + 1, r, v[p << 1].lst, v[p].tag1);
+      v[p].tag1 = 0;
     }
   }
 
@@ -168,12 +205,17 @@ class Seg {
     Pushup(p);
   }
 
-  void Recover(int p, int l, int r) {  // CHICK
-    ;
+  void Recover(int p, int l, int r) {
+    if (l < r) {
+      Pushdown(p, l, r);
+      int mid = l + r >> 1;
+      Recover(p << 1, l, mid), Recover(p << 1 | 1, mid + 1, r);
+    }
   }
 
  public:
   void Init() { Init(1, 1, n); }
+
   void Tag() { Tag1(1, 1, n, Lst(), 1); }
 
   void Add(int d) {
