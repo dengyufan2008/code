@@ -15,7 +15,7 @@ int main() {
   ios::sync_with_stdio(0);
   cout << kN << ' ' << kM << '\n';
   for (int i = 1; i <= kM; i++) {
-    cout << Rand() % 2 << ' ';
+    cout << Rand() % 2 + 1 << ' ';
     int x = Rand() % kN + 1, y = Rand() % kN + 1;
     cout << min(x, y) << ' ' << max(x, y) << ' ';
     cout << Rand() % kV + 1 << '\n';

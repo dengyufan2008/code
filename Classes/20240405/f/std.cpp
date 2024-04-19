@@ -289,7 +289,6 @@ int main() {
   build(1, 1, m);
   work(1, 1, n, 0);
   calc(1, 1, m);
-  for (int i = 1; i <= m; i++) printf("%lld ", ans[i]);
-  printf("\n");
+  for (int i = 1; i <= m; i++) printf("%lld", ans[i]), cout << " \n"[i == m];
   return 0;
 }
