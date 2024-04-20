@@ -17,11 +17,11 @@ CD kLE = 86;                                                           // 怪物
 CD kD = 0.1;                                                           // 小宝元素抗性为 10%
 CD kOffD = kTeam * (-0.2);                                             // 钟离盾
 CD kM1 = kTeam * (120);                                                // 教官 (60% 覆盖率)
-CD kH = 26685.4;
-CD kA = 1238.8;
-CD kM0 = 279.5;
-CD kCp = 84.7;
-CD kCd = 199.7;
+CD kH = 27600;
+CD kA = 1204.8;
+CD kM0 = 279.7;
+CD kCp = 84.3;
+CD kCd = 201.9;
 
 int main() {
   cin.tie(0), cout.tie(0);
