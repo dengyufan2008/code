@@ -7,7 +7,7 @@ using namespace std;
 ifstream cin("f.in");
 ofstream cout("f.out");
 
-const int kMaxN = 2000 + 1, kInf = 1e9;
+const int kMaxN = 1e5 + 1, kInf = 1e9;
 int n, m;
 struct Q {
   int w;
@@ -51,7 +51,12 @@ class Seg {
     LL tag1, tag20, tag21;
     bool o;
   } v[kMaxN << 2];
-  int p[kMaxN];
+  struct E {
+    int d;
+    Lst lst;
+    bool o;
+  };
+  vector<E> e;
 
   Lst Merge(Lst x, int y) {
     if (x < v[y].lst) {
@@ -81,9 +86,9 @@ class Seg {
       return ans.Add(p, tag20 * (v[p].o ? min(chk0, v[p].chk0) : chk0));
     }
     int mid = l + r >> 1;
-    if (v[p].chk0 > chk0) {
+    if (!v[p << 1].o || v[p << 1].chk0 > chk0) {
       ans.Add(p << 1, tag20 * chk0);
-      Tag20(p << 1 | 1, mid + 1, r, min(chk0, v[p << 1].chk0), tag20);
+      Tag20(p << 1 | 1, mid + 1, r, chk0, tag20);
     } else {
       Tag20(p << 1, l, mid, chk0, tag20);
       v[p].tag20 += tag20;
@@ -97,9 +102,9 @@ class Seg {
       return ans.Add(p, tag21 * (v[p].o ? max(chk1, v[p].chk1) : chk1));
     }
     int mid = l + r >> 1;
-    if (v[p].chk1 < chk1) {
+    if (!v[p << 1].o || v[p << 1].chk1 < chk1) {
       ans.Add(p << 1, tag21 * chk1);
-      Tag21(p << 1 | 1, mid + 1, r, max(chk1, v[p << 1].chk1), tag21);
+      Tag21(p << 1 | 1, mid + 1, r, chk1, tag21);
     } else {
       Tag21(p << 1, l, mid, chk1, tag21);
       v[p].tag21 += tag21;
@@ -197,6 +202,7 @@ class Seg {
   void ChangeLst(int p, int l, int r, int d, int o,
                  int lst, int chk0, int chk1, bool forced) {
     if (l == r) {
+      e.push_back({d, v[p].lst, v[p].o});
       if (o == 0) {
         v[p].o = 0, v[p].lst = Lst(0, l, chk0, chk1, q[l].o);
       } else {
@@ -222,6 +228,21 @@ class Seg {
     Pushup(p);
   }
 
+  void ChangeLst(int p, int l, int r, int d, int o, Lst lst) {
+    if (l == r) {
+      v[p].o = o, v[p].lst = lst;
+      return;
+    }
+    Pushdown(p, l, r);
+    int mid = l + r >> 1;
+    if (mid >= d) {
+      ChangeLst(p << 1, l, mid, d, o, lst);
+    } else {
+      ChangeLst(p << 1 | 1, mid + 1, r, d, o, lst);
+    }
+    Pushup(p);
+  }
+
   void Recover(int p, int l, int r) {
     if (l < r) {
       Pushdown(p, l, r);
@@ -236,18 +257,22 @@ class Seg {
   void Tag() { Tag1(1, 1, m, Lst(), 0, 1); }
 
   void Add(int d) {
-    ChangeLst(1, 1, m, d, 1, CalcLst(1, 1, m, d), kInf, -kInf, 1);
-    p[d] = FindP(1, 1, m, d);
-    if (p[d]) {
-      ChangeLst(1, 1, m, p[d], -1, d, kInf, -kInf, 0);
+    int lst = CalcLst(1, 1, m, d);
+    ChangeLst(1, 1, m, d, 1, lst, kInf, -kInf, 1);
+    int p = FindP(1, 1, m, d);
+    if (p) {
+      ChangeLst(1, 1, m, p, -1, d, kInf, -kInf, 0);
+    } else {
+      e.push_back({});
     }
   }
 
-  void Remove(int d) {
-    ChangeLst(1, 1, m, d, 0, 0, kInf, -kInf, 1);
-    if (p[d]) {
-      ChangeLst(1, 1, m, p[d], -1, CalcLst(1, 1, m, p[d]), kInf, -kInf, 1);
-      p[d] = 0;
+  void Undo() {
+    for (int i = 0; i < 2; i++) {
+      if (e.back().d) {
+        ChangeLst(1, 1, m, e.back().d, e.back().o, e.back().lst);
+      }
+      e.pop_back();
     }
   }
 
@@ -275,14 +300,12 @@ class Op {
     }
     if (l == r) {
       seg.Tag();
-      // seg.Recover();  // CHICK
-      // ans.Print();    // CHICK
     } else {
       int mid = l + r >> 1;
       Calc(p << 1, l, mid), Calc(p << 1 | 1, mid + 1, r);
     }
-    for (int i = v[p].size() - 1; i >= 0; i--) {
-      seg.Remove(v[p][i]);
+    for (int i : v[p]) {
+      seg.Undo();
     }
   }
 
