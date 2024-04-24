@@ -11,8 +11,8 @@ ofstream cout("emo.out");
 const int kMaxN = 101;
 int n, m, l;
 LL k, p, ans, a[kMaxN][kMaxN], d[kMaxN][kMaxN];
-queue<int> q;
-unordered_map<int, int> h;
+queue<unsigned> q;
+unordered_map<unsigned, int> h;
 
 bool C(int s) {
   for (int i = 0; i < m; i++) {
@@ -46,10 +46,10 @@ void Mul(LL a[kMaxN][kMaxN], LL b[kMaxN][kMaxN]) {
 int main() {
   cin.tie(0), cout.tie(0);
   ios::sync_with_stdio(0);
-  cin >> n >> k >> p, m = 1 << n, h[0] = 0, l = 1;
-  for (q.push(0); !q.empty(); q.pop()) {
+  cin >> n >> k >> p, m = 1 << n, h[1] = 0, l = 1;
+  for (q.push(1); !q.empty(); q.pop()) {
     for (int s = 0; s < m; s++) {
-      int x = q.front(), y = 0;
+      unsigned x = q.front(), y = 0;
       for (int i = s;; i = i - 1 & s) {
         if (x >> i & 1) {
           for (int j = s ^ i;; j = j - 1 & (s ^ i)) {
@@ -65,8 +65,10 @@ int main() {
           break;
         }
       }
-      !h.count(y) && (h[y] = l++);
-      d[h[x]][h[y]] = (d[h[x]][h[y]] + 1) % p;
+      if (y) {
+        !h.count(y) && (q.push(y), h[y] = l++);
+        d[h[x]][h[y]] = (d[h[x]][h[y]] + 1) % p;
+      }
     }
   }
   for (int i = 0; i < l; i++) {
@@ -78,8 +80,10 @@ int main() {
     }
     Mul(d, d);
   }
-  for (int i = 1; i < 1 << m; i += 2) {
-    ans = (ans + a[0][i]) % p;
+  for (auto i : h) {
+    if (i.first & 1) {
+      ans = (ans + a[0][i.second]) % p;
+    }
   }
   cout << ans << '\n';
 }
