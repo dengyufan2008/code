@@ -45,7 +45,7 @@ class Seg {
 
 void CalcR(int f, int x) {
   int mx = 0;
-  v[x].s = 0;
+  v[x].s = 1;
   for (auto i : v[x].e) {
     if (i.first != f && !v[i.first].b) {
       CalcR(x, i.first);
@@ -61,20 +61,14 @@ void CalcR(int f, int x) {
 void CalcD(int f, int x, LL d) {
   l.push_back({x, d});
   for (auto i : v[x].e) {
-    if (i.first != f) {
+    if (i.first != f && !v[i.first].b) {
       CalcD(x, i.first, d + i.second);
     }
   }
 }
 
 void Divide() {
-  v[r].b = 1, l.clear();
-  for (auto i : v[r].e) {
-    if (!v[i.first].b) {
-      CalcD(0, i.first, i.second);
-    }
-  }
-  sort(l.begin(), l.end());
+  v[r].b = 1, l.clear(), CalcD(0, r, 0), sort(l.begin(), l.end());
   for (int o : {1, -1}) {
     t.clear();
     for (int i = ~o ? 0 : l.size() - 1; ~o ? i < l.size() : i >= 0; i += o) {
@@ -87,10 +81,11 @@ void Divide() {
       t.push_back(l[i]);
     }
   }
-  int _s = s - v[r].s;
+  int _s = s;
   for (auto i : v[r].e) {
     if (!v[i.first].b) {
-      s = min(v[i.first].s, _s), CalcR(0, i.first), Divide();
+      s = v[i.first].s * 2 <= _s ? v[i.first].s : _s - v[r].s;
+      CalcR(0, i.first), Divide();
     }
   }
 }
@@ -140,7 +135,7 @@ int main() {
   }
   cin >> m;
   for (int i = 1; i <= m; i++) {
-    cin >> q[i].l >> q[i].r;
+    cin >> q[i].l >> q[i].r, q[i].d = i;
   }
   s = n, CalcR(0, 1), Divide();
   sort(w.begin(), w.end());
@@ -157,7 +152,7 @@ int main() {
     }
   }
   for (int i = 1; i <= m; i++) {
-    cout << ans[i] << '\n';
+    cout << (ans[i] == kInf ? -1 : ans[i]) << '\n';
   }
   return 0;
 }
