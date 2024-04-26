@@ -9,19 +9,21 @@ ifstream cin("o.in");
 ofstream cout("o.out");
 
 const LL kMaxN = 2e5 + 1, kMaxM = 1e6 + 1, kMaxL = 18, kInf = 1e18;
+struct E {
+  int p, d, w;
+} e[kMaxN << 2];
 struct V {
-  int s, d, f[kMaxL];
+  int et, s, f, r;
   LL w;
   bool b;
-  vector<pair<int, int>> e;
 } v[kMaxN];
 struct Q {
   int l, r, d;
 } q[kMaxM];
-int n, m, s, r;
+int n, m, s, r, lg[kMaxN];
 LL ans[kMaxM];
 vector<pair<int, LL>> l, t;
-vector<pair<int, int>> w;
+vector<LL> w;
 class Seg {
   LL v[kMaxN];
 
@@ -42,15 +44,56 @@ class Seg {
     return ans;
   }
 } seg;
+class Lca {
+  int r[kMaxL][kMaxN], a[kMaxN];
+
+  void Init(int f, int x) {
+    static int k = 0;
+    v[x].f = f, v[x].r = ++k, r[0][k] = v[f].r, a[k] = x;
+    for (int i = v[x].et; i; i = e[i].p) {
+      if (e[i].d != f) {
+        v[e[i].d].w = v[x].w + e[i].w;
+        Init(x, e[i].d);
+      }
+    }
+  }
+
+ public:
+  void Init() {
+    Init(0, 1);
+    for (int i = 1; i < kMaxL; i++) {
+      for (int j = 1; j <= n; j++) {
+        r[i][j] = r[i - 1][j];
+        if (j + (1 << i - 1) <= n) {
+          r[i][j] = min(r[i][j], r[i - 1][j + (1 << i - 1)]);
+        }
+      }
+    }
+    for (int i = 2; i < kMaxN; i++) {
+      lg[i] = lg[i >> 1] + 1;
+    }
+  }
+
+  int Ask(int x, int y) {
+    x = v[x].r, y = v[y].r;
+    x > y ? swap(x, y) : void();
+    int l = lg[y - x];
+    return a[min(r[l][x + 1], r[l][y - (1 << l) + 1])];
+  }
+
+  LL Dis(int x, int y) {
+    return v[x].w + v[y].w - v[Ask(x, y)].w * 2;
+  }
+} lca;
 
 void CalcR(int f, int x) {
   int mx = 0;
   v[x].s = 1;
-  for (auto i : v[x].e) {
-    if (i.first != f && !v[i.first].b) {
-      CalcR(x, i.first);
-      v[x].s += v[i.first].s;
-      mx = max(mx, v[i.first].s);
+  for (int i = v[x].et; i; i = e[i].p) {
+    if (e[i].d != f && !v[e[i].d].b) {
+      CalcR(x, e[i].d);
+      v[x].s += v[e[i].d].s;
+      mx = max(mx, v[e[i].d].s);
     }
   }
   if (max(mx, s - v[x].s) * 2 <= s) {
@@ -60,9 +103,9 @@ void CalcR(int f, int x) {
 
 void CalcD(int f, int x, LL d) {
   l.push_back({x, d});
-  for (auto i : v[x].e) {
-    if (i.first != f && !v[i.first].b) {
-      CalcD(x, i.first, d + i.second);
+  for (int i = v[x].et; i; i = e[i].p) {
+    if (e[i].d != f && !v[e[i].d].b) {
+      CalcD(x, e[i].d, d + e[i].w);
     }
   }
 }
@@ -75,53 +118,19 @@ void Divide() {
       for (; !t.empty() && t.back().second > l[i].second; t.pop_back()) {
       }
       if (!t.empty()) {
-        int x = t.back().first, y = l[i].first;
-        w.push_back({min(x, y), max(x, y)});
+        LL x = t.back().first, y = l[i].first;
+        w.push_back(min(x, y) << 31 | max(x, y));
       }
       t.push_back(l[i]);
     }
   }
   int _s = s, _r = r;
-  for (auto i : v[_r].e) {
-    if (!v[i.first].b) {
-      s = v[i.first].s * 2 <= _s ? v[i.first].s : _s - v[_r].s;
-      CalcR(0, i.first), Divide();
+  for (int i = v[r].et; i; i = e[i].p) {
+    if (!v[e[i].d].b) {
+      s = v[e[i].d].s * 2 <= _s ? v[e[i].d].s : _s - v[_r].s;
+      CalcR(0, e[i].d), Divide();
     }
   }
-}
-
-void CalcF(int f, int x) {
-  v[x].d = v[f].d + 1, v[x].f[0] = f;
-  for (int i = 1; i < kMaxL; i++) {
-    v[x].f[i] = v[v[x].f[i - 1]].f[i - 1];
-  }
-  for (auto i : v[x].e) {
-    if (i.first != f) {
-      v[i.first].w = v[x].w + i.second;
-      CalcF(x, i.first);
-    }
-  }
-}
-
-int Lca(int x, int y) {
-  if (v[x].d < v[y].d) {
-    swap(x, y);
-  }
-  for (int i = kMaxL - 1; i >= 0; i--) {
-    if (v[x].d - (1 << i) >= v[y].d) {
-      x = v[x].f[i];
-    }
-  }
-  for (int i = kMaxL - 1; i >= 0; i--) {
-    if (v[x].f[i] != v[y].f[i]) {
-      x = v[x].f[i], y = v[y].f[i];
-    }
-  }
-  return x == y ? x : v[x].f[0];
-}
-
-LL Dis(int x, int y) {
-  return v[x].w + v[y].w - v[Lca(x, y)].w * 2;
 }
 
 int main() {
@@ -130,8 +139,8 @@ int main() {
   cin >> n;
   for (int i = 1, x, y, z; i < n; i++) {
     cin >> x >> y >> z;
-    v[x].e.push_back({y, z});
-    v[y].e.push_back({x, z});
+    e[i << 1] = {v[x].et, y, z}, v[x].et = i << 1;
+    e[i << 1 | 1] = {v[y].et, x, z}, v[y].et = i << 1 | 1;
   }
   cin >> m;
   for (int i = 1; i <= m; i++) {
@@ -142,10 +151,10 @@ int main() {
   sort(q + 1, q + m + 1, [](Q i, Q j) {
     return i.l < j.l || i.l == j.l && i.r < j.r;
   });
-  CalcF(0, 1);
+  lca.Init();
   for (int i = n, j = w.size() - 1, k = m; i >= 1; i--) {
-    for (; j >= 0 && w[j].first == i; j--) {
-      seg.CheckMin(w[j].second, Dis(w[j].first, w[j].second));
+    for (; j >= 0 && (w[j] >> 31) == i; j--) {
+      seg.CheckMin(w[j] & ~(-1 << 31), lca.Dis(w[j] >> 31, w[j] & ~(-1 << 31)));
     }
     for (; k >= 1 && q[k].l == i; k--) {
       ans[q[k].d] = seg.Ask(q[k].r);
