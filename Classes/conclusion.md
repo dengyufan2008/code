@@ -46,12 +46,11 @@
 - 模拟费用流的一种方法是, 考虑建图中的若干关键点, 两两维护路径的最大 (小) 值, 然后对这些关键点暴力跑 SPFA. [例](https://www.luogu.com.cn/paste/fgt41p1o)
 
 - 对于一类 $n$ 的范围稍小于 $q$ 的范围的含有点对查询的题目, 极有可能是考虑求出所有的支配点对并查询, 一般数量级为 $O(n \log n)$. [例](https://www.luogu.com.cn/problem/P9058)
+# 20240406 讲[题](https://uoj.ac/problems?search=%E8%AE%AD2021)总结 & [解](https://www.cnblogs.com/dmoransky/p/16052837.html)
 
-# 20240406 讲[题](https://uoj.ac/problems?search=%E8%AE%AD2021)总结 & [题解](https://www.cnblogs.com/dmoransky/p/16052837.html)
+- 对于一类极多维的偏序问题, 可以将序列分为 $O(\log n)$ 块, 每块内维护某一维 $\le x$ 的下标集合. $O(\frac{n^2}{\log n})$.
 
-- 对于一类极多维的偏序问题, 可以将序列分为 $O(\log n)$ 块, 每块内维护某一维 $\le x$ 的下标集合. $O(\frac{n^2}{\log n})$. [例](https://uoj.ac/problem/710)
-
-- 对于一类会了前一半不会后一半的问题, 考虑后一半能否规约到前一半. [例](https://uoj.ac/problem/710)
+  对于一类会了前一半不会后一半的问题, 考虑后一半能否规约到前一半. [例](https://uoj.ac/problem/710)
 
 - 做凸包时一个点弹掉的点集就是删了这个点之后需要加回来的点集. 很显然但是没有想到.
 
@@ -65,6 +64,10 @@
 
 - 序列上两个人博弈, 一个人取完一个数后另一个人取相邻的其中一个数, 要让自己的和最大. 可以转化成带权最大匹配, 边权为两边的 min. [例 (不会)](https://uoj.ac/problem/720)
 
+附: [算术](https://uoj.ac/problem/718) 的解
+
+![](https://cdn.luogu.com.cn/upload/image_hosting/me5lkgw7.png)
+
 # 20240411 讲[题](https://www.luogu.com.cn/paste/gg40dcu5)总结
 
 - 奇偶位分别考虑是一种常见思路. 在计数问题中若奇偶位没有互相限制, 则可以分别统计奇偶位的贡献, 从而减少状态数. [例](https://qoj.ac/problem/8330)
@@ -75,7 +78,7 @@
 
   如做的是集合 Dp 要转移到超集, 则可以考虑 Meet-in-the-Middle, 前一半枚举转移后的集合, 后一半枚举转移前的集合. 则前一半对应查询, 后一半对应修改. [例](https://qoj.ac/problem/8005)
 
-- 对于一类计数问题, 若要在 枚举每一种可能的集合 的情况下还要 对每个集合计算一个抽象式子, 可以考虑那个式子的组合意义 (要能简单表述的最好), 从而得到一些光看式子想不到的抽象转化. 事实上这一思路的适用范围较广, 如 HNOI 2024 Day1 T3 wormhole. [例](https://atcoder.jp/contests/wtf22-day2/tasks/wtf22_day2_d)
+- 对于一类计数问题, 若要在 枚举每一种可能的集合 的情况下还要 对每个集合计算一个抽象式子, 可以考虑那个式子的组合意义 (要能简单表述的最好), 从而得到一些光看式子想不到的抽象转化. 事实上这一思路的适用范围较广, 如 HNOI 2024 Day1 T3 wormhole. [例](https://www.luogu.com.cn/problem/AT_wtf22_day2_d)
 
 - 对于一类需要快速判断一些奇怪的问题是否成立的问题, 考虑将问题的成立与否转化为一些条件的真假, 然后根据这些条件设计 Hash 方程. 
   
@@ -105,8 +108,7 @@
 
   因此, 大多数情况下, 二分+网络流 往往可以改成 动态加边的网络流, 从而少一个 $\log$.
 
-- 稠密图上 BFS 可以使用 ``bitset`` 优化. [这两点对应的例]
-(https://www.luogu.com.cn/problem/CF513F2)
+- 稠密图上 BFS 可以使用 ``bitset`` 优化. [这两点对应的例](https://www.luogu.com.cn/problem/CF513F2)
 
 - 网络流中一个元素若有两种决策, 考虑钦定其为其中一种, 并利用网络流进行调整. [例](https://www.luogu.com.cn/problem/CF1250K)
 

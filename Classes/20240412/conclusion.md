@@ -4,8 +4,7 @@
 
   因此, 大多数情况下, 二分+网络流 往往可以改成 动态加边的网络流, 从而少一个 $\log$.
 
-- 稠密图上 BFS 可以使用 ``bitset`` 优化. [这两点对应的例]
-(https://www.luogu.com.cn/problem/CF513F2)
+- 稠密图上 BFS 可以使用 ``bitset`` 优化. [这两点对应的例](https://www.luogu.com.cn/problem/CF513F2)
 
 - 网络流中一个元素若有两种决策, 考虑钦定其为其中一种, 并利用网络流进行调整. [例](https://www.luogu.com.cn/problem/CF1250K)
 
