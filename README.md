@@ -6,6 +6,8 @@
 
 判断最小割中一条边是否被割掉: 从源点开始搜, 只走非满的边.
 
+Dfn 求 LCA: 令 Dfn 数组为 $r_i$, ST 表数组为 $st_i$, 可以令 $st_{r_i} = r_{f_i}$, 维护区间 min. 有 $r_{LCA(x, y)} = \min_{i = r_x + 1}^{r_y} st_i$, 维护 Dfn 的逆数组即可.
+
 ----
 
 [我准 **备** 用来 **忘** 记的 **箓**](https://www.luogu.com.cn/paste/lvmrhjxm)
@@ -65,4 +67,4 @@
 
 - [Dinic](https://www.luogu.com.cn/paste/1ltjkyl7)
 
-## *Last Update : 2024.4.7*
+## *Last Update : 2024.4.26*
