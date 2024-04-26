@@ -1,4 +1,4 @@
-# 20240406 讲题(uoj [709, 720])总结 & [题解](https://www.cnblogs.com/dmoransky/p/16052837.html)
+# 20240406 讲[题](https://uoj.ac/problems?search=%E8%AE%AD2021)总结 & [题解](https://www.cnblogs.com/dmoransky/p/16052837.html)
 
 - 对于一类极多维的偏序问题, 可以将序列分为 $O(\log n)$ 块, 每块内维护某一维 $\le x$ 的下标集合. $O(\frac{n^2}{\log n})$. [例](https://uoj.ac/problem/710)
 

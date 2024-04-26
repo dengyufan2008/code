@@ -47,7 +47,7 @@
 
 - 对于一类 $n$ 的范围稍小于 $q$ 的范围的含有点对查询的题目, 极有可能是考虑求出所有的支配点对并查询, 一般数量级为 $O(n \log n)$. [例](https://www.luogu.com.cn/problem/P9058)
 
-# 20240406 讲题(uoj [709, 720])总结 & [题解](https://www.cnblogs.com/dmoransky/p/16052837.html)
+# 20240406 讲[题](https://uoj.ac/problems?search=%E8%AE%AD2021)总结 & [题解](https://www.cnblogs.com/dmoransky/p/16052837.html)
 
 - 对于一类极多维的偏序问题, 可以将序列分为 $O(\log n)$ 块, 每块内维护某一维 $\le x$ 的下标集合. $O(\frac{n^2}{\log n})$. [例](https://uoj.ac/problem/710)
 
@@ -59,7 +59,7 @@
 
 - 从 0 开始每次随一个 $[-v, v]$ 的数并加上, 走到的数的范围期望是 $O(\sqrt v)$ 的. 但随着步数的增加, 实际的数字会越发趋于稳定, 故越不可能成为最大 (小) 值. [例](https://uoj.ac/problem/716)
 
-- 对于字符串 $S, T$ 有 $S^\infty < T^\infty \Leftrightarrow ST < TS$. [例 (不会)](https://uoj.ac/problem/717)
+- 对于字符串 $S, T$ 有 $S < T^\infty \Leftrightarrow S < TS$, $S^\infty < T^\infty \Leftrightarrow ST < TS$. LCP 同样相等 (显然取等号时不等但不重要). [例 (不会)](https://uoj.ac/problem/717)
 
 - 复习 SG 函数: 若先后手能进行的操作相同, 且每次只能操作一个最小的操作单位 (如 Nim 游戏中的每堆石子, 例题中的每颗棋子), 且会转移到拓扑序靠后的一些单位状态 (集), 则每个单位状态的 sg 值为后继的 mex, 多个单位状态的并的 sg 值为 Xor 和. 0 必败, 非 0 必胜. [例](https://uoj.ac/problem/719)
 
