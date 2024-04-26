@@ -26,7 +26,7 @@ class Seg {
   LL v[kMaxN];
 
  public:
-  Seg() { fill(&v[0], &v[kMaxN], kInf); };
+  Seg() { fill(&v[1], &v[kMaxN], kInf); };
 
   void CheckMin(int x, LL y) {
     for (int i = x; i <= n; i += i & -i) {
@@ -81,10 +81,10 @@ void Divide() {
       t.push_back(l[i]);
     }
   }
-  int _s = s;
-  for (auto i : v[r].e) {
+  int _s = s, _r = r;
+  for (auto i : v[_r].e) {
     if (!v[i.first].b) {
-      s = v[i.first].s * 2 <= _s ? v[i.first].s : _s - v[r].s;
+      s = v[i.first].s * 2 <= _s ? v[i.first].s : _s - v[_r].s;
       CalcR(0, i.first), Divide();
     }
   }
