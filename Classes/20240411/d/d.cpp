@@ -1,8 +1,11 @@
 #include <algorithm>
-#include <iostream>
+#include <fstream>
 #define LL long long
 
 using namespace std;
+
+ifstream cin("d.in");
+ofstream cout("d.out");
 
 const int kMaxN = 5001, kMod = 998244353;
 int n, m, a[kMaxN];
