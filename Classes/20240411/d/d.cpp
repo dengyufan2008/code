@@ -1,16 +1,13 @@
 #include <algorithm>
-#include <fstream>
+#include <iostream>
 #define LL long long
 
 using namespace std;
 
-ifstream cin("d.in");
-ofstream cout("d.out");
-
 const int kMaxN = 5001, kMod = 998244353;
 int n, m, a[kMaxN];
 LL fact[kMaxN], _fact[kMaxN], s1[kMaxN][kMaxN], s2[kMaxN][kMaxN];
-LL w, f[kMaxN][kMaxN], g[kMaxN], h[kMaxN];
+LL f[kMaxN][kMaxN], g[kMaxN], h[kMaxN];
 
 LL Pow(LL x, int y = kMod - 2) {
   LL ans = 1;
@@ -49,7 +46,7 @@ int main() {
       s2[i][j] = s2[i - 1][j] * j;
       f[i][j] = f[i - 1][j] * (m + i - j);
     }
-    s1[i][0] = 0;
+    s1[i][0] %= kMod, s2[i][0] %= kMod, f[i][0] %= kMod;
     for (int j = 1; j <= i; j++) {
       s1[i][j] = (s1[i][j] + s1[i - 1][j - 1]) % kMod;
       s2[i][j] = (s2[i][j] + s2[i - 1][j - 1]) % kMod;
@@ -71,23 +68,20 @@ int main() {
       h[i] = (h[i] + g[j] * s2[j][i]) % kMod;
     }
   }
-  w = 1;
-  for (int i = 2; i <= n; i++) {  // 恰好 i 个有序的集合
-    w = w * i % kMod, h[i] = h[i] * w % kMod;
+  for (int i = 1; i <= n; i++) {  // 恰好 i 个有序的集合
+    h[i] = h[i] * fact[i] % kMod;
   }
   for (int i = n; i >= 1; i--) {  // 恰好 i 个有序的内部无 0 的集合
     for (int j = i + 1; j <= n; j++) {
       h[i] = (h[i] - h[j] * C(j - 1, j - i) % kMod + kMod) % kMod;
     }
   }
-  w = 1;
-  for (int i = 1, j = 1; i <= n; i = j) {
+  for (int i = 1, j = 1; i <= n; i = j) {  // 相同 a_i 不区分
     for (; j <= n && a[i] == a[j]; j++) {
     }
-    w = w * _fact[j - i] % kMod;
-  }
-  for (int i = 1; i <= n; i++) {  // 相同 a_i 不区分
-    h[i] = h[i] * w % kMod;
+    for (int k = 1; k <= n; k++) {
+      h[k] = h[k] * _fact[j - i] % kMod;
+    }
   }
   for (int i = 1; i <= n; i++) {
     cout << h[i] << '\n';
