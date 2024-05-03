@@ -12,9 +12,9 @@ Dfn 求 LCA: 令 Dfn 数组为 $r_i$, ST 表数组为 $st_i$, 可以令 $st_{r_i
 
 [我准 **备** 用来 **忘** 记的 **箓**](https://www.luogu.com.cn/paste/lvmrhjxm)
 
-[考逝总结](https://www.luogu.com.cn/paste/j2ee18mi)
+[考逝总结](https://www.luogu.com.cn/article/sd8bpaa1)
 
-[讲氪总结](https://www.luogu.com.cn/paste/jab35jlk)
+[讲氪总结](https://www.luogu.com.cn/article/bn0cnhaw)
 
 [To Do Lists](https://www.luogu.com.cn/paste/lcysbo18)
 
