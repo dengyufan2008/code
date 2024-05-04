@@ -7,7 +7,7 @@ using namespace std;
 ifstream cin("i.in");
 ofstream cout("i.out");
 
-const int kMaxN = 101, kMaxM = 3001, kMod = 998244353;
+const int kMaxN = 101, kMaxM = 2101, kMod = 998244353;
 struct A {
   int c, f[3][3][2];
 
@@ -69,6 +69,10 @@ LL Pow(LL x, int y = kMod - 2) {
   return ans;
 }
 
+LL C(int x, int y) {
+  return fact[x] * _fact[y] % kMod * _fact[x - y] % kMod;
+}
+
 int main() {
   cin.tie(0), cout.tie(0);
   ios::sync_with_stdio(0);
@@ -93,7 +97,7 @@ int main() {
       A y = A(x.c + (t > 1), -1);
       for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
-          for (int k = 0; k <= t - i - j; k++) {
+          for (int k = 0; k < 3 && k <= t - i - j; k++) {
             int w = t - i - j - k;
             if (~x.f[i][j][1]) {
               CheckMax(y.f[j][k][1], x.f[i][j][1] + i + w / 3);
@@ -121,10 +125,7 @@ int main() {
     for (int j = 0; j <= i * 4; j++) {
       for (int k = 1; k <= m; k++) {
         for (int o = a[i + 1]; o < 5; o++) {
-          Add(f[i + 1][j + o][e[k][o]], f[i][j][k]);
-          // if (f[i][j][k]) {
-          //   cout << "f[" << i << "][" << j << "][" << k << "] to f[" << i + 1 << "][" << j + o << "][" << e[k][o] << "]: " << f[i][j][k] << '\n';
-          // }
+          Add(f[i + 1][j + o][e[k][o]], f[i][j][k] * C(4 - a[i + 1], o - a[i + 1]));
         }
       }
     }
@@ -134,9 +135,8 @@ int main() {
     for (int j = 2; j <= m; j++) {
       Add(w, f[n][i][j]);
     }
-    w = w * fact[i - 13] % kMod * fact[n * 4 - i] % kMod;
-    Add(ans, w * _fact[n * 4 - 13]);
+    Add(ans, w * fact[i - 13] % kMod * fact[n * 4 - i]);
   }
-  cout << ans << '\n';
+  cout << ans * _fact[n * 4 - 13] % kMod << '\n';
   return 0;
 }
