@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cmath>
 #include <fstream>
 #include <iomanip>
@@ -14,7 +15,7 @@ struct V {
   int d;
   vector<int> e;
 } v[kMaxN];
-int n, w, q[kMaxN];
+int n, w, q[kMaxN], l[kMaxN];
 double ans, sqt[kMaxN];
 
 void T(int x) {
@@ -31,6 +32,14 @@ void T(int x) {
   }
 }
 
+void CalcAns(int x) {
+  static LL s;
+  s = 0, T(x);
+  for (int i = 1; i <= n; i++) {
+    s += v[q[i]].d, ans = max(ans, sqt[i] * w - s);
+  }
+}
+
 int main() {
   cin.tie(0), cout.tie(0);
   ios::sync_with_stdio(0);
@@ -39,19 +48,14 @@ int main() {
     cin >> x >> y;
     v[x].e.push_back(y), v[y].e.push_back(x);
   }
-  if (w == 1) {
-    cout << "1.00\n";
-    return 0;
-  }
   for (int i = 1; i <= n; i++) {
-    sqt[i] = sqrt(i);
+    l[i] = i, sqt[i] = sqrt(i);
   }
-  for (int i = 1; i <= n; i++) {
-    LL s = 0;
-    T(i);
-    for (int j = 1; j <= n; j++) {
-      s += v[q[j]].d, ans = max(ans, sqt[j] * w - s);
-    }
+  sort(l + 1, l + n + 1, [](int i, int j) {
+    return v[i].e.size() > v[j].e.size();
+  });
+  for (int i = 1; i <= 100; i++) {
+    CalcAns(l[i]);
   }
   cout << fixed << setprecision(2) << ans << '\n';
   return 0;
