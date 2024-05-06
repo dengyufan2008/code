@@ -12,7 +12,7 @@ ofstream cout("string.out");
 const int kMaxN = 50001, kMaxB = 225;
 const ULL kBase = 15553;
 int n, m, a[kMaxN], d[kMaxN], p[kMaxN], q[kMaxN];
-int l[kMaxN], r[kMaxN], s[kMaxN][kMaxB], h[kMaxN];
+int l[kMaxN], s[kMaxN][kMaxB];
 LL ans;
 ULL w[kMaxN][kMaxB], v[kMaxN * 3][kMaxB], pw[kMaxN];
 
@@ -65,6 +65,19 @@ ULL Hash(int l, int r) {
   return ans;
 }
 
+int Lcp(int x, int y) {
+  int l = 0, r = n - max(x, y) - 1;
+  while (l <= r) {
+    int mid = l + r >> 1;
+    if (Hash(x, x + mid) == Hash(y, y + mid)) {
+      l = mid + 1;
+    } else {
+      r = mid - 1;
+    }
+  }
+  return l;
+}
+
 int main() {
   cin.tie(0), cout.tie(0);
   ios::sync_with_stdio(0);
@@ -78,29 +91,12 @@ int main() {
     d[a[i]] = q[d[a[i]]] = l[i] = i;
   }
   Init(), sort(l, l + n, [](int i, int j) {
-    int l = 0, r = n - max(i, j) - 1;
-    while (l <= r) {
-      int mid = l + r >> 1;
-      if (Hash(i, i + mid) == Hash(j, j + mid)) {
-        l = mid + 1;
-      } else {
-        r = mid - 1;
-      }
-    }
+    int l = Lcp(i, j);
     return W(i, l) < W(j, l);
   });
-  for (int i = 0; i < n; i++) {
-    r[l[i]] = i;
-  }
   ans = 1LL * n * (n + 1) / 2;
-  for (int i = 0; i < n; i++) {
-    if (r[i]) {
-      h[r[i]] = i ? max(h[r[i - 1]] - 1, 0) : 0;
-      int _i = l[r[i] - 1], &j = h[r[i]];
-      for (; max(i, _i) + j < n && W(i, j) == W(_i, j); j++) {
-      }
-      ans -= j;
-    }
+  for (int i = 1; i < n; i++) {
+    ans -= Lcp(l[i - 1], l[i]);
   }
   cout << ans << '\n';
   return 0;

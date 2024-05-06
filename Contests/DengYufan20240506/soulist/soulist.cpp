@@ -224,7 +224,7 @@ int main() {
   cin.tie(0), cout.tie(0);
   ios::sync_with_stdio(0);
   cin >> n >> m;
-  if (n <= 19 && m <= 19 && 0) {
+  if (n <= 19 && m <= 19) {
     return Sub1::main();
   } else if (n <= 7) {
     return Sub2::main();
