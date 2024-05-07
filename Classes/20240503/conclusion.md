@@ -9,3 +9,5 @@
 - 对于一个不一定是积性函数的函数 $F(n)$ 的前缀和单点求值问题, 考虑 $F(n)$ 的递推式, 若能写成一个类似狄利克雷卷积的形式, 则考虑构造另一个积性函数 $G(n)$ 使得卷积后的是好求前缀和的函数 $H(n)$, 从而杜教筛. [例](https://loj.ac/p/6714)
   
 - $(a - b)^k \le a^k - b^k$. [例](https://cpc.csgrandeur.cn/csgoj/problemset/problem?pid=1245)
+
+附: 讲[上午课](https://www.luogu.com.cn/api/team/downloadFile/9nt80yus) & [下午课](https://www.luogu.com.cn/api/team/downloadFile/pcpfoxpt)内容

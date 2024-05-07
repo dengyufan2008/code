@@ -147,6 +147,8 @@
   
 - $(a - b)^k \le a^k - b^k$. [例](https://cpc.csgrandeur.cn/csgoj/problemset/problem?pid=1245)
 
+附: 讲[上午课](https://www.luogu.com.cn/api/team/downloadFile/9nt80yus) & [下午课](https://www.luogu.com.cn/api/team/downloadFile/pcpfoxpt)内容
+
 # 20240504 讲[题](https://www.luogu.com.cn/api/team/downloadFile/5n4g6qh1)总结
 
 - 对于一类贪心问题, 找到对贡献影响很大的关键点, 据此来调整非关键点从而得到特殊性质.
@@ -162,3 +164,11 @@
 - 对于一类限定某些元素要在两个元素之间的问题, 考虑从两边往中间构造. [例](https://www.luogu.com.cn/problem/P7056)
 
 附: 讲[课](https://www.luogu.com.cn/api/team/downloadFile/byor0cng)内容
+
+# 20240505 好[题](https://www.luogu.com.cn/paste/yard06r4)分享
+
+# 20240506 好[题](https://www.luogu.com.cn/paste/49557exa)分享
+
+# 20240507 好[题](https://www.luogu.com.cn/paste/f99xji7t)分享
+
+附: 讲[课](https://www.luogu.com.cn/api/team/downloadFile/vwgjlhf2)内容
