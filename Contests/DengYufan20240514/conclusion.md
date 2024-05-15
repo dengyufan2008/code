@@ -1,4 +1,4 @@
-# 20240514 总结
+# 20240514 总结 & [解](https://www.luogu.com.cn/api/team/downloadFile/0h39kbn0)
 
 ## T1(tree) [BDFS 序] [树链剖分]
 

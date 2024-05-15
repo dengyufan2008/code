@@ -1,4 +1,4 @@
-# 20240515 总结 & [解](https://www.luogu.com.cn/api/team/downloadFile/0h39kbn0)
+# 20240515 总结
 
 ## T1(matrix) [最小割]
 
