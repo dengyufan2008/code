@@ -67,7 +67,7 @@ Dfn 求 LCA: 令 Dfn 数组为 $r_i$, ST 表数组为 $st_i$, 可以令 $st_{r_i
 
 - [Splay](https://www.luogu.com.cn/paste/t1c5l25d)
 
-- [Dinic](https://www.luogu.com.cn/paste/1ltjkyl7)
+- [HLPP](https://www.luogu.com.cn/paste/1ltjkyl7)
 
 - [Fast Mul](https://www.luogu.com.cn/paste/bmjrtlws)
 
