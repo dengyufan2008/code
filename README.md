@@ -8,6 +8,8 @@
 
 Dfn 求 LCA: 令 Dfn 数组为 $r_i$, ST 表数组为 $st_i$, 可以令 $st_{r_i} = r_{f_i}$, 维护区间 min. 有 $r_{LCA(x, y)} = \min_{i = r_x + 1}^{r_y} st_i$, 维护 Dfn 的逆数组即可.
 
+[一道数学题](https://www.luogu.com.cn/article/ueohh8lt)
+
 ----
 
 [我准 **备** 用来 **忘** 记的 **箓**](https://www.luogu.com.cn/paste/lvmrhjxm)
@@ -65,8 +67,8 @@ Dfn 求 LCA: 令 Dfn 数组为 $r_i$, ST 表数组为 $st_i$, 可以令 $st_{r_i
 
 - [Splay](https://www.luogu.com.cn/paste/t1c5l25d)
 
-- [Dinic](https://www.luogu.com.cn/paste/1ltjkyl7)
+- [HLPP](https://www.luogu.com.cn/paste/1ltjkyl7)
 
 - [Fast Mul](https://www.luogu.com.cn/paste/bmjrtlws)
 
-## *Last Update : 2024.5.3*
+## *Last Update : 2024.5.8*

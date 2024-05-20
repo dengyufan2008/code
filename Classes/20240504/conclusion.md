@@ -10,6 +10,6 @@
 
 - 对于一类确定树的形态的问题, 只需考虑一个点的邻点集合与邻点中哪个是父亲. [例](https://www.luogu.com.cn/problem/CF1129E)
 
-- 
+- 对于一类限定某些元素要在两个元素之间的问题, 考虑从两边往中间构造. [例](https://www.luogu.com.cn/problem/P7056)
 
 附: 讲[课](https://www.luogu.com.cn/api/team/downloadFile/byor0cng)内容
