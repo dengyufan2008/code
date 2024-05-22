@@ -2,18 +2,19 @@
 #include <fstream>
 #include <unordered_map>
 #include <vector>
-#define ULL unsigned long long
+#define LL long long
+#define ULL unsigned LL
 
 using namespace std;
 
 ifstream cin("h.in");
 ofstream cout("h.out");
-// const int kMaxN = 3e5 + 2, kMaxL = 19, kBase = 15553;
-const int kMaxN = 65 + 2, kMaxL = 7, kBase = 15553;
+
+const int kMaxN = 6e5 + 1, kMaxL = 19, kBase = 15553;
 int n, o[kMaxN];
 string s[kMaxN];
 unordered_map<ULL, int> q;
-vector<pair<string, int>> v;
+vector<pair<string, LL>> v;
 
 namespace SA {
 int m, p[kMaxN], a[kMaxN], r[kMaxN];
@@ -53,7 +54,11 @@ void Sort() {
     }
     for (int i = 1; i <= m; i++) {
       b[a[i]] = b[a[i - 1]];
-      if (r[a[i]] != r[a[i - 1]] || r[a[i] + h] != r[a[i - 1] + h]) {
+      if (r[a[i]] != r[a[i - 1]]) {
+        b[a[i]]++;
+      } else if ((a[i] + h <= m) ^ (a[i - 1] + h <= m)) {
+        b[a[i]]++;
+      } else if (r[a[i] + h] != r[a[i - 1] + h]) {
         b[a[i]]++;
       }
     }
@@ -144,8 +149,8 @@ int W(int x) {
   return ans;
 }
 
-int Calc1() {
-  int w = 0;
+LL Calc1() {
+  LL w = 0;
   for (int i = 2; i < kMaxN; i++) {
     lg[i] = lg[i >> 1] + 1;
   }
@@ -178,19 +183,22 @@ int Z(string s) {
   return s.size();
 }
 
-int Calc2() {
-  int w = 0;
+LL Calc2() {
+  LL w = 0;
   t.resize(1), m = 0;
-  for (int i = n; i >= 1; i--) {
-    static ULL h;
-    h = s[i][0];
-    for (int j = 1; j < s[i].size(); j++) {
-      if (q.count(h)) {
-        v.push_back({s[i].substr(j), q[h]});
+  for (int u : {1, -1}) {
+    for (int i = u == 1 ? n : 1; i * u >= (u == 1 ? 1 : -n); i -= u) {
+      static ULL h;
+      h = s[i][0];
+      for (int j = 1; j < s[i].size(); j++) {
+        if (q.count(h)) {
+          v.push_back({s[i].substr(j), u * q[h]});
+        }
+        h = h * kBase + s[i][j];
       }
-      h = h * kBase + s[i][j];
+      !q.count(h) && (q[h] = 0), q[h]++;
     }
-    !q.count(h) && (q[h] = 0), q[h]++;
+    q.clear();
   }
   for (int i = 0; i < v.size(); i++) {
     p[i] = t.size(), t += v[i].first, m += v[i].first.size(), o[i] = i;
@@ -198,25 +206,10 @@ int Calc2() {
   p[v.size()] = m + 1, Sort(), CalcL();
   sort(o, o + v.size(), Cmp1);
   for (int i = 0, j = 0; i < v.size(); i++) {
-    j += v[o[i]].second;
-    int lcp = i < v.size() ? Lcp1(o[i], o[i + 1]) : Z(v.back().first);
-    w = min(w, lcp + 1 - j);
+    int lcp = i + 1 < v.size() ? Lcp1(o[i], o[i + 1]) : Z(v[o[i]].first);
+    j += v[o[i]].second, w = min(w, 1LL + lcp - j);
   }
   return w;
-  // for (int i = 0; o[i] != 5; i++) {
-  //   cout << v[o[i]].second << ' ';
-  // }
-  // cout << v[5].second << '\n';
-  // int _w = -217;
-  // for (int i = 1; i <= n; i++) {
-  //   int __w = 0;
-  //   for (int j = i + 1; j <= n; j++) {
-  //     __w += s[i] + 'r' > s[j] + 'r';
-  //   }
-  //   _w += __w;
-  //   cout << __w << " \n"[i == n];
-  // }
-  // return _w;
 }
 
 int main() {
