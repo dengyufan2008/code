@@ -1,25 +1,22 @@
 #include <algorithm>
 #include <fstream>
 #include <unordered_map>
-#include <vector>
+#define PII pair<int, int>
 #define LL long long
-#define ULL unsigned LL
 
 using namespace std;
 
 ifstream cin("h.in");
 ofstream cout("h.out");
 
-const int kMaxN = 6e5 + 1, kMaxL = 19, kBase = 15553;
-int n, o[kMaxN];
-string s[kMaxN];
-unordered_map<ULL, int> q;
-vector<pair<string, LL>> v;
-
-namespace SA {
-int m, p[kMaxN], a[kMaxN], r[kMaxN];
-int l[kMaxL][kMaxN], lg[kMaxN];
-string t = "~";
+const int kMaxN = 3e5 + 1, kMaxL = 19, kBase = 15553;
+int n, m, o[kMaxN], w[kMaxN], d[kMaxN];
+int a[kMaxN], r[kMaxN], l[kMaxL][kMaxN], lg[kMaxN];
+LL v, ans;
+PII p[kMaxN];
+pair<PII, int> t[kMaxN << 1];
+string s, _s;
+unordered_map<unsigned LL, int> q;
 
 void Sort() {
   static int b[kMaxN], c[kMaxN];
@@ -27,10 +24,10 @@ void Sort() {
     a[i] = i;
   }
   sort(a + 1, a + m + 1, [](int i, int j) {
-    return t[i] < t[j];
+    return s[i] < s[j];
   });
   for (int i = 1; i <= m; i++) {
-    r[a[i]] = r[a[i - 1]] + (t[a[i]] != t[a[i - 1]]);
+    r[a[i]] = r[a[i - 1]] + (s[a[i]] != s[a[i - 1]]);
   }
   for (int h = 1; h < m; h <<= 1) {
     fill(&b[1], &b[m] + 1, 0);
@@ -58,7 +55,7 @@ void Sort() {
         b[a[i]]++;
       } else if ((a[i] + h <= m) ^ (a[i - 1] + h <= m)) {
         b[a[i]]++;
-      } else if (r[a[i] + h] != r[a[i - 1] + h]) {
+      } else if (a[i] + h <= m && r[a[i] + h] != r[a[i - 1] + h]) {
         b[a[i]]++;
       }
     }
@@ -67,13 +64,14 @@ void Sort() {
 }
 
 void CalcL() {
+  for (int i = 2; i <= m; i++) {
+    lg[i] = lg[i >> 1] + 1;
+  }
   for (int i = 1; i <= m; i++) {
     if (r[i] < m) {
       l[0][r[i]] = max(l[0][r[i - 1]] - 1, 0);
-      for (int &j = l[0][r[i]]; t[i + j] == t[a[r[i] + 1] + j]; j++) {
+      for (int &j = l[0][r[i]]; s[i + j] == s[a[r[i] + 1] + j]; j++) {
       }
-    } else {
-      l[0][r[i]] = 0;
     }
   }
   for (int i = 1; i < kMaxL; i++) {
@@ -86,135 +84,118 @@ void CalcL() {
   }
 }
 
-int Lcp0(int x, int xl, int y, int yl) {
-  x = r[p[x] + xl], y = r[p[y] + yl];
-  x > y ? swap(x, y) : void();
-  int u = lg[y - x];
-  return min(l[u][x], l[u][y - (1 << u)]);
-}
-
-bool Cmp0(int x, int xl, int xr, int y, int yl, int yr) {  // [l, r)
-  int lcp = Lcp0(x, xl, y, yl);
-  if (lcp >= min(xr - xl, yr - yl)) {
-    return xr - xl < yr - yl;
+int Lcp0(int x, int y) {
+  if (x == y) {
+    return s.size() - x;
+  } else {
+    x = r[x], y = r[y];
+    x > y ? swap(x, y) : void();
+    int u = lg[y - x];
+    return min(l[u][x], l[u][y - (1 << u)]);
   }
-  return t[p[x] + xl + lcp] < t[p[y] + yl + lcp];
 }
 
-int Lcp1(int x, int y) {
+bool Cmp0(PII x, PII y) {  // [l, r)
+  int lx = x.second - x.first, ly = y.second - y.first;
+  int lcp = Lcp0(x.first, y.first);
+  if (lcp >= min(lx, ly)) {
+    return lx < ly;
+  }
+  return s[x.first + lcp] < s[y.first + lcp];
+}
+
+int Lcp1(PII x, PII y) {
   static int lcp;
-  int lx = p[x + 1] - p[x];
-  int ly = p[y + 1] - p[y];
+  int lx = x.second - x.first, ly = y.second - y.first;
   if (lx > ly) {
     swap(x, y), swap(lx, ly);
   }
-  if ((lcp = Lcp0(x, 0, y, 0)) < lx) {
+  if ((lcp = Lcp0(x.first, y.first)) < lx) {
     return lcp;
-  } else if ((lcp = Lcp0(y, 0, y, lx)) < ly - lx) {
+  } else if ((lcp = Lcp0(y.first, y.first + lx)) < ly - lx) {
     return lx + lcp;
-  } else if ((lcp = Lcp0(y, ly - lx, x, 0)) < lx) {
+  } else if ((lcp = Lcp0(y.first + ly - lx, x.first)) < lx) {
     return ly + lcp;
   }
-  return kMaxN;
+  return -1;
 }
 
-bool Cmp1(int x, int y) {
+bool Cmp1(PII x, PII y) {
   int lcp = Lcp1(x, y), w = 0;
-  int lx = p[x + 1] - p[x];
-  int ly = p[y + 1] - p[y];
+  int lx = x.second - x.first, ly = y.second - y.first;
   if (lx > ly) {
     w = 1, swap(x, y), swap(lx, ly);
   }
   if (lcp < lx) {
-    return (t[p[x] + lcp] < t[p[y] + lcp]) ^ w;
+    return (s[x.first + lcp] < s[y.first + lcp]) ^ w;
   } else if (lcp < ly) {
-    return (t[p[y] + lcp - lx] < t[p[y] + lcp]) ^ w;
+    return (s[y.first + lcp - lx] < s[y.first + lcp]) ^ w;
   } else if (lcp < lx + ly) {
-    return (t[p[y] + lcp - lx] < t[p[x] + lcp - ly]) ^ w;
+    return (s[y.first + lcp - lx] < s[x.first + lcp - ly]) ^ w;
+  } else if (lx != ly) {
+    return (lx < ly) ^ w;
+  } else if (x.first != y.first) {
+    return x.first < y.first;
   }
   return 0;
 }
-}  // namespace SA
-using namespace SA;
 
-int W(int x) {
-  static int d[kMaxN] = {};
-  int ans = 0;
-  for (int i = x + 1; i <= n; i += i & -i) {
-    ans += d[i];
-  }
-  for (int i = x; i >= 1; i -= i & -i) {
-    d[i]++;
-  }
-  return ans;
-}
-
-LL Calc1() {
-  LL w = 0;
-  for (int i = 2; i < kMaxN; i++) {
-    lg[i] = lg[i >> 1] + 1;
-  }
-  cin >> n;
-  for (int i = 1; i <= n; i++) {
-    cin >> s[i], m += s[i].size();
-    p[i] = t.size(), t += s[i], o[i] = i;
-  }
-  p[n + 1] = m + 1, Sort(), CalcL();
-  sort(o + 1, o + n + 1, [](int i, int j) {
-    return Cmp0(i, 0, s[i].size(), j, 0, s[j].size());
-  });
-  a[o[1]] = 1;
-  for (int i = 2; i <= n; i++) {
-    int x = o[i - 1], y = o[i];
-    a[y] = a[x] + Cmp0(x, 0, s[x].size(), y, 0, s[y].size());
-  }
-  for (int i = 1; i <= n; i++) {
-    w += W(a[i]);
-  }
-  return w;
-}
-
-int Z(string s) {
-  for (int i = 0; i < s.size(); i++) {
+int Z(PII x) {
+  for (int i = x.first; i < x.second; i++) {
     if (s[i] != 'z') {
-      return i;
+      return i - x.first;
     }
   }
-  return s.size();
-}
-
-LL Calc2() {
-  LL w = 0;
-  t.resize(1), m = 0;
-  for (int u : {1, -1}) {
-    for (int i = u == 1 ? n : 1; i * u >= (u == 1 ? 1 : -n); i -= u) {
-      static ULL h;
-      h = s[i][0];
-      for (int j = 1; j < s[i].size(); j++) {
-        if (q.count(h)) {
-          v.push_back({s[i].substr(j), u * q[h]});
-        }
-        h = h * kBase + s[i][j];
-      }
-      !q.count(h) && (q[h] = 0), q[h]++;
-    }
-    q.clear();
-  }
-  for (int i = 0; i < v.size(); i++) {
-    p[i] = t.size(), t += v[i].first, m += v[i].first.size(), o[i] = i;
-  }
-  p[v.size()] = m + 1, Sort(), CalcL();
-  sort(o, o + v.size(), Cmp1);
-  for (int i = 0, j = 0; i < v.size(); i++) {
-    int lcp = i + 1 < v.size() ? Lcp1(o[i], o[i + 1]) : Z(v[o[i]].first);
-    j += v[o[i]].second, w = min(w, 1LL + lcp - j);
-  }
-  return w;
+  return -1;
 }
 
 int main() {
   cin.tie(0), cout.tie(0);
   ios::sync_with_stdio(0);
-  cout << Calc1() + Calc2() << '\n';
+  s = "~", cin >> n;
+  for (int i = 1; i <= n; i++) {
+    cin >> _s, o[i] = i, p[i].first = s.size(), s += _s, p[i].second = s.size();
+  }
+  m = s.size() - 1, Sort(), CalcL(), m = 0;
+  for (int u : {-1, 1}) {
+    for (int _i = 1; _i <= n; _i++) {
+      int i = u == -1 ? _i : n - _i + 1;
+      unsigned LL h;
+      h = s[p[i].first];
+      for (int j = p[i].first + 1; j < p[i].second; j++) {
+        if (q.count(h)) {
+          t[++m] = {{j, p[i].second}, q[h]};
+        }
+        h = h * kBase + s[j];
+      }
+      !q.count(h) && (q[h] = 0), q[h] += u;
+    }
+    q.clear();
+  }
+  sort(t + 1, t + m + 1, [](pair<PII, int> i, pair<PII, int> j) {
+    return Cmp1(i.first, j.first);
+  });
+  for (int i = 1; i <= m; i++) {
+    v += t[i].second;
+    int lcp = i < m ? Lcp1(t[i].first, t[i + 1].first) : Z(t[i].first);
+    if (lcp >= 0) {
+      ans = min(ans, 1LL + lcp - v);
+    }
+  }
+  sort(o + 1, o + n + 1, [](int i, int j) {
+    return Cmp0(p[i], p[j]);
+  });
+  for (int i = 1; i <= n; i++) {
+    w[o[i]] = w[o[i - 1]] + Cmp0(p[o[i - 1]], p[o[i]]);
+  }
+  for (int i = 1; i <= n; i++) {
+    for (int j = w[i] + 1; j <= n; j += j & -j) {
+      ans += d[j];
+    }
+    for (int j = w[i]; j >= 1; j -= j & -j) {
+      d[j]++;
+    }
+  }
+  cout << ans << '\n';
   return 0;
 }
