@@ -113,7 +113,7 @@ void Solve2() {
       g[i][j] = (g[i][j] + g[i][j + 1]) % kMod;
     }
   }
-  for (int i = m - t; i < m; i++) {
+  for (int i = m - t + 1; i <= m; i++) {
     w = w * Pow(i) % kMod;
   }
   ans = (ans - w * g[n][1] % kMod + kMod) % kMod;
