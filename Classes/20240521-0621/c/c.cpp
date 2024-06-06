@@ -79,7 +79,7 @@ int main() {
           p = max(p, f[i - 1 + kMaxM][x - 1]);
         }
         if (i < min(k, n)) {
-          p = max(p, min(f[i + 1 + kMaxM][x - 1] + 1, m));
+          p = max(p, f[i + 1 + kMaxM][x - 1] + 1);
         }
         if (p >= max(-i, 0)) {
           int l = p + 1, r = min(n - i, m);
@@ -90,6 +90,8 @@ int main() {
             ws == wt ? l = mid + 1 : r = mid - 1;
           }
           p = r;
+        } else {
+          p = min(p, min(n - i, m));
         }
       }
     }
