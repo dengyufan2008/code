@@ -1,5 +1,5 @@
 #include <fstream>
-#define ULL unsigned long long
+#define LL long long
 
 using namespace std;
 
@@ -7,9 +7,9 @@ ifstream cin("c.in");
 ofstream cout("c.out");
 
 const int kMaxN = 1e6 + 1, kMaxM = 1001;
-const int kInf = 1e9, kBase = 15553;
+const int kInf = 1e9, kBase = 15553, kMod = 715876003;
 int o, n, m, k, f[kMaxM << 1][kMaxM];
-ULL hs[kMaxN], ht[kMaxN], pw[kMaxN];
+LL hs[kMaxN], ht[kMaxN], pw[kMaxN];
 string s, t;
 
 void Max(int &x, int y) { x = max(x, y); }
@@ -50,7 +50,7 @@ int main() {
   ios::sync_with_stdio(0);
   pw[0] = 1;
   for (int i = 1; i < kMaxN; i++) {
-    pw[i] = pw[i - 1] * kBase;
+    pw[i] = pw[i - 1] * kBase % kMod;
   }
   cin >> o;
   while (o--) {
@@ -61,10 +61,10 @@ int main() {
     }
     s = '~' + s, t = '~' + t;
     for (int i = 1; i <= n; i++) {
-      hs[i] = hs[i - 1] * kBase + s[i];
+      hs[i] = (hs[i - 1] * kBase + s[i]) % kMod;
     }
     for (int i = 1; i <= m; i++) {
-      ht[i] = ht[i - 1] * kBase + t[i];
+      ht[i] = (ht[i - 1] * kBase + t[i]) % kMod;
     }
     for (int i = max(-k, -m); i <= min(k, n); i++) {
       f[i + kMaxM][0] = min(-i, 0);
@@ -85,8 +85,9 @@ int main() {
           int l = p + 1, r = min(n - i, m);
           while (l <= r) {
             int mid = l + r >> 1;
-            ULL ws = hs[i + mid] - hs[i + p] * pw[mid - p];
-            ULL wt = ht[mid] - ht[p] * pw[mid - p];
+            LL ws = hs[i + mid] - hs[i + p] * pw[mid - p] % kMod + kMod;
+            LL wt = ht[mid] - ht[p] * pw[mid - p] % kMod + kMod;
+            ws >= kMod && (ws -= kMod), wt >= kMod && (wt -= kMod);
             ws == wt ? l = mid + 1 : r = mid - 1;
           }
           p = r;
