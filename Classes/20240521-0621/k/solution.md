@@ -1,6 +1,6 @@
 # 又一道数学[题](https://community.topcoder.com/stat?c=problem_statement&pm=11351)
 
-给定集合 $S=\{x \mid 0 \le x<n\}$. 求在 $S$ 中恰好选 $k$ 个数使得总和为 $n$ 的倍数的方案数.
+给定集合 $S=\{x \mid 0 \le x \le n - 1\}$. 求在 $S$ 中恰好选 $k$ 个数使得总和为 $n$ 的倍数的方案数.
 
 $1 \le k \le 1000$, $1 \le n \le 10^9$, $1 \le k \le n$.
 
@@ -79,7 +79,14 @@ $$\prod_{j=0}^{d-1} (\omega_d^jy+1) = (-1)^{d+1}y^d+1$$
 <details>
 <summary>Proof</summary>
 
-.
+左式关于 $y$ 的方程的解集为 $T = \{\frac{-1}{\omega_d^j} \mid 0 \le j \le d-1 \}$.
+- $2 \mid d$
+
+  $T = \{\omega_d^j \mid 0 \le j \le d-1 \}$. 由代数基本定理得其与 $y^d-1$ 成倍数关系. 代入 $y = 0$ 发现其等于 $1-y^d$, 即右式.
+
+- $2 \nmid d$
+
+  $T = \{-\omega_d^j \mid 0 \le j \le d-1 \}$. 同理等于 $y^d+1$ 即右式.
 </details>
 
 故原式即
