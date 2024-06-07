@@ -11,6 +11,7 @@ ofstream cout("j.out");
 
 // const int kMaxN = 8001, kFact[5] = {1, 1, 2, 6, 24};
 const int kMaxN = 105, kFact[5] = {1, 1, 2, 6, 24};
+// const int kMaxN = 401, kFact[5] = {1, 1, 2, 6, 24};
 int w[4];
 LL ans, c[kMaxN];
 struct V {
@@ -130,7 +131,7 @@ void Expand() {
       for (int i = 0; i < 4; i++) {
         for (int _x : {x, -x}) {
           _v = v, _v.Add(i, _x), __v = _v, __v.Add(3, -_x);
-          if (__v == v && !l[x].count(_v)) {
+          if (__v == v && !l[x].count(_v) && _v.C()) {
             bool flag = 1;
             for (int y = x - 1; y <= x && flag; y++) {
               for (int j = 0; j < 4 && flag; j++) {
@@ -143,7 +144,7 @@ void Expand() {
                 }
               }
             }
-            if (flag && _v.C()) {
+            if (flag) {
               l[x].insert(_v), c[x] += _v.C();
             }
           }
@@ -154,7 +155,6 @@ void Expand() {
 }
 
 void CalcAns() {
-  V v;
   LL f[kMaxN >> 1] = {}, g[kMaxN >> 1] = {};
   for (int i = 0; i < kMaxN >> 1; i++) {
     for (int j = max(i - w[1], 0); j <= min(i, w[0]); j++) {
@@ -192,11 +192,16 @@ int main() {
   for (int i = 0; i < kMaxN; i++) {
     if (!l[i].empty()) {
       cout << i << ":\n";
+      int shit = 0;
       for (V v : l[i]) {
-        for (int o = 0; o < 4; o++) {
-          cout << v.w[o] << " \n"[o == 3];
+        if (v.w[0] <= 10 && v.w[1] <= 11 && v.w[2] <= 12 && v.w[3] <= 13) {
+          shit++;
+          for (int o = 0; o < 4; o++) {
+            cout << v.w[o] << " \n"[o == 3];
+          }
         }
       }
+      // cout << shit << '\n';
     }
   }
   CalcAns();
