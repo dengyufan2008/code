@@ -1,6 +1,6 @@
 # 又一道数学[题](https://community.topcoder.com/stat?c=problem_statement&pm=11351)
 
-给定集合 $S=\{x \mid 0 \le x \le n - 1\}$. 求在 $S$ 中恰好选 $k$ 个数使得总和为 $n$ 的倍数的方案数.
+给定集合 $S=\{x \mid 0 \le x \le n - 1\}$. 求在 $S$ 中恰好选 $k$ 个数使得总和为 $n$ 的倍数的方案数. 模 $p = 10^9+7$.
 
 $1 \le k \le 1000$, $1 \le n \le 10^9$, $1 \le k \le n$.
 
@@ -102,3 +102,19 @@ $$\frac{1}{n} \sum_{d \mid n,d \mid k} \varphi(d) {\frac{n}{d} \choose \frac{k}{
 $$\frac{(-1)^n}{n} \sum_{d \mid n,d \mid k} \varphi(d) {\frac{n}{d} \choose \frac{k}{d}} (-1)^\frac{n}{d}$$
 
 于是筛出 $\varphi(d)$ 后枚举 $d$ 暴力算组合数可以做到 $O(k^\frac{4}{3})$.
+
+顺带一提, 这里暴力算组合数需要线性预处理逆元.
+
+设 $a = \lfloor \frac{p}{x} \rfloor$, $b = p \bmod x$.
+
+$$p = ax+b$$
+
+$$ax \equiv -b \pmod p$$
+
+$$axx^{-1}b^{-1} \equiv -bx^{-1}b^{-1} \pmod p$$
+
+$$x^{-1} \equiv -ab^{-1} \pmod p$$
+
+即
+
+$$inv_x = (p-\frac{p}{x}) \times inv_{p \bmod x} \bmod p$$
