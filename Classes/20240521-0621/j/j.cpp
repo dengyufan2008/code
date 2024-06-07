@@ -9,9 +9,7 @@ using namespace std;
 ifstream cin("j.in");
 ofstream cout("j.out");
 
-// const int kMaxN = 8001, kFact[5] = {1, 1, 2, 6, 24};
-const int kMaxN = 105, kFact[5] = {1, 1, 2, 6, 24};
-// const int kMaxN = 401, kFact[5] = {1, 1, 2, 6, 24};
+const int kMaxN = 8001, kFact[5] = {1, 1, 2, 6, 24};
 int w[4];
 LL ans, c[kMaxN];
 struct V {
@@ -112,8 +110,6 @@ void Bfs() {
               if (s <= t * (t + 1) / 2 && ((s + t * (t + 1) / 2) & 1 ^ 1)) {
                 if (!st.count({v, t})) {
                   ::l[t].insert(v), c[t] += v.C();
-                } else {
-                  break;
                 }
               }
             }
@@ -130,8 +126,8 @@ void Expand() {
     for (V v : l[x - 1]) {
       for (int i = 0; i < 4; i++) {
         for (int _x : {x, -x}) {
-          _v = v, _v.Add(i, _x), __v = _v, __v.Add(3, -_x);
-          if (__v == v && !l[x].count(_v) && _v.C()) {
+          _v = v, _v.Add(i, _x);
+          if (!l[x].count(_v) && _v.C()) {
             bool flag = 1;
             for (int y = x - 1; y <= x && flag; y++) {
               for (int j = 0; j < 4 && flag; j++) {
@@ -186,24 +182,6 @@ void CalcAns() {
 int main() {
   cin.tie(0), cout.tie(0);
   ios::sync_with_stdio(0);
-  Init();
-  Bfs();
-  Expand();
-  for (int i = 0; i < kMaxN; i++) {
-    if (!l[i].empty()) {
-      cout << i << ":\n";
-      int shit = 0;
-      for (V v : l[i]) {
-        if (v.w[0] <= 10 && v.w[1] <= 11 && v.w[2] <= 12 && v.w[3] <= 13) {
-          shit++;
-          for (int o = 0; o < 4; o++) {
-            cout << v.w[o] << " \n"[o == 3];
-          }
-        }
-      }
-      // cout << shit << '\n';
-    }
-  }
-  CalcAns();
+  Init(), Bfs(), Expand(), CalcAns();
   return 0;
 }
