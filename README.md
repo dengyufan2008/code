@@ -30,10 +30,8 @@ DAG 上生成外向树的个数只有 $O(2^{m - n + 1})$ 个. [例](https://qoj.
 
 [Sharing](https://www.luogu.com.cn/paste/frklj4he)
 
-![](https://count.getloli.com/get/@Made_in_Code?theme=gelbooru)
-![](https://www.ipip5.com/ipimg/)
 ![](https://luogu.wao3.cn/api/practice?id=250810&dark_mode=true)
-![](https://luogu.wao3.cn/api/guzhi?id=250810&scores=100,26,0,55,60&dark_mode=true)
+
 # *DengYufan's Introduction*
 
 ## *Accounts*
