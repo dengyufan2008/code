@@ -4,6 +4,8 @@
 
 $1 \le k \le 1000$, $1 \le n \le 10^9$, $1 \le k \le n$.
 
+---
+
 答案即为
 
 $$\sum_i [n \mid i] [x^i y^k] \prod_{j=0}^{n-1} (x^jy+1)$$
