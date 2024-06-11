@@ -1,5 +1,4 @@
 #include <algorithm>
-#include <ctime>
 #include <fstream>
 #include <queue>
 #define LL long long
@@ -8,7 +7,6 @@ using namespace std;
 
 ifstream cin("o.in");
 ofstream cout("o.out");
-ofstream cerr("CON");
 
 const int kMaxN = 1e5 + 1, kMaxM = 2001, kInf = 1e9;
 struct E {
@@ -81,18 +79,21 @@ void ReBuild() {
   }
 }
 
-void Dij(int s) {
-  priority_queue<pair<int, int>> q;
+void Spfa(int s) {
+  queue<int> q;
   for (int i = 1; i <= n; i++) {
     v[i].d = kInf;
   }
-  for (v[s].d = 0, q.push({0, s}); !q.empty();) {
-    int x = q.top().second;
-    q.pop();
+  for (v[s].d = 0, q.push(s); !q.empty(); q.pop()) {
+    int x = q.front();
+    v[x].b = 0;
     for (auto i : v[x].e) {
       int y = i.first, z = i.second;
       if (v[y].d > v[x].d + z) {
-        v[y].d = v[x].d + z, q.push({-v[y].d, y});
+        v[y].d = v[x].d + z;
+        if (!v[y].b) {
+          v[y].b = 1, q.push(y);
+        }
       }
     }
   }
@@ -105,7 +106,7 @@ void Calc3() {
     }
   }
   for (int i = 1; i <= k; i++) {
-    Dij(a[i]);
+    Spfa(a[i]);
     for (int j = 1; j <= k; j++) {
       d[i][j] = v[a[j]].d;
     }
@@ -246,6 +247,5 @@ int main() {
   Init(), Del1(), ReBuild();
   Calc3(), FindChain(), Calc2();
   cout << ans << '\n';
-  cerr << clock() << '\n';
   return 0;
 }
