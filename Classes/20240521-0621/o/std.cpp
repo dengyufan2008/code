@@ -1,7 +1,9 @@
 #include <fstream>
+#define mode0
 
 using namespace std;
 
+#ifdef mode0
 ifstream cin("o.in");
 ofstream cout("o.ans");
 
@@ -37,3 +39,19 @@ int main() {
   cout << ans << '\n';
   return 0;
 }
+#endif
+
+#ifdef mode1
+ifstream cin("o.in");
+ifstream cout("o.out");
+ofstream cans("o.ans");
+
+int main() {
+  cin.tie(0), cout.tie(0);
+  ios::sync_with_stdio(0);
+  long long ans;
+  cout >> ans;
+  cans << (ans >= 0 ? ans : 114514LL) << '\n';
+  return 0;
+}
+#endif

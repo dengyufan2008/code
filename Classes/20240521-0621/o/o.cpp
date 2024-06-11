@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <ctime>
 #include <fstream>
 #include <queue>
 #define LL long long
@@ -7,6 +8,7 @@ using namespace std;
 
 ifstream cin("o.in");
 ofstream cout("o.out");
+ofstream cerr("CON");
 
 const int kMaxN = 1e5 + 1, kMaxM = 2001, kInf = 1e9;
 struct E {
@@ -48,9 +50,13 @@ void Del1() {
     }
   }
   for (; !q.empty(); q.pop()) {
-    int x = q.front();
-    int y = v[x].e.front().first;
-    int z = v[x].e.front().second;
+    int x = q.front(), y, z;
+    for (auto i : v[x].e) {
+      if (v[i.first].w) {
+        y = i.first, z = i.second;
+        break;
+      }
+    }
     ans += 1LL * v[x].w * (n - v[x].w) * z;
     v[y].w += v[x].w, v[x].w = 0, v[y].d--;
     if (v[y].d == 1) {
@@ -105,7 +111,7 @@ void Calc3() {
     }
     LL s = 0;
     for (int j = 1; j <= n; j++) {
-      s += v[j].w * v[j].d;
+      s += 1LL * v[j].w * v[j].d;
     }
     ans += v[a[i]].w * s;
   }
@@ -117,7 +123,7 @@ void Calc3() {
 }
 
 void Find(int j, int p) {
-  for (; v[p].e.size() == 2;) {
+  for (; v[p].e.size() == 2 && (k || !v[j].b);) {  // considering 基环树
     v[j].b = 1, e[m].l.push_back(j);
     if (v[p].e.front().first == j) {
       e[m].t.push_back(v[p].e.front().second);
@@ -136,9 +142,19 @@ void CalcChain(int _i) {
   E &i = e[_i];
   int x = 1, y = 1;
   int disx = i.t.front(), dism = 0, disy = i.s - disx, wm = 0, wy = i.w;
-  LL zm = 0, zy = i.rz;
-  LL dis = d[v[i.l.front()].o][v[i.l.back()].o];
-  for (; x <= i.l.size() - 2 && y <= i.l.size() - 2; x++) {
+  LL zm = 0, zy = i.rz, dis = d[v[i.l.front()].o][v[i.l.back()].o];
+  if (!k) {  // considering 基环树
+    if (v[i.l.front()].e.front().first == i.l.back()) {
+      dis = v[i.l.front()].e.front().second;
+    } else {
+      dis = v[i.l.front()].e.back().second;
+    }
+    disx = 0, disy = i.s, wy += v[i.l.front()].w + v[i.l.back()].w;
+    zy += 1LL * v[i.l.front()].w * disy;
+    i.l.insert(i.l.begin(), 0), i.l.push_back(0);
+    i.t.insert(i.t.begin(), 0), i.t.push_back(0);
+  }
+  for (; x <= i.l.size() - 2; x++) {
     while (y <= i.l.size() - 2) {
       if (dism <= disx + dis + disy) {
         zm += 1LL * dism * v[i.l[y]].w;
@@ -150,9 +166,9 @@ void CalcChain(int _i) {
         break;
       }
     }
-    ans += v[i.l[x]].w * (1LL * wy * (disx + dis) + zy + zm);
+    ans += v[i.l[x]].w * (wy * (disx + dis) + zy + zm);
     disx += i.t[x], dism -= i.t[x];
-    zm -= 1LL * (wm - v[i.l[x]].w) * i.t[x];
+    wm -= v[i.l[x]].w, zm -= wm * i.t[x];
   }
 }
 
@@ -170,10 +186,10 @@ void FindChain() {
         e[m].w += v[e[m].l[j]].w;
       }
       for (int j = 1, z = 0; j <= e[m].l.size() - 2; j++) {
-        z += e[m].t[j - 1], e[m].lz += v[e[m].l[j]].w * z;
+        z += e[m].t[j - 1], e[m].lz += 1LL * v[e[m].l[j]].w * z;
       }
       for (int j = e[m].l.size() - 2, z = 0; j >= 1; j--) {
-        z += e[m].t[j], e[m].rz += v[e[m].l[j]].w * z;
+        z += e[m].t[j], e[m].rz += 1LL * v[e[m].l[j]].w * z;
       }
     }
   }
@@ -204,7 +220,7 @@ void Cross(int _i, int _j, int o00, int o01, int o10, int o11) {
         break;
       }
     }
-    ans += v[i.l[x]].w * (1LL * w * (xdis0 + d[x0][y0]) + z);
+    ans += v[i.l[x]].w * (w * (xdis0 + d[x0][y0]) + z);
     xdis0 += i.t[x], xdis1 -= i.t[x];
   }
 }
@@ -230,5 +246,6 @@ int main() {
   Init(), Del1(), ReBuild();
   Calc3(), FindChain(), Calc2();
   cout << ans << '\n';
+  cerr << clock() << '\n';
   return 0;
 }
