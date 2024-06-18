@@ -1,159 +1,114 @@
 #include <fstream>
-#include <queue>
-#define PII pair<int, int>
-#define LL long long
 
 using namespace std;
 
 ifstream cin("q.in");
 ofstream cout("q.out");
 
-const int kMaxN = 1e5 + 1, kV = 131071;
-const int kMod1 = 1e9 + 7, kMod2 = 715876003;
-struct D {
-  int l, r;
-  LL h1, h2;
-} d[kMaxN * 54];
-struct V {
-  int p, r;
-  bool b;
-  vector<PII> e;
-} v[kMaxN];
-int n, m, k, s;
-LL pw1[kMaxN], pw2[kMaxN];
+const int kMaxN = 202, kMaxM = kMaxN << 1, kMod = 1e4 + 7;
+int n, m, _n, _m, ans, f[kMaxN][kMaxN][kMaxN], g[kMaxM][kMaxM], d[kMaxM][kMaxM];
+string s;
 
-bool Ask(int p, int q, int l, int r) {
-  if (!p || !q) {
-    return q;
-  } else if (l == r) {
-    return d[p].h1 < d[q].h1;
-  }
-  int mid = l + r >> 1;
-  if (d[d[p].r].h1 != d[d[q].r].h1 || d[d[p].r].h2 != d[d[q].r].h2) {
-    return Ask(d[p].r, d[q].r, mid + 1, r);
-  } else {
-    return Ask(d[p].l, d[q].l, l, mid);
-  }
-}
+void Add(int &x, int y) { x = (x + y) % kMod; }
 
-bool Cmp(int p, int q) {
-  return (p || q) && Ask(p, q, 0, kV);
-}
-
-int Find(int p, int l, int r, int x) {
-  if (!p || !d[p].h1 && !d[p].h2) {
-    return max(x, l);
-  } else if ((d[p].h1 + 1) % kMod1 == pw1[r - l + 1] &&
-             (d[p].h2 + 1) % kMod2 == pw2[r - l + 1]) {
-    return -1;
-  }
-  int mid = l + r >> 1;
-  if (mid >= x) {
-    int ans = Find(d[p].l, l, mid, x);
-    if (~ans) {
-      return ans;
-    }
-  }
-  return Find(d[p].r, mid + 1, r, x);
-}
-
-void Pushup(int p, int len) {
-  d[p].h1 = (d[d[p].l].h1 + d[d[p].r].h1 * pw1[len]) % kMod1;
-  d[p].h2 = (d[d[p].l].h2 + d[d[p].r].h2 * pw2[len]) % kMod2;
-}
-
-void Clear(int &p, int l, int r, int _l, int _r) {
-  d[++k] = d[p], p = k;
-  if (l >= _l && r <= _r) {
-    p = 0;
-    return;
-  }
-  int mid = l + r >> 1;
-  if (mid >= _l) {
-    Clear(d[p].l, l, mid, _l, _r);
-  }
-  if (mid < _r) {
-    Clear(d[p].r, mid + 1, r, _l, _r);
-  }
-  Pushup(p, mid - l + 1);
-}
-
-void Set(int &p, int l, int r, int x) {
-  d[++k] = d[p], p = k;
-  if (l == r) {
-    d[p].h1 = d[p].h2 = 1;
-    return;
-  }
-  int mid = l + r >> 1;
-  if (mid >= x) {
-    Set(d[p].l, l, mid, x);
-  } else {
-    Set(d[p].r, mid + 1, r, x);
-  }
-  Pushup(p, mid - l + 1);
-}
-
-void Add(int &p, int x) {
-  int w = Find(p, 0, kV, x);
-  if (x < w) {
-    Clear(p, 0, kV, x, w - 1);
-  }
-  Set(p, 0, kV, w);
-}
-
-auto cmp = [](PII p, PII q) { return Cmp(q.second, p.second); };
-priority_queue<PII, vector<PII>, decltype(cmp)> q(cmp);
-
-void Dij() {
-  int x, p;
-  v[s].p = k = 1;
-  for (q.push({s, 0}); !q.empty();) {
-    x = q.top().first, q.pop();
-    if (!v[x].b) {
-      v[x].b = 1;
-      for (auto i : v[x].e) {
-        if (!v[i.first].b) {
-          p = v[x].p, Add(p, i.second);
-          if (!v[i.first].p || Cmp(p, v[i.first].p)) {
-            v[i.first].p = p, v[i.first].r = x;
-            q.push({i.first, p});
-          }
+void Mul(int a[kMaxM][kMaxM], int b[kMaxM][kMaxM]) {
+  static int c[kMaxM][kMaxM] = {};
+  for (int i = 0; i <= _m; i++) {
+    for (int j = 0; j <= _m; j++) {
+      c[i][j] = 0;
+      // for (int k = 0; k <= _m; k++) {
+      //   c[i][j] = (c[i][j] + a[i][k] * b[k][j]) % kMod;
+      // }
+      int l = 0, r = _m, mid = m + 1;
+      if (i <= m) {
+        l = max(l, i);
+      } else {
+        l = max(l, m + 1), r = min(r, i);
+      }
+      if (j <= m) {
+        r = min(r, j);
+      } else {
+        mid = max(mid, j);
+      }
+      if (l >= mid || r <= m) {
+        for (int k = l; k <= r; k++) {
+          c[i][j] = (c[i][j] + a[i][k] * b[k][j]) % kMod;
+        }
+      } else {
+        for (int k = l; k <= m; k++) {
+          c[i][j] = (c[i][j] + a[i][k] * b[k][j]) % kMod;
+        }
+        for (int k = mid; k <= r; k++) {
+          c[i][j] = (c[i][j] + a[i][k] * b[k][j]) % kMod;
         }
       }
     }
   }
-}
-
-void Print(int x, int t) {
-  if (!v[x].r) {
-    cout << t << '\n'
-         << x << " \n"[x == s];
-    return;
+  for (int i = 0; i <= _m; i++) {
+    for (int j = 0; j <= _m; j++) {
+      b[i][j] = c[i][j];
+    }
   }
-  Print(v[x].r, t + 1);
-  cout << x << " \n"[x == s];
 }
 
 int main() {
   cin.tie(0), cout.tie(0);
   ios::sync_with_stdio(0);
-  pw1[0] = pw2[0] = 1;
-  for (int i = 1; i < kMaxN; i++) {
-    pw1[i] = pw1[i - 1] * 2 % kMod1;
-    pw2[i] = pw2[i - 1] * 2 % kMod2;
+  cin >> s >> n, m = s.size(), s = '~' + s;
+  n += m, _m = m + (m + 1 >> 1) + 1, f[1][m][0] = 1;
+  for (int i = m; i >= 1; i--) {
+    for (int l = 1, r; (r = l + i - 1) <= m; l++) {
+      for (int j = m - r + l - 1; j >= 0; j -= 2) {
+        if (s[l] == s[r]) {
+          Add(f[l + 1][r - 1][j], f[l][r][j]);
+        } else {
+          Add(f[l][r - 1][j + 1], f[l][r][j]);
+          Add(f[l + 1][r][j + 1], f[l][r][j]);
+        }
+      }
+    }
   }
-  cin >> n >> m;
-  for (int i = 1, x, y, z; i <= m; i++) {
-    cin >> x >> y >> z;
-    v[x].e.push_back({y, z});
-    v[y].e.push_back({x, z});
+  for (int i = 1; i <= m; i++) {
+    d[i][i] = 24, d[i + m + 1][i + m + 1] = 25;
+    d[i - 1][i] = d[i + m + 1][i + m] = 1;
   }
-  cin >> s, Dij(), cin >> s;
-  if (v[s].p) {
-    cout << d[v[s].p].h1 << '\n';
-    Print(s, 1);
-  } else {
-    cout << -1 << '\n';
+  d[m + 1][m + 1] = 26, g[m + 1][m + 1] = 1;
+  for (int i = 1; i <= m; i++) {  // [i+1, i-1]
+    for (int j = m + 1, k = 0; j >= 0; j -= 2, k++) {
+      Add(d[j][k + m + 1], f[i + 1][i - 1][j]);
+    }
   }
+  _n = n + 3 >> 1;
+  for (int i = 1; i <= _n; i <<= 1) {
+    if (i & _n) {
+      Mul(d, g);
+    }
+    Mul(d, d);
+  }
+  Add(ans, g[0][m + 1]);
+  for (int i = 0; i <= m + m + 1; i++) {
+    for (int j = 0; j <= m + m + 1; j++) {
+      g[i][j] = d[i][j] = 0;
+    }
+  }
+  for (int i = 1; i <= m; i++) {
+    d[i][i] = 24, d[i + m + 1][i + m + 1] = 25;
+    d[i - 1][i] = d[i + m + 1][i + m] = 1;
+  }
+  d[m + 1][m + 1] = 26, g[m + 1][m + 1] = n & 1 ? 26 : 1;
+  for (int i = 1; i <= m + 1; i++) {  // [i, i-1]
+    for (int j = m, k = 0; j >= 0; j -= 2, k++) {
+      Add(d[j][k + m + 1], f[i][i - 1][j]);
+    }
+  }
+  _n = n + 2 >> 1;
+  for (int i = 1; i <= _n; i <<= 1) {
+    if (_n & i) {
+      Mul(d, g);
+    }
+    Mul(d, d);
+  }
+  Add(ans, g[0][m + 1]);
+  cout << ans << '\n';
   return 0;
 }
