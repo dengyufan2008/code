@@ -30,8 +30,11 @@ class E {
   set<T> s;
 
   auto Split(int x) {  // (, x] return (x, ]
+    if (s.empty() || (--s.end())->r <= x) {
+      return s.end();
+    }
     auto p = s.lower_bound({x + 1, -1, -1});
-    if (p == s.end() || p->l == x + 1) {
+    if (p != s.end() && p->l == x + 1) {
       return p;
     }
     T t = *--p;
@@ -76,12 +79,9 @@ class V {
   int n, w1[kMaxN], w2[512];
 
   void Pushdown(int x) {
-    if (~w2[x]) {
-      int l = x << 9, r = min(l | 511, n);
-      for (int i = l; i <= r; i++) {
-        w1[i] = w2[x];
-      }
-      w2[x] = -1;
+    if (w2[x] <= 0) {
+      fill(&w1[x << 9], &w1[min(x << 9 | 511, n)] + 1, w2[x]);
+      w2[x] = 1;
     }
   }
 
@@ -97,6 +97,9 @@ class V {
     for (int i = l; i <= r; i++) {
       PLL d = {w1[i], f[i] + s[i] * w1[i]};
       for (; j > l && Cross(p[1].d[j - 1], p[1].d[j], d) >= 0; j--) {
+        if (d.first == p[1].d[j].first) {
+          d.second = max(d.second, p[1].d[j].second);
+        }
       }
       p[1].d[++j] = d;
     }
@@ -107,7 +110,7 @@ class V {
   void Init() {
     n = p[0].h[0] = p[0].t[0] = 0;
     p[0].d[0] = {0, 0};
-    fill(&w2[0], &w2[512], -1);
+    fill(&w2[0], &w2[512], 1);
   }
 
   void Cover(int l, int r, int w) {
@@ -172,6 +175,7 @@ class V {
   void AddPoint() {
     int m = ++n >> 9, _m = m << 9, &i = p[0].t[m];
     PLL d = {s[n], f[n]};
+    !(n & 511) && (i = _m - 1);
     for (; i > _m && Cross(p[0].d[i - 1], p[0].d[i], d) >= 0; i--) {
     }
     p[0].d[++i] = d, p[0].h[m] = i;
