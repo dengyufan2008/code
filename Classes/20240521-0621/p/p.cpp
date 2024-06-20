@@ -1,3 +1,6 @@
+#pragma GCC optimize("O3")
+#pragma GCC optimize("Ofast")
+#pragma GCC optimize("inline")
 #include <fstream>
 #define LL long long
 
@@ -28,52 +31,37 @@ LL Pow(LL x, LL y) {
 
 class P {
  public:
-  LL f[4];
+  LL r, i;
 
-  P() {
-    f[0] = f[1] = f[2] = f[3] = 0;
-  }
-
-  P(LL f0, LL f1, LL f2, LL f3) {
-    f[0] = f0, f[1] = f1, f[2] = f2, f[3] = f3;
-  }
+  P() : r(0), i(0) {}
+  P(LL _r, LL _i) : r(_r), i(_i) {}
 
   P operator+(P x) {
-    P ans;
-    for (int i = 0; i < 4; i++) {
-      ans.f[i] = (f[i] + x.f[i]) % p;
-    }
-    return ans;
+    return {(r + x.r) % p, (i + x.i) % p};
   }
 
   P operator<<(LL x) {
-    P ans;
-    for (int i = 0; i < 4; i++) {
-      ans.f[i + x & 3] = f[i];
+    if ((x & 3) == 0) {
+      return P(r, i);
+    } else if ((x & 3) == 1) {
+      return P(-i, r);
+    } else if ((x & 3) == 2) {
+      return P(-r, -i);
+    } else {
+      return P(i, -r);
     }
-    return ans;
   }
 
   P operator*(LL x) {
-    P ans;
-    for (int i = 0; i < 4; i++) {
-      ans.f[i] = f[i] * x % p;
-    }
-    return ans;
+    return {r * x % p, i * x % p};
   }
 
   P operator*(P x) {
-    P ans;
-    for (int i = 0; i < 4; i++) {
-      for (int j = 0; j < 4; j++) {
-        Add(ans.f[i + j & 3], f[i] * x.f[j]);
-      }
-    }
-    return ans;
+    return {(r * x.r - i * x.i) % p, (r * x.i + i * x.r) % p};
   }
 
   P operator^(LL y) {
-    P x = *this, ans(1, 0, 0, 0);
+    P x = *this, ans(1, 0);
     for (LL i = 1; i <= y; i <<= 1) {
       if (i & y) {
         ans = ans * x;
@@ -123,16 +111,16 @@ void CalcFact() {
 
 void CalcAns(int o) {
   LL b[4] = {};
-  P w(o, 0, 0, 0);
+  P w(o, 0);
   for (int i = 0; i < 4; i++) {
     for (int j = 0; j < 4; j++) {
       b[j] += d[i][j];
     }
   }
   for (int i = 0; i < 4; i++) {
-    w.f[0] = w.f[0] * h[a[i]].fact % p;
+    w.r = w.r * h[a[i]].fact % p;
     for (int j = 0; j < 4; j++) {
-      w.f[0] = w.f[0] * h[d[i][j]]._fact % p;
+      w.r = w.r * h[d[i][j]]._fact % p;
     }
   }
   int q = (d[1][3] + d[3][1]) + 3 * (d[1][1] + d[3][3]) & 3;
@@ -140,14 +128,18 @@ void CalcAns(int o) {
   w = w << q;
   for (int i = 0; i < 4; i++) {
     for (int j = i + 1; j < 4; j++) {
-      P p(1, 0, 0, 0);
-      p.f[i + j & 3] += 1;
+      P p(1, 0);
+      if (i + j & 1) {
+        p.i += i + j & 2 ? -1 : 1;
+      } else {
+        p.r += i + j & 2 ? -1 : 1;
+      }
       w = w * (p ^ b[i] * b[j]);
     }
   }
   for (int i = 0; i < 4; i++) {
-    P p(1, 0, 0, 0);
-    p.f[i + i & 3] += 1;
+    P p(1, 0);
+    p.r += i & 1 ? -1 : 1;
     w = w * (p ^ b[i] * (b[i] - 1) / 2);
   }
   ans = ans + w;
@@ -180,9 +172,9 @@ int main() {
     ans = P();
     S(0, 0, 1, n, 1, 1);
     S(0, n, 1, 0, 1, 1);
-    S(0, 0, 1, 0, 1, p - 1);
+    S(0, 0, 1, 0, 1, -1);
     int q = p - 1 - 1LL * n * (n + 3) / 2 % (p - 1);
-    cout << (ans.f[0] - ans.f[2] + p) * Pow(2, q) % p << '\n';
+    cout << (ans.r + p) * Pow(2, q) % p << '\n';
   }
   return 0;
 }
