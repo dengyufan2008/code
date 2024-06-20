@@ -10,7 +10,7 @@ using namespace std;
 ifstream cin("s.in");
 ofstream cout("s.out");
 
-const int kMaxN = 2e5 + 1, kB = 512;
+const int kMaxN = 2e5 + 1;
 struct T {
   int l, r;
   mutable int w;
@@ -55,13 +55,13 @@ class E {
         s.insert({t.l, t.r - 1, t.w});
       }
       auto p = Split(h[i]);
-      if (p->w > a[i]) {
+      if (p != s.end() && p->w > a[i]) {
         auto q = s.lower_bound({-1, -1, a[i]});
         for (auto j = p; j != q; j++) {
           o[i].push_back(*j);
         }
-        int l = p->l, r = q->l - 1, w = p->w;
-        s.erase(p, q), s.insert({l, r, w});
+        int l = p->l, r = (--q)->r;
+        s.erase(p, ++q), s.insert({l, r, a[i]});
       }
       o[i].push_back({i, i, t.w});
     }
@@ -70,10 +70,10 @@ class E {
 
 class V {
   struct P {
-    int h[kB], t[kB];
+    int h[512], t[512];
     PLL d[kMaxN];
   } p[2];
-  int n, w1[kMaxN], w2[kB];
+  int n, w1[kMaxN], w2[512];
 
   void Pushdown(int x) {
     if (~w2[x]) {
@@ -107,7 +107,7 @@ class V {
   void Init() {
     n = p[0].h[0] = p[0].t[0] = 0;
     p[0].d[0] = {0, 0};
-    fill(&w2[0], &w2[kB], -1);
+    fill(&w2[0], &w2[512], -1);
   }
 
   void Cover(int l, int r, int w) {
@@ -137,21 +137,41 @@ class V {
     }
   }
 
-  void Ask(int x) {
-    int m = n >> 9;
-    for (int i = 0; i <= m; i++) {
+  void Ask() {  // [n - m + 1, n]
+    int _n = n + 1;
+    int l = max(n - m + 1, 0), r = n;
+    int x = l >> 9, y = r >> 9;
+    if (x == y) {
+      Pushdown(x), Pushup(x);
+      for (int i = l; i <= r; i++) {
+        f[_n] = max(f[_n], f[i] - w1[i] * (s[_n] - s[i]));
+      }
+      return;
+    }
+    int _l = x << 9 | 511, _r = y << 9;
+    Pushdown(x), Pushup(x);
+    Pushdown(y), Pushup(y);
+    for (int i = l; i <= _l; i++) {
+      f[_n] = max(f[_n], f[i] - w1[i] * (s[_n] - s[i]));
+    }
+    for (int i = _r; i <= r; i++) {
+      f[_n] = max(f[_n], f[i] - w1[i] * (s[_n] - s[i]));
+    }
+    for (int i = x + 1; i < y; i++) {
       int _i = i << 9, &j = p[1].h[i];
       for (; j > _i; j--) {
         PLL d = p[1].d[j] - p[1].d[j - 1];
-        if (d.second - s[x] * d.first >= 0) {
+        if (d.second - s[_n] * d.first >= 0) {
           break;
         }
       }
-      f[x] = max(f[x], p[1].d[j].second - s[x] * p[1].d[j].first);
+      f[_n] = max(f[_n], p[1].d[j].second - s[_n] * p[1].d[j].first);
     }
-    n++, m = n >> 9;
-    int _m = m << 9, &i = p[0].t[m];
-    PLL d = {s[x], f[x]};
+  }
+
+  void AddPoint() {
+    int m = ++n >> 9, _m = m << 9, &i = p[0].t[m];
+    PLL d = {s[n], f[n]};
     for (; i > _m && Cross(p[0].d[i - 1], p[0].d[i], d) >= 0; i--) {
     }
     p[0].d[++i] = d, p[0].h[m] = i;
@@ -166,6 +186,20 @@ void Input() {
   }
 }
 
+void Compress() {
+  vector<T> _o;
+  for (int i = 1; i <= n; i++) {
+    for (T j : o[i]) {
+      if (_o.empty() || _o.back().r + 1 < j.l || _o.back().w > j.w) {
+        _o.push_back(j);
+      } else {
+        _o.back().r = j.r;
+      }
+    }
+    o[i] = _o, _o.clear();
+  }
+}
+
 void CalcF() {
   v.Init();
   for (int i = 1; i <= n; i++) {
@@ -173,7 +207,7 @@ void CalcF() {
     for (T j : o[i]) {
       v.Cover(j.l - 1, j.r - 1, -j.w);
     }
-    v.Ask(i);
+    v.Ask(), v.AddPoint();
   }
   cout << f[n] << '\n';
 }
@@ -181,6 +215,6 @@ void CalcF() {
 int main() {
   cin.tie(0), cout.tie(0);
   ios::sync_with_stdio(0);
-  Input(), e.Calc(), CalcF();
+  Input(), e.Calc(), Compress(), CalcF();
   return 0;
 }
