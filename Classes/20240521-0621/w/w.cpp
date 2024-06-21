@@ -1,3 +1,7 @@
+#pragma GCC optimize("O3")
+#pragma GCC optimize("Ofast")
+#pragma GCC optimize("inline")
+#include <ctime>
 #include <fstream>
 
 using namespace std;
@@ -33,7 +37,9 @@ void Pushdown(int x) {
 }
 
 void Pushup(int x) {
-  v[x].mn = v[x].s[1] ? v[v[x].s[1]].mn : x;
+  v[x].mn = x;
+  v[x].s[0] && (v[x].mn = min(v[x].mn, v[v[x].s[0]].mn));
+  v[x].s[1] && (v[x].mn = min(v[x].mn, v[v[x].s[1]].mn));
 }
 
 int Son(int x) {
@@ -107,10 +113,21 @@ void Cut(int x, int y) {
   if (Exist(x, y)) {
     v[x].s[1] = v[y].f = 0, Pushup(x), MakeRoot(z);
     Access(y), Splay(y), TagC(y, -v[x].c);
+  } else {
+    MakeRoot(z);
   }
 }
 
+int FindFa(int x) {
+  Splay(x);
+  for (x = v[x].s[0]; v[x].s[1]; x = v[x].s[1]) {
+    Pushdown(x);
+  }
+  return Splay(x), x;
+}
+
 int FindGap(int x, int y) {
+  Pushdown(x);
   if (v[x].s[0] && v[v[x].s[0]].mn <= y) {
     return FindGap(v[x].s[0], y);
   } else if (x <= y) {
@@ -120,31 +137,37 @@ int FindGap(int x, int y) {
 }
 
 void Merge(int x, int y) {
-  int topx, topy, _x, _y, mid;
+  int topx, topy, _x, _y, f, mid;
   Access(x), topx = FindTop(x);
   if (topx == FindTop(y)) {
+    // cout << "Del " << x << ' ' << y << '\n';
     return;
   }
   Access(y), topy = FindTop(y);
   if (FindTop(x) == topy) {
+    // cout << "Del " << x << ' ' << y << '\n';
     return;
   }
-  _x = FindTop(x), Access(v[_x].f), _y = FindTop(y);
+  _x = FindTop(x), Access(f = v[_x].f), _y = FindTop(y);
   if (topx == topy) {
-    Cut(_y, v[_y].f);
+    _x < _y ? swap(_x, _y), swap(x, y) : void();
+    Cut(_y, f), Access(x), Access(y);
   }
   for (; Splay(_x), v[_x].mn < _y;) {
     _x = FindGap(_x, _y);
     if (~Son(_x)) {
-      mid = v[_x].f, Cut(mid, _x);
-      Link(_y, mid);
+      mid = FindFa(_x), Cut(mid, _x), Link(_y, mid);
+      Access(x), Access(y);
     }
     swap(_x, _y), swap(x, y);
   }
   Link(x, _y);
 }
 
-int Ask(int x, int y) { return v[FindGap(FindRoot(x), y)].c; }
+int Ask(int x, int y) {
+  x = FindGap(FindRoot(x), y);
+  return Access(x), v[x].c;
+}
 
 int main() {
   cin.tie(0), cout.tie(0);
@@ -161,8 +184,9 @@ int main() {
     if (o == 1) {
       Merge(x, y);
     } else {
-      cout << Ask(x, y) << '\n';
+      cout << (p = Ask(x, y)) << '\n';
     }
   }
+  cout << clock() << '\n';
   return 0;
 }
