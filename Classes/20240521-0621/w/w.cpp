@@ -1,7 +1,6 @@
 #pragma GCC optimize("O3")
 #pragma GCC optimize("Ofast")
 #pragma GCC optimize("inline")
-#include <ctime>
 #include <fstream>
 
 using namespace std;
@@ -13,22 +12,14 @@ const int kMaxN = 5e5 + 1;
 struct V {
   int mn, c, t;
   int f, s[2];
-  bool b;
 } v[kMaxN];
 int u, n, m;
-
-void TagB(int x) {
-  v[x].b ^= 1, swap(v[x].s[0], v[x].s[1]);
-}
 
 void TagC(int x, int y) {
   v[x].c += y, v[x].t += y;
 }
 
 void Pushdown(int x) {
-  if (v[x].b) {
-    TagB(v[x].s[0]), TagB(v[x].s[1]), v[x].b = 0;
-  }
   if (v[x].t) {
     TagC(v[x].s[0], v[x].t);
     TagC(v[x].s[1], v[x].t);
@@ -77,10 +68,6 @@ void Access(int x) {
   }
 }
 
-void MakeRoot(int x) {
-  Access(x), Splay(x), TagB(x);
-}
-
 int FindTop(int x) {
   Splay(x);
   for (; v[x].s[0];) {
@@ -91,31 +78,6 @@ int FindTop(int x) {
 
 int FindRoot(int x) {
   return Access(x), FindTop(x);
-}
-
-void Link(int x, int y) {
-  x > y ? swap(x, y) : void();
-  int z = FindRoot(y);
-  if (FindRoot(x) != z) {
-    MakeRoot(x), v[x].f = y, MakeRoot(z);
-    Access(y), Splay(y), TagC(y, v[x].c);
-  }
-}
-
-bool Exist(int x, int y) {
-  MakeRoot(x), Access(y), Splay(x);
-  return v[x].s[1] == y && !v[y].s[0];
-}
-
-void Cut(int x, int y) {
-  x > y ? swap(x, y) : void();
-  int z = FindRoot(y);
-  if (Exist(x, y)) {
-    v[x].s[1] = v[y].f = 0, Pushup(x), MakeRoot(z);
-    Access(y), Splay(y), TagC(y, -v[x].c);
-  } else {
-    MakeRoot(z);
-  }
 }
 
 int FindFa(int x) {
@@ -140,28 +102,32 @@ void Merge(int x, int y) {
   int topx, topy, _x, _y, f, mid;
   Access(x), topx = FindTop(x);
   if (topx == FindTop(y)) {
-    // cout << "Del " << x << ' ' << y << '\n';
     return;
   }
   Access(y), topy = FindTop(y);
   if (FindTop(x) == topy) {
-    // cout << "Del " << x << ' ' << y << '\n';
     return;
   }
   _x = FindTop(x), Access(f = v[_x].f), _y = FindTop(y);
   if (topx == topy) {
     _x < _y ? swap(_x, _y), swap(x, y) : void();
-    Cut(_y, f), Access(x), Access(y);
+    Splay(f), TagC(f, -v[_y].c), v[_y].f = 0;  // Cut(_y, f)
+    Access(x), Access(y);
   }
   for (; Splay(_x), v[_x].mn < _y;) {
     _x = FindGap(_x, _y);
     if (~Son(_x)) {
-      mid = FindFa(_x), Cut(mid, _x), Link(_y, mid);
+      mid = FindFa(_x);
+      Access(mid), Splay(mid), Splay(_x);  // Cut(mid, _x);
+      v[_x].f = 0, TagC(mid, -v[_x].c);
+      Access(_y), Splay(_y), v[_y].f = mid;  // Link(_y, mid);
+      Access(mid), Splay(mid), TagC(mid, v[_y].c);
       Access(x), Access(y);
     }
     swap(_x, _y), swap(x, y);
   }
-  Link(x, _y);
+  Access(_y), Splay(_y), v[_y].f = x;  // Link(x, _y);
+  Access(x), Splay(x), TagC(x, v[_y].c);
 }
 
 int Ask(int x, int y) {
@@ -187,6 +153,5 @@ int main() {
       cout << (p = Ask(x, y)) << '\n';
     }
   }
-  cout << clock() << '\n';
   return 0;
 }
