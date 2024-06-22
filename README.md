@@ -18,6 +18,8 @@ DAG 上生成外向树的个数只有 $O(2^{m - n + 1})$ 个. [例](https://qoj.
 
 [一道 OI 题](https://www.luogu.com.cn/article/xr76q3sa)
 
+史诗级没什么用的发现: $\gcd(a,c) \gcd(b,c) = \gcd(ab,c \gcd(a,b,c))$, 或言 $\gcd$ 也可以整式乘法.
+
 ----
 
 [我准 **备** 用来 **忘** 记的 **箓**](https://www.luogu.com.cn/paste/lvmrhjxm)
@@ -77,4 +79,4 @@ DAG 上生成外向树的个数只有 $O(2^{m - n + 1})$ 个. [例](https://qoj.
 
 - [Fast Mul](https://www.luogu.com.cn/paste/bmjrtlws)
 
-## *Last Update : 2024.5.31*
+## *Last Update : 2024.6.22*

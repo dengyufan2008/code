@@ -44,26 +44,23 @@ $$ \sum_s {s^{c_s} \times c_s!} $$
 
 - 对于一个大小为 $s$ 的连通块, 其出边的连接方案数为 $s$.
 
-  <details>
-  <summary>Proof</summary>
+  <details><summary>Proof</summary>
 
-  不妨任意钦定一个 $q_1$. 有 $q_{p^x_1} = p^x_{q_1}, q_{p^x_{p^x_1}} = p^x_{p^x_{q_1}}, ...$ 故可以通过若干边确定每个 $q_i$ 的取值.
+  >  不妨任意钦定一个 $q_1$. 有 $q_{p^x_1} = p^x_{q_1}, q_{p^x_{p^x_1}} = p^x_{p^x_{q_1}}, ...$ 故可以通过若干边确定每个 $q_i$ 的取值.
   </details>
 
 - 对于 $i$ 个大小为 $s$ 的无标号同构连通块, 它们连成一个特定的环的本质不同的方案数为 $s^{i - 1}$.
   
-  <details>
-  <summary>Proof</summary>
+  <details><summary>Proof</summary>
 
-  前 $i - 1$ 个连通块随便连, 把这些进行旋转使得与先前的特定的环相同, 那么最后一个连通块只有一种连法.
+  >  前 $i - 1$ 个连通块随便连, 把这些进行旋转使得与先前的特定的环相同, 那么最后一个连通块只有一种连法.
   </details>
 
 - 对于 $i$ 个大小为 $s$ 的无标号同构连通块, 它们连成 $x$ 个同构的环的本质不同方案数为 $s^{i-x+1}$.
 
-  <details>
-  <summary>Proof</summary>
+  <details><summary>Proof</summary>
 
-  前 $\frac{i}{x}$ 个连通块随便连, 有 $s^{\frac{i}{x}}$ 种方案, 之后要连出 $x - 1$ 个与之前那个相同的环, 有 $(s^{\frac{i}{x} - 1})^{x-1} = s^{i-\frac{i}{x} - x + 1}$ 种方案, 共 $s^{i-x+1}$ 种.
+  >  前 $\frac{i}{x}$ 个连通块随便连, 有 $s^{\frac{i}{x}}$ 种方案, 之后要连出 $x - 1$ 个与之前那个相同的环, 有 $(s^{\frac{i}{x} - 1})^{x-1} = s^{i-\frac{i}{x} - x + 1}$ 种方案, 共 $s^{i-x+1}$ 种.
   </details>
 
 由此, 可以得出 $f$ 的转移方程
@@ -84,26 +81,25 @@ $$ f_{i, j, s} = f_{i, j, 1} \times s^{i + j - 1} $$
 
 $$ f_{i, j, 1} = \sum_{x | i} f_{x, j - 1, 1} \times (\frac{i}{x})^{x + j - 2} \times g_{i, x} $$
 
-<details>
-<summary>Proof</summary>
+<details><summary>Proof</summary>
 
-考虑数学归纳法, 当 $i = 1$ 时显然成立, 现假设对于前 $i - 1$ 项都成立.
-
-$$ f_{i, j, s} = \sum_{x | i} f_{x, j - 1, s \times \frac{i}{x}} \times g_{i, x} \times s^{i - x + 1} $$
-
-$$ f_{i, j, s} = \sum_{x | i} f_{x, j - 1, 1} \times (s \times \frac{i}{x})^{x + j - 2} \times g_{i, x} \times s^{i - x + 1} $$
-
-$$ f_{i, j, s} = \sum_{x | i} f_{x, j - 1, 1} \times (\frac{i}{x})^{x + j - 2} \times g_{i, x} \times s^{i + j - 1} $$
-
-又因为有
-
-$$ f_{i, j, 1} = \sum_{x | i} f_{x, j - 1, \frac{i}{x}} \times g_{i, x} $$
-
-$$ f_{i, j, 1} = \sum_{x | i} f_{x, j - 1, 1} \times (\frac{i}{x})^{x + j - 2} \times g_{i, x} $$
-
-故
-
-$$ f_{i, j, s} = f_{i, j, 1} \times s^{i + j - 1} $$
+>  考虑数学归纳法, 当 $i = 1$ 时显然成立, 现假设对于前 $i - 1$ 项都成立.
+>
+>  $$ f_{i, j, s} = \sum_{x | i} f_{x, j - 1, s \times \frac{i}{x}} \times g_{i, x} \times s^{i - x + 1} $$
+>
+>  $$ f_{i, j, s} = \sum_{x | i} f_{x, j - 1, 1} \times (s \times \frac{i}{x})^{x + j - 2} \times g_{i, x} \times s^{i - x + 1} $$
+>
+>  $$ f_{i, j, s} = \sum_{x | i} f_{x, j - 1, 1} \times (\frac{i}{x})^{x + j - 2} \times g_{i, x} \times s^{i + j - 1} $$
+>
+>  又因为有
+>
+>  $$ f_{i, j, 1} = \sum_{x | i} f_{x, j - 1, \frac{i}{x}} \times g_{i, x} $$
+>
+>  $$ f_{i, j, 1} = \sum_{x | i} f_{x, j - 1, 1} \times (\frac{i}{x})^{x + j - 2} \times g_{i, x} $$
+>
+>  故
+>
+>  $$ f_{i, j, s} = f_{i, j, 1} \times s^{i + j - 1} $$
 </details>
 
 现在可以 $O(nk \ln n)$ 预处理 $f$. 考虑计算答案.
@@ -134,7 +130,7 @@ $d_0 = 1$, 可以 $O(n^2)$ 计算, 答案即为每个等价类的 $d_c$ 之积.
   <details>
   <summary>Proof</summary>
 
-  考虑随机一个排列 $s$, $s_{[1, \frac{i}{x}]}$ 表示第一个环的元素集合及顺序, 以此类推. 由于是一个环, $s_1$ 需要是 $s_{[1, \frac{i}{x}]}$ 中的最小值, 概率为 $\frac{1}{\frac{i}{x}}$; 这 $x$ 个环都要满足上述要求, 概率为 $\frac{1}{(\frac{i}{x})^x}$. 由于这 $x$ 个环间是无序的, 需要让每个环内最小的元素有序, 概率为 $\frac{1}{x!}$. 排列共有 $i!$ 个, 故方案数为 $\frac{i!}{x! \space (\frac{i}{x})^x}$.
+  >  考虑随机一个排列 $s$, $s_{[1, \frac{i}{x}]}$ 表示第一个环的元素集合及顺序, 以此类推. 由于是一个环, $s_1$ 需要是 $s_{[1, \frac{i}{x}]}$ 中的最小值, 概率为 $\frac{1}{\frac{i}{x}}$; 这 $x$ 个环都要满足上述要求, 概率为 $\frac{1}{(\frac{i}{x})^x}$. 由于这 $x$ 个环间是无序的, 需要让每个环内最小的元素有序, 概率为 $\frac{1}{x!}$. 排列共有 $i!$ 个, 故方案数为 $\frac{i!}{x! \space (\frac{i}{x})^x}$.
   </details>
 
 则有优化后的方程
