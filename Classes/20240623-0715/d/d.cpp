@@ -1,5 +1,4 @@
 #include <fstream>
-#include <queue>
 #define LL long long
 
 using namespace std;
@@ -8,9 +7,8 @@ ifstream cin("d.in");
 ofstream cout("d.out");
 
 const int kMaxN = 1e6 + 1, kMod = 1e9 + 7;
-int n, a[kMaxN], c[kMaxN], d[kMaxN];
-LL ans, f[kMaxN][2];
-queue<int> q;
+int n, m, a[kMaxN], c[kMaxN], d[kMaxN], q[kMaxN];
+LL ans;
 
 int main() {
   cin.tie(0), cout.tie(0);
@@ -20,11 +18,11 @@ int main() {
     cin >> a[i], d[a[i]]++;
   }
   for (int i = 1; i <= n; i++) {
-    c[i] = d[i], !d[i] ? q.push(i) : void();
+    c[i] = d[i], !d[i] ? q[++m] = i : 0;
   }
-  for (int x; !q.empty(); q.pop()) {
-    x = q.front(), ans = ans * (c[x] + 1) % kMod;  // 计算 深度>2 的点的贡献
-    !--d[a[x]] ? q.push(a[x]) : void();
+  for (int i = 1, x; i <= m; i++) {
+    x = q[i], ans = ans * (c[x] + 1) % kMod;  // 计算 深度>2 的点的贡献
+    !--d[a[x]] ? q[++m] = a[x] : 0;
   }
   for (int i = 1, j, p; i <= n; i++) {
     if (d[i]) {
