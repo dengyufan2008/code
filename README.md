@@ -6,7 +6,7 @@
 
 判断最小割中一条边是否被割掉: 从源点开始搜, 只走非满的边.
 
-Dfn 求 LCA: 令 Dfn 数组为 $r_i$, ST 表数组为 $st_i$, 可以令 $st_{r_i} = r_{f_i}$, 维护区间 min. 有 $r_{LCA(x, y)} = \min_{i = r_x + 1}^{r_y} st_i$, 维护 Dfn 的逆数组即可.
+Dfn 求 LCA: 令 Dfn 数组为 $r_i$, ST 表数组为 $st_i$, 可以令 $st_{r_i} = r_{f_i}$, 维护区间 min. 有 $r_{LCA(x, y)} = \min_{r_x < i \le r_y} st_i$, 维护 Dfn 的逆数组即可.
 
 树形 Dp 的另一种方式: 按 Dfs 序 Dp, 维护到根的路径上点的状态. 需要深度较小, 且转移只与祖先有关. [例](https://www.luogu.com.cn/problem/P3577)
 
