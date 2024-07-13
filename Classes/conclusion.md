@@ -174,3 +174,5 @@
 附: 讲[课](https://www.luogu.com.cn/api/team/downloadFile/vwgjlhf2)内容
 
 # 20240521-0621 PTY 特供题单 ([精简版](https://www.luogu.com.cn/paste/bqg2225v))
+
+# 20240623-0714 PTY 特供题单 ([精简版](https://www.luogu.com.cn/paste/8ldma22f))
