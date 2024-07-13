@@ -14,6 +14,13 @@ DAG 上生成外向树的个数只有 $O(2^{m - n + 1})$ 个. [例](https://qoj.
 
 用 LCT 维护树时若树一定为小根堆则可以维护子树相关信息. [例](https://qoj.ac/problem/7760)
 
+$$d(ij) = \sum_{x|i}\sum_{y|j}[\gcd(x, y)=1]$$
+对每个质因数独立, 分解后易证.
+
+对若干个排列取出 $O(n)$ 个极大复合无关组, 可以 ``shuffle`` $O(n)$ 次每次依次全部复合起来.
+
+对于一个数集选两个数和 $\ge m$, 则可按 $\min(a_i, m - a_i)$ 升序排序, 靠前的需 $\ge \frac{m}{2}$.
+
 [一道数学题](https://www.luogu.com.cn/article/ueohh8lt)
 
 [又一道数学题](https://www.luogu.com.cn/article/7d3j944s)
