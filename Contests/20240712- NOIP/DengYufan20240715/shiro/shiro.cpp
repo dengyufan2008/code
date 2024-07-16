@@ -41,7 +41,7 @@ class Seg1 {
   struct V {
     int l, r;
     F f;
-  } v[kMaxN * 32];
+  } v[kMaxN * 20];
   int m, s[kMaxN];
 
   long double Val(F f, LL x) {
@@ -116,7 +116,7 @@ class Seg2 {
   struct V {
     int l, r;
     F f;
-  } v[kMaxN * 32];
+  } v[kMaxN * 20];
   int s, m;
 
   double Val(F f, LL x) { return f.a - sqrt(x - f.b); }
