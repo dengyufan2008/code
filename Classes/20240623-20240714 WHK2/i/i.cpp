@@ -12,18 +12,13 @@ LL ans, pw[kMaxN], fact[kMaxN], _fact[kMaxN];
 bool b[kMaxN];
 string s, t;
 
-LL Mul(LL a, LL b) {
-	LL c = a * b - (LL)((double)a * b / kMod + 0.1) * kMod;
-	return c < 0 ? c + kMod : c;
-}
-
 LL Pow(LL x, int y = kMod - 2) {
   LL ans = 1;
   for (int i = 1; i <= y; i <<= 1) {
     if (i & y) {
-      ans = Mul(ans, x);
+      ans = ans * x % kMod;
     }
-    x = Mul(x, x);
+    x = x * x % kMod;
   }
   return ans;
 }
@@ -32,7 +27,7 @@ LL C(int x, int y) {
   if (y < 0 || y > x) {
     return 0;
   }
-  return Mul(fact[x], Mul(_fact[y], _fact[x - y]));
+  return fact[x] * _fact[y] % kMod * _fact[x - y] % kMod;
 }
 
 int Gcd(int x, int y) {
@@ -49,15 +44,15 @@ void Init() {
   sq = s.size() - sa - sb, tq = t.size() - ta - tb;
   pw[0] = 1;
   for (int i = 1; i < kMaxN; i++) {
-    pw[i] = pw[i - 1] << 1, pw[i] >= kMod && (pw[i] -= kMod);
+    pw[i] = pw[i - 1] * 2 % kMod;
   }
   fact[0] = 1;
   for (int i = 1; i < kMaxN; i++) {
-    fact[i] = Mul(fact[i - 1], i);
+    fact[i] = fact[i - 1] * i % kMod;
   }
   _fact[kMaxN - 1] = Pow(fact[kMaxN - 1]);
   for (int i = kMaxN - 1; i >= 1; i--) {
-    _fact[i - 1] = Mul(_fact[i], i);
+    _fact[i - 1] = _fact[i] * i % kMod;
   }
   b[1] = mu[1] = 1;
   for (int i = 2; i < kMaxN; i++) {
@@ -88,7 +83,7 @@ void Calc1() {  // S = T
   LL w = (pw[n + 1] - 2) * (pw[n + 1] - 2) % kMod;
   for (int i = 0; i < s.size(); i++) {
     if (s[i] == '?' && t[i] == '?') {
-      w <<= 1, w >= kMod && (w -= kMod);
+      w = w * 2 % kMod;
     }
   }
   ans = (ans + w) % kMod;
