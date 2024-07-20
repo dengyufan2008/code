@@ -187,6 +187,8 @@ void work() {
 }
 
 int main() {
+  freopen("k.in", "r", stdin);
+  freopen("k.ans", "w", stdout);
   std::ios::sync_with_stdio(0);
   int T = 1;
   std::cin >> T;
