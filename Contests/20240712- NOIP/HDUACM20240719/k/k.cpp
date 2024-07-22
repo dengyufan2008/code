@@ -13,18 +13,18 @@ struct E {
   int x, l, r, o;
 };
 struct V {
-  int w, r, s;
+  int w, f, r, s;
   vector<int> e, g;
 } v[kMaxN];
 struct D {
   int w, c, t, ans;
 } d[kMaxN << 2];
 int t, n, m, l, r;
-vector<int> p[kMaxN];
+vector<int> g, p[kMaxN];
 vector<E> h, e[kMaxN];
 
 void S(int f, int x) {
-  v[x].r = ++m, v[x].s = 1;
+  v[x].f = f, v[x].r = ++m, v[x].s = 1;
   for (int i : v[x].e) {
     if (i != f) {
       S(x, i), v[x].s += v[i].s;
@@ -55,15 +55,41 @@ void A(int w, int x, int y, int _x, int _y) {
   }
 }
 
+void A(int w, int x, int y, int _x, int _y, int __x, int __y) {
+  A(w, x, y, _x, _y), A(w, __x, __y);
+  if (x <= y && __x <= __y) {
+    e[w].push_back({x, __x, __y, 1});
+    if (y < n) {
+      e[w].push_back({y + 1, __x, __y, -1});
+    }
+    e[w].push_back({__x, x, y, 1});
+    if (__y < n) {
+      e[w].push_back({__y + 1, x, y, -1});
+    }
+  }
+  if (_x <= _y && __x <= __y) {
+    e[w].push_back({_x, __x, __y, 1});
+    if (_y < n) {
+      e[w].push_back({_y + 1, __x, __y, -1});
+    }
+    e[w].push_back({__x, _x, _y, 1});
+    if (__y < n) {
+      e[w].push_back({__y + 1, _x, _y, -1});
+    }
+  }
+}
+
 void T(int x, int w) {
   int p = v[x].r + 1;
   for (int i = 0, j = 0; i < v[x].e.size(); i++) {
     int y = v[x].e[i];
-    if (j < v[x].g.size() && v[v[x].e[i]].r + v[v[x].e[i]].s > v[v[x].g[j]].r) {
-      int z = v[x].g[j];
-      A(w, v[y].r, v[z].r - 1, v[z].r + v[z].s, v[y].r + v[y].s - 1), j++;
-    } else {
-      A(w, v[y].r, v[y].r + v[y].s - 1);
+    if (y != v[x].f) {
+      if (j < v[x].g.size() && v[y].r + v[y].s > v[v[x].g[j]].r) {
+        int z = v[x].g[j];
+        A(w, v[y].r, v[z].r - 1, v[z].r + v[z].s, v[y].r + v[y].s - 1), j++;
+      } else {
+        A(w, v[y].r, v[y].r + v[y].s - 1);
+      }
     }
   }
   for (int i : v[x].g) {
@@ -72,23 +98,35 @@ void T(int x, int w) {
 }
 
 void R() {
-  for (int i = 0; i < n; i++) {
+  for (int i = 0, q; i < n; i++) {
     if (p[i].empty()) {
       r = i - 1;
       break;
     } else {
+      q = 0, g.clear();
       sort(p[i].begin(), p[i].end(), [](int i, int j) {
         return v[i].r < v[j].r;
       });
-      int g = p[i].front();
+      g.push_back(p[i].front()), q = g.back();
       for (int j = 1; j < p[i].size(); j++) {
-        if (v[g].r + v[g].s <= v[p[i][j]].r) {
-          g = p[i].front();
+        if (v[q].r + v[q].s <= v[p[i][j]].r) {
+          if (v[g.front()].r + v[g.front()].s <= v[p[i][j]].r) {
+            g.push_back(p[i][j]), q = g.back();
+            continue;
+          } else {
+            q = g.front();
+          }
         }
-        v[g].g.push_back(p[i][j]), g = p[i][j];
+        v[q].g.push_back(p[i][j]), q = p[i][j];
       }
-      A(i, 1, v[p[i].front()].r - 1, v[p[i].front()].r + v[p[i].front()].s, n);
-      T(p[i].front(), i);
+      if (g.size() == 1) {
+        A(i, 1, v[g.front()].r - 1, v[g.front()].r + v[g.front()].s, n);
+        T(g.front(), i);
+      } else {
+        A(i, 1, v[g.front()].r - 1, v[g.front()].r + v[g.front()].s,
+          v[g.back()].r - 1, v[g.back()].r + v[g.back()].s, n);
+        T(g.front(), i), T(g.back(), i);
+      }
     }
   }
 }
@@ -160,7 +198,8 @@ LL C(int x) {
   sort(h.begin(), h.end(), [](E i, E j) {
     return i.x < j.x;
   });
-  h.push_back({n + 1, 0, 0, 0}), W(1, 1, n);
+  h.insert(h.begin(), {1, 1, n, 0});
+  h.push_back({n + 1, 1, n, 0}), W(1, 1, n);
   for (int i = 0, j = 0; i + 1 < h.size(); i = j) {
     for (; j + 1 < h.size() && h[i].x == h[j].x; j++) {
       M(1, 1, n, h[j].l, h[j].r, h[j].o);
