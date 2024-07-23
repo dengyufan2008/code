@@ -1,4 +1,4 @@
-# 20240719 [HDUACM](https://acm.hdu.edu.cn/contest/problems?cid=1124) 总结
+# 20240719 [HDUACM](https://acm.hdu.edu.cn/contest/problems?cid=1124) 总结 & [Account](https://www.luogu.com.cn/paste/o08ha6jb)
 
 ## T1(循环位移) [哈希]
 
