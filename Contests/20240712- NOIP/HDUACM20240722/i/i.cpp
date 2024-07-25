@@ -6,7 +6,7 @@ using namespace std;
 ifstream cin("i.in");
 ofstream cout("i.out");
 
-const int kMaxN = 1e5, kB = 318, kMod = 1e9 + 7;
+const int kMaxN = 1e5, kB = 318, kMod = 1e9 + 7, kInv2 = kMod + 1 >> 1;
 int t, n, m;
 
 class Blk {
@@ -98,15 +98,15 @@ class Calc {
     ans += (n - l) * k, lst += k;
   }
 
-  LL Ask() {
-    return (ans + lst * (lst + 1) / 2) % kMod;
-  }
+  LL Ask() { return (ans + lst * kInv2) % kMod; }
 } calc;
 
 void AddSuf(int x, int k) {
   int p = min(blk.Find(x, 0), blk.Find(x, -k));
   if (p < n) {
     blk.Add(x, p, k), calc.Add(p + 1, k);
+  } else {
+    blk.Add(x, n - 1, k);
   }
 }
 
