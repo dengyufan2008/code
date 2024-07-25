@@ -41,6 +41,8 @@ $$d(ij) = \sum_{x|i}\sum_{y|j}[\gcd(x, y)=1]$$
 
 [讲氪总结](https://www.luogu.com.cn/article/bn0cnhaw)
 
+[最腥知识](https://www.luogu.com.cn/article/ft3tx54e)
+
 [To Do Lists](https://www.luogu.com.cn/paste/lcysbo18)
 
 [Files](https://www.luogu.com.cn/team/33225#file)
