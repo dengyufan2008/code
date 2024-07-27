@@ -39,6 +39,8 @@ void del(int x) {
 }
 
 int main() {
+  freopen("i.in", "r", stdin);
+  freopen("i.ans", "w", stdout);
   int T;
   scanf("%d", &T);
   while (T--) {
