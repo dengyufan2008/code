@@ -1,8 +1,8 @@
 $$
 \mu = \begin{cases}
-\frac{1}{\tan \theta} \space (\theta \in [0, \pi] \setminus \{\frac{\pi}{2}\})
+\frac{1}{\tan \theta} \space \space \space \space \space \space \theta \in [0, \pi] \setminus \{\frac{\pi}{2}\}
 \\
--\frac{1}{\tan \theta} \space (\theta \in [\pi, 2\pi] \setminus \{\frac{3\pi}{2}\})
+-\frac{1}{\tan \theta} \space \space \space \theta \in [\pi, 2\pi] \setminus \{\frac{3\pi}{2}\}
 \end{cases}
 $$
 
