@@ -72,6 +72,10 @@ void CalcPair() {
 }
 
 void CalcAns() {
+  if (n == 2) {
+    cout << a[0] << '\n';
+    return;
+  }
   inv[1] = 1;
   for (int i = 2; i <= t; i++) {
     inv[i] = kMod - 1LL * kMod / i * inv[kMod % i] % kMod;
