@@ -50,6 +50,8 @@ event mergeevent(node a, node b) {
 }
 
 int main() {
+  freopen("i.in", "r", stdin);
+  freopen("i.ans", "w", stdout);
   ios::sync_with_stdio(false);
   cin.tie(0);
   int t;
