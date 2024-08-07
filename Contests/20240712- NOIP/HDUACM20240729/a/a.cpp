@@ -30,17 +30,21 @@ int PopCount(int s) {
   return ans;
 }
 
+V Cross(int x, int y, int z) {
+  V p = v[y] - v[x], q = v[z] - v[x];
+  return {p.y * q.z - p.z * q.y,
+          p.z * q.x - p.x * q.z,
+          p.x * q.y - p.y * q.x};
+}
+
 LL Det(V x, V y, V z) {
   return x.x * y.y * z.z - x.x * z.y * y.z -
          y.x * x.y * z.z + y.x * z.y * x.z +
          z.x * x.y * y.z - z.x * y.y * x.z;
 }
 
-V Cross(int x, int y, int z) {
-  V p = v[y] - v[x], q = v[z] - v[x];
-  return {p.y * q.z - p.z * q.y,
-          p.z * q.x - p.x * q.z,
-          p.x * q.y - p.y * q.x};
+LL Volumn(int w, int x, int y, int z) {
+  return Det(v[x] - v[w], v[y] - v[w], v[z] - v[w]);
 }
 
 bool Volumn(int s) {
@@ -52,10 +56,29 @@ bool Volumn(int s) {
             if (s >> k & 1) {
               for (int l = k + 1; l < n; l++) {
                 if (s >> l & 1) {
-                  if (Det(v[j] - v[i], v[k] - v[i], v[l] - v[i])) {
+                  if (Volumn(i, j, k, l)) {
                     return 1;
                   }
                 }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  return 0;
+}
+
+bool Area(int s) {
+  for (int i = 0; i < n; i++) {
+    if (s >> i & 1) {
+      for (int j = i + 1; j < n; j++) {
+        if (s >> j & 1) {
+          for (int k = j + 1; k < n; k++) {
+            if (s >> k & 1) {
+              if (Cross(i, j, k).Mod()) {
+                return 1;
               }
             }
           }
@@ -126,7 +149,7 @@ int main() {
           t |= (c[i] == m) << i;
         }
         ans += !b[t], b[t] = 1;
-      } else {
+      } else if (Area(s)) {
         m = 0;
         for (int i = 0; i < n; i++) {
           c[i] = 0;
@@ -153,7 +176,7 @@ int main() {
                 if (able) {
                   m++;
                   for (int l = 0; l < n; l++) {
-                    if (o * Cross(i, j, l) >= 0) {
+                    if (!Volumn(i, j, k, l) && o * Cross(i, j, l) >= 0) {
                       c[l]++;
                     }
                   }
