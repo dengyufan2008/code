@@ -1,10 +1,9 @@
-// not be done
 #include <fstream>
 
 using namespace std;
 
-ifstream cin("h.in");
-ofstream cout("h.out");
+ifstream cin("a.in");
+ofstream cout("a.out");
 
 int main() {
   cin.tie(0), cout.tie(0);
