@@ -21,6 +21,8 @@ $$d(ij) = \sum_{x|i}\sum_{y|j}[\gcd(x, y)=1]$$
 
 对于一个数集选两个数和 $\ge m$, 则可按 $\min(a_i, m - a_i)$ 升序排序, 靠前的需 $\ge \frac{m}{2}$.
 
+对于一类最优化问题, 若在没有限制的情况下直接排序即可得到最优方案, 但题目中给了一个树形拓扑序的限制, 则可以将相邻逆序对绑在一起. [例](https://acm.hdu.edu.cn/contest/problem?cid=1131&pid=1001) & [Account](https://www.luogu.com.cn/paste/o08ha6jb)
+
 [一道数学题](https://www.luogu.com.cn/article/ueohh8lt)
 
 [又一道数学题](https://www.luogu.com.cn/article/7d3j944s)
