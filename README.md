@@ -27,13 +27,13 @@ $$d(ij) = \sum_{x|i}\sum_{y|j}[\gcd(x, y)=1]$$
 
 [又一道数学题](https://www.luogu.com.cn/article/7d3j944s)
 
+[双一道数学题](https://www.luogu.com.cn/article/lc9tfr5v)
+
 [一道计数题](https://www.luogu.com.cn/article/qpk41kv1)
 
 [又一道计数题](https://www.luogu.com.cn/article/6bpx8onp)
 
 [一道 OI 题](https://www.luogu.com.cn/article/xr76q3sa)
-
-[又一道 OI 题](https://www.luogu.com.cn/article/lc9tfr5v)
 
 史诗级没什么用的发现: $\gcd(a,c) \gcd(b,c) = \gcd(ab,c \gcd(a,b,c))$, 或言 $\gcd$ 也可以整式乘法.
 

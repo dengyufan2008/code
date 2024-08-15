@@ -1,4 +1,4 @@
-# 又一道 OI [题](https://acm.hdu.edu.cn/contest/problem?cid=1130&pid=1012)
+# 双一道数学[题](https://acm.hdu.edu.cn/contest/problem?cid=1130&pid=1012)
 
 给定一个长为 $n$ 的序列 $a_i$, 定义一次摸牌为拿走尚存的编号最小的数, 摸到第 $i$ 张牌会获得额外 $a_i$ 的摸牌次数.
 
