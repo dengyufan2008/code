@@ -33,6 +33,8 @@ $$d(ij) = \sum_{x|i}\sum_{y|j}[\gcd(x, y)=1]$$
 
 [一道 OI 题](https://www.luogu.com.cn/article/xr76q3sa)
 
+[又一道 OI 题](https://www.luogu.com.cn/article/lc9tfr5v)
+
 史诗级没什么用的发现: $\gcd(a,c) \gcd(b,c) = \gcd(ab,c \gcd(a,b,c))$, 或言 $\gcd$ 也可以整式乘法.
 
 ----
@@ -96,4 +98,4 @@ $$d(ij) = \sum_{x|i}\sum_{y|j}[\gcd(x, y)=1]$$
 
 - [Fast Mul](https://www.luogu.com.cn/paste/bmjrtlws)
 
-## *Last Update : 2024.7.25*
+## *Last Update : 2024.8.15*
