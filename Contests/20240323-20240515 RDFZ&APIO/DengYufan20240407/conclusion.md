@@ -14,34 +14,9 @@
 
 **对于一个总和确定的序列, 本质不同的元素只有 $O(\sqrt n)$ 种. 远古时代会的东西现在不会了, 哈哈.**
 
-### 多项式取模 
-给定最高项次数分别为 $n$ 和 $m$ 的多项式 $F(z)$ 和 $G(z)$, 求最高项次数分别为 $n - m$ 与 $m - 1$ 的多项式 $Q(z)$ 与 $R(z)$, 使得
+[多项式取模](https://www.luogu.com.cn/article/ft3tx54e) 相关知识点.
 
-$$F(z) = Q(z) G(z) + R(z).$$
-
-考虑定义最高项系数为 $n$ 的多项式 $F(z)$ 的转置
-
-$$F^T(z) = z^n F(\frac{1}{z})$$
-
-即 reverse 每一项的系数. 有
-
-$$F(z) = Q(z) G(z) + R(z)$$
-
-$$z^n F(z) = z^{n - m} Q(z) z^m G(z) + z^{n - m + 1} z^{m - 1} R(z)$$
-
-$$F^T(z) = Q^T(z) G^T(z) + z^{n - m + 1} R^T(z).$$
-
-因为 $Q^T$ 的最高项系数为 $n - m$, 则
-
-$$F^T(z) = Q^T(z) G^T(z) \pmod {z^{n - m + 1}}.$$
-
-$O(n \log n)$
-
-### 多项式多点求值
-
-给定最高项次数为 $n$ 的多项式 $F(z) = \sum_i f_i z^i$ 与长为 $m$ 的序列 $a$, 求 $F(a_i)$.
-
-考虑 $F(z) = F_i(z) * (z - a_i) + ans_i$, 则只要对每个 $i$ 求出 $F(z) \bmod (z - a_i)$ 的值即可. 考虑分治取模, 左边每次模 $\prod_{i = l}^{mid} (z - a_i)$, 右边同理. $O(n \log^2 n)$ ~~或许可以利用 class 20240404 转置原理, 但我还不会.~~
+[多项式多点求值](https://www.luogu.com.cn/article/ft3tx54e) 相关知识点.
 
 ## T3([c](https://www.luogu.com.cn/problem/U415119) 或 [月球车站](https://uoj.ac/problem/683)) [不会]
 
