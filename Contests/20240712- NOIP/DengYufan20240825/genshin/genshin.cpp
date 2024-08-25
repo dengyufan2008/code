@@ -30,18 +30,20 @@ int n, m, ans, w[26], a[kMaxN];
 
 void Mul(A &x, A &y, A &z) {
   for (int i = 0; i < 5; i++) {
-    for (int j = 0; j < 5; j++) {
+    for (int j = 0; j < kLeft[i]; j++) {
       x.a[i][j] = 0;
     }
   }
+  x.a[4][4] = 1;
   for (int i = 0; i < 4; i++) {
     for (int j = kLeft[i]; j < 5; j++) {
+      long long s = 0;
       for (int k = 0; k < 5; k++) {
-        x.a[i][j] = (x.a[i][j] + 1LL * y.a[i][k] * z.a[k][j]) % kMod;
+        s += 1LL * y.a[i][k] * z.a[k][j];
       }
+      x.a[i][j] = s % kMod;
     }
   }
-  x.a[4][4] = 1;
 }
 
 class Seg {
