@@ -102,7 +102,7 @@ struct SAM {
     int l, r;
     vector<D> d;
   } h[kMaxN << 1];
-  int k, q[kMaxN << 1];
+  int k;
 
   void Build() {
     int r = k = 1;
@@ -156,41 +156,19 @@ struct SAM {
     }
   }
 
-  void Sort() {
-    int l = 1, r = 0, c[kMaxN << 1] = {};
-    for (int i = 1; i <= k; i++) {
-      for (int j = 0; j < 26; j++) {
-        v[i].e[j] && c[v[i].e[j]]++;
-      }
-    }
-    for (int i = 1; i <= k; i++) {
-      !c[i] && (q[++r] = i);
-    }
-    for (; l <= r; l++) {
-      int i = q[l];
-      for (int j = 0; j < 26; j++) {
-        if (!--c[v[i].e[j]]) {
-          q[++r] = v[i].e[j];
-        }
-      }
-    }
-  }
-
   void Div() {
     LL in[kMaxN << 1] = {}, out[kMaxN << 1] = {};
     int pre[kMaxN << 1] = {}, suf[kMaxN << 1] = {};
     for (int i = 1; i <= k; i++) {
-      int x = q[i];
-      in[x]++;
+      in[i]++;
       for (int j = 0; j < 26; j++) {
-        v[x].e[j] && (in[v[x].e[j]] += in[x]);
+        v[i].e[j] && (in[v[i].e[j]] += in[i]);
       }
     }
     for (int i = k; i >= 1; i--) {
-      int x = q[i];
-      out[x]++;
+      out[i]++;
       for (int j = 0; j < 26; j++) {
-        v[x].e[j] && (out[x] += out[v[x].e[j]]);
+        v[i].e[j] && (out[i] += out[v[i].e[j]]);
       }
     }
     for (int i = 1; i <= k; i++) {
@@ -203,22 +181,22 @@ struct SAM {
       }
     }
     for (int i = 1; i <= k; i++) {
-      int x = q[i], s;
-      if (suf[pre[x]] != x) {
-        v[x].r = x, v[x].d = 0, s = 1;
-        h[x].d.push_back({x, v[x].w, v[x].c});
-        for (int y = x, z = suf[x]; pre[z] == y;) {
-          D d = h[x].d.back();
-          h[x].d.push_back({z, d.w + v[z].w + 1LL * v[z].c * s, d.c + v[z].c});
-          v[z].r = x, v[z].d = s, y = z, z = suf[z], s++;
+      int s;
+      if (suf[pre[i]] != i) {
+        v[i].r = i, v[i].d = 0, s = 1;
+        h[i].d.push_back({i, v[i].w, v[i].c});
+        for (int x = i, y = suf[i]; pre[y] == x;) {
+          D d = h[i].d.back();
+          h[i].d.push_back({y, d.w + v[y].w + 1LL * v[y].c * s, d.c + v[y].c});
+          v[y].r = i, v[y].d = s, x = y, y = suf[y], s++;
         }
-        int y = h[x].d.back().x;
-        h[x].l = v[y].mx - s + 2, h[x].r = v[y].mx;
+        int x = h[i].d.back().x;
+        h[i].l = v[x].mx - s + 2, h[i].r = v[x].mx;
       }
     }
   }
 
-  void Init() { Build(), Calc(), Sort(), Div(); }
+  void Init() { Build(), Calc(), Div(); }
 } sam;
 
 LL Ask(int l, int r) {
