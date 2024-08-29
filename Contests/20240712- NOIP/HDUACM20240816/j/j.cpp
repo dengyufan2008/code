@@ -11,7 +11,7 @@ ofstream cout("j.out");
 const LL kMaxN = 4001, kInf = 1e18;
 struct V {
   int s, b;
-  LL f[kMaxN << 1][2];  // +:out -:in 0:neednt 1:root 2:need
+  LL f[kMaxN << 1][2];  // +:out -:in 0:neednt 1:need
   vector<pair<int, int>> e;
 } v[kMaxN];
 int t, n;
