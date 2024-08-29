@@ -1,3 +1,4 @@
+// O((n+q) \log n)
 #include <algorithm>
 #include <fstream>
 #include <vector>
