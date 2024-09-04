@@ -297,3 +297,35 @@ $$cnt = \det(D - A){2, 3, 4, ..., n \choose 2, 3, 4, ..., n}$$
 故求完行列式之后再乘几个阶乘即可.
 
 $O(n^3)$.
+
+# 保序回归
+
+给定长度为 $n$ 的 $v_i$, $w_i$ 和 $y_i$ 以及一个正整数 $p$ 和偏序关系 $\preceq$ (事实上可以理解为 $\le$), 构造一个长度为 $n$ 的序列 $x_i$ 满足 $v_i \preceq v_j \Rightarrow x_i \preceq x_j$, 最小化 $\sum_{i=1}^n w_i |x_i-y_i|^p$.
+
+$1 \le n \le 10^5$, $1 \le v_i \le n$, 答案值域在 $10^{18}$ 以内.
+
+---
+
+考虑人为地加上一个额外限制, $\forall 1 \le i \le n, l \le x_i \le r$. 称这个问题为 $\mathcal P[l, r]$. 定义函数 
+$$
+F(x, l, r) = \begin{cases}
+l \space (x < l)
+\\
+x \space (l \le x \le r)
+\\
+r \space (x > r)
+\end{cases}$$
+.
+
+设 $\mathcal P[-\infty, \infty]$ 的一组最优解为 $x_i$, 则 $F(x_i, l, r)$ 为 $\mathcal P[l, r]$ 的一组最优解.
+
+  <details><summary>Proof</summary>
+
+  > 合法性显然. 由于 $w_i |x_i-y_i|^p$ 为凸函数, 则离原先的最优解越远越劣, 故得证. 仅为感性证明, 具体证明参考 [这篇博客](https://blog.csdn.net/qq_42101694/article/details/105294249).
+  </details>
+
+故考虑整体二分, 每次计算 $\mathcal P[mid, mid+1]$ 的答案, 若 $x_i' = mid$ 则说明 $x_i \le mid$, 否则 $x_i > mid$. 对于其他的不在当前二分区间里的元素, 其对在区间里的元素没有限制作用且贡献固定, 则无需考虑.
+
+考虑如何求解 $\mathcal P[mid, mid+1]$. 由于每个元素只有两种取值, 则事先将所有元素按 $v_i$ 排序, 对每个前缀求出都取 $mid$ 的贡献, 后缀同理. 枚举分界点容易计算最优解. 单次 $O(cnt)$, 其中 $cnt$ 为在二分区间内的元素个数.
+
+总时间复杂度 $O(n \log V)$.
