@@ -10,4 +10,4 @@
   
   对于一类求每种方案的贡献和的计数题, 若一种方案的贡献不好求, 考虑构造一种 "维护一个 (几个) 变量并进行操作贡献答案" 的类自动机算法, 从而可以 Dp 转移.
   
-  比如, 例题中的类自动机算法为 $s \leftarrow \max(s + a_i, i)$, $ans \leftarrow ans + s - (n + i - 1)$, $s \leftarrow \min(s, n + i - 1)$. [例](https://qoj.ac/problem/8820) & [解](https://www.cnblogs.com/275307894a/p/18267708)
+  比如, 例题中的类自动机算法为 $s \leftarrow \max(s + a_i, i)$, $ans \leftarrow ans + s - (n + i - 1)$, $s \leftarrow \min(s, n + i - 1)$. [例](https://qoj.ac/problem/8820) & [解](https://www.luogu.com.cn/article/68ltezbd)
