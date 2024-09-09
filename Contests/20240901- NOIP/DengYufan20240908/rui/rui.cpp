@@ -24,31 +24,14 @@ bool a[kMaxN];
 vector<int> v;
 priority_queue<Q> q1, q2;
 
-void Calc12() {
-  int s0[kMaxN] = {}, s1[kMaxN] = {}, f[4][kMaxN][2][2] = {};
+void Calc1() {
+  int s0[kMaxN] = {}, s1[kMaxN] = {};
   for (int i = 1; i <= n; i++) {
     s0[i] = s0[i - 1], s1[i] = s1[i - 1];
     a[i] ? s1[i]++ : s0[i]++;
   }
-  fill(&f[0][1][0][0], &f[0][n][1][1] + 1, -kInf);
-  for (int i = 1; i <= 3; i++) {
-    int f00 = 0, f01 = -kInf, f10 = 0, f11 = -kInf;
-    for (int j = 1; j <= n; j++) {
-      f[i][j][0][0] = f00 + s0[j];
-      f[i][j][0][1] = f01 + s0[j];
-      f[i][j][1][0] = f10 + s1[j];
-      f[i][j][1][1] = f11 + s1[j];
-      f00 = max(f00, f[i - 1][j][1][0] - s0[j]);
-      f01 = max(f01, f[i - 1][j][1][1] - s0[j]);
-      f10 = max(f10, f[i - 1][j][0][0] - s1[j]);
-      f11 = max(f11, f[i - 1][j][0][1] - s1[j]);
-      f11 = max(f11, f[i - 1][j][0][0] - s1[j]);
-    }
-  }
-  for (int i = 1; i <= 2; i++) {
-    int f0 = max(f[i][n][0][0], f[i][n][1][0]);
-    int f1 = max(f[i + 1][n][0][1], f[i + 1][n][1][1]);
-    ans[i] = max(f0, f1);
+  for (int i = 0; i <= n; i++) {
+    ans[1] = max(ans[1], s0[i] - s1[i] + s1[n]);
   }
 }
 
@@ -67,7 +50,7 @@ bool Empty() { return q1.size() == q2.size(); }
 Q Top() { return Update(), q1.top(); }
 
 void Calc(int l, int r, int o, int w) {
-  if (m - o <= 2) {
+  if (m - o <= 1) {
     return;
   }
   while (!Empty()) {
@@ -78,7 +61,7 @@ void Calc(int l, int r, int o, int w) {
     f[i] = {i, i, i, v[i]}, Push({v[i], i});
   }
   ans[m - o] = max(ans[m - o], n - w);
-  for (int i = 1; i * 2 <= m - o - 3; i++) {
+  for (int i = 1; i * 2 <= m - o - 2; i++) {
     Q t = Top();
     Pop(), w += t.w;
     if (f[t.x].l == l) {
@@ -126,10 +109,6 @@ int main() {
     static char c;
     cin >> c, a[i] = c == '1';
   }
-  if (n == 1) {
-    cout << "1\n";
-  } else {
-    Calc12(), CalcAll();
-  }
+  Calc1(), CalcAll();
   return 0;
 }
