@@ -8,7 +8,7 @@ ofstream cout("a.out");
 
 const int kMaxN = 1e6 + 1, kMod = 998244353;
 int t, n, k;
-LL ans, f[kMaxN], g[kMaxN], fact[kMaxN], _fact[kMaxN];
+LL ans, f[kMaxN], fact[kMaxN], _fact[kMaxN];
 
 LL Pow(LL x, int y = kMod - 2) {
   LL ans = 1;
@@ -38,20 +38,18 @@ int main() {
   }
   cin >> t;
   while (t--) {
-    cin >> n >> k, k = Pow(2, k), ans = 0;
-    f[0] = 1;  // A(k, i)
-    for (int i = 1; i <= n; i++) {
-      f[i] = f[i - 1] * (k - i + 1) % kMod;
-    }
-    g[n] = 1;  // A(k - i, n - i)
+    cin >> n >> k, k = Pow(2, k), f[n] = 1;  // A(k - i, n - i)
     for (int i = n - 1; i >= 0; i--) {
-      g[i] = g[i + 1] * (k - i) % kMod;
+      f[i] = f[i + 1] * (k - i) % kMod;
     }
     for (int i = 0; i <= n; i++) {
-      LL c = C(n, i) * f[i] % kMod * g[i] % kMod * g[i] % kMod;
-      ans = i & 1 ? (ans - c + kMod) % kMod : (ans + c) % kMod;
+      f[i] = f[i] * C(n, i) % kMod;
+      ans = i & 1 ? (ans - f[i] + kMod) % kMod : (ans + f[i]) % kMod;
     }
-    cout << ans * (k - n) % kMod * Pow(k) % kMod << '\n';  // A(k - i, n - i - 1)
+    for (int i = 1; i <= n; i++) {
+      ans = ans * (k - i) % kMod;
+    }
+    cout << ans << '\n', ans = 0;
   }
   return 0;
 }
