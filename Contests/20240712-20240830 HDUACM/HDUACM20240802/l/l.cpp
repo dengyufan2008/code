@@ -22,6 +22,7 @@ vector<int> d1[kMaxN], d2[kMaxN];  // 连通块的行号, 列号
 void Init() {
   cin >> s, t = s, n = s.size();
   s = '~' + s, reverse(t.begin(), t.end()), t = '~' + t;
+  Init!!!!!!;
 }
 
 void CalcSam(V v[kMaxN << 1], int &m, int &r, string &s) {
