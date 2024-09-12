@@ -25,7 +25,8 @@ int main() {
   sort(l + 1, l + n + 1, [](int i, int j) {
     return b[i] < b[j];
   });
-  for (int i = 1; i <= n; i++) {
+  a[l[1]] = 1;
+  for (int i = 2; i <= n; i++) {
     a[l[i]] = a[l[i - 1]] + (b[l[i]] > b[l[i - 1]]);
   }
   f[0][0] = 1;
@@ -35,12 +36,15 @@ int main() {
   for (int i = 1; i <= n; i++) {
     for (int j = a[i]; j >= 1; j -= j & -j) {
       for (int k = 0; k < i; k++) {
-        f[i][k + 1] = (f[i][k + 1] + d[j][k]) % kMod;
+        f[i][k + 1] += d[j][k];
       }
+    }
+    for (int k = 1; k <= i; k++) {
+      f[i][k] %= kMod;
     }
     for (int j = a[i]; j <= n; j += j & -j) {
       for (int k = 1; k <= i; k++) {
-        d[j][k] = (d[j][k] + f[i][k]) % kMod;
+        d[j][k] += f[i][k], d[j][k] >= kMod && (d[j][k] -= kMod);
       }
     }
   }
