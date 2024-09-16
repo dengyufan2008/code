@@ -1,3 +1,4 @@
+// not be done
 #include <algorithm>
 #include <fstream>
 #include <queue>
@@ -8,7 +9,8 @@ using namespace std;
 ifstream cin("l.in");
 ofstream cout("l.out");
 
-const int kMaxN = 1e6 + 1;
+// const LL kMaxN = 1e6 + 1, kInf = 1e18;
+const LL kMaxN = 3 + 1, kInf = 1e18;
 struct V {
   int f, l, e[26];
   int c, r, p[26];                 // endpos 大小, 最大的 endpos, 前缀加字符跳到的儿子
@@ -21,8 +23,9 @@ vector<int> d1[kMaxN], d2[kMaxN];  // 连通块的行号, 列号
 
 void Init() {
   cin >> s, t = s, n = s.size();
+  fill(&v1[1], &v1[m1] + 1, v1[0]);
+  fill(&v2[1], &v2[m2] + 1, v2[0]);
   s = '~' + s, reverse(t.begin(), t.end()), t = '~' + t;
-  Init!!!!!!;
 }
 
 void CalcSam(V v[kMaxN << 1], int &m, int &r, string &s) {
@@ -74,7 +77,7 @@ void FindBlock() {
     }
     for (int i = 0; i < 26; i++) {
       if (v1[x].e[i] && v1[x].l + 1 == v1[v1[x].e[i]].l) {
-        q.push({v1[x].e[i], v2[y].p[i]});
+        q.push({v1[x].e[i], v2[y].p[i] ? v2[y].p[i] : y});
       }
     }
   }
@@ -133,7 +136,7 @@ void Dp() {
 int main() {
   cin.tie(0), cout.tie(0);
   ios::sync_with_stdio(0);
-  cin >> u;
+  v1[0].g = v2[0].g = kInf, cin >> u;
   while (u--) {
     Init();
     CalcSam(v1, m1, r1, s), CalcSam(v2, m2, r2, t);
