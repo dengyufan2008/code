@@ -3,7 +3,6 @@
 #include <random>
 #include <vector>
 #define LL long long
-#define ULL unsigned LL
 
 using namespace std;
 
@@ -14,15 +13,13 @@ const LL kMaxN = 1e5 + 1, kMaxM = 3e5 + 1, kInf = 1e18;
 int n, m, d[kMaxN];
 LL ans;
 vector<pair<int, int>> h[kMaxN];
-mt19937_64 Rand(chrono::steady_clock().now().time_since_epoch().count());
+mt19937 Rand(chrono::steady_clock().now().time_since_epoch().count());
 
 class Treap {
   struct V {
-    LL w, s0, s1;
-    int c;
-    ULL t;
-    int l, r;
-  } v[kMaxN];
+    LL w, s0, s1, t;
+    int c, l, r;
+  } v[kMaxN << 1];
   int k, s;
 
   void Update(int p) {
@@ -54,7 +51,7 @@ class Treap {
     if (!p || !q) {
       return p | q;
     }
-    if (v[p].t < v[q].t) {
+    if (v[p].t <= v[q].t) {
       v[p].r = Merge(v[p].r, q);
       return Update(p), p;
     } else {
@@ -66,14 +63,17 @@ class Treap {
  public:
   void Insert(LL w) {
     auto x = Split(s, w);
-    v[++k] = {w, w, 0, 1, Rand()};
+    v[++k] = {w, w, 0, Rand(), 1, 0, 0};
     x.first = Merge(x.first, k);
     s = Merge(x.first, x.second);
   }
+
   void Erase(LL w) {
     auto x = Split(s, w);
     auto y = Split(x.first, w - 1);
-    s = Merge(y.first, x.second);
+    y.second = Merge(v[y.second].l, v[y.second].r);
+    x.first = Merge(y.first, y.second);
+    s = Merge(x.first, x.second);
   }
   LL Ask() { return v[s].s0; }
 } treap;
@@ -81,7 +81,13 @@ class Matrix {
   LL a[4][4];
 
  public:
-  Matrix() { fill(&a[0][0], &a[4][0], -kInf); }
+  Matrix() {
+    a[0][0] = a[0][1] = a[0][2] = a[0][3] = -kInf;
+    a[1][0] = a[1][1] = a[1][2] = a[1][3] = -kInf;
+    a[2][0] = a[2][1] = a[2][2] = a[2][3] = -kInf;
+    a[3][0] = a[3][1] = a[3][2] = a[3][3] = -kInf;
+  }
+
   Matrix(LL x, LL y) {
     a[0][0] = a[0][1] = a[0][3] = -kInf;
     a[1][1] = a[1][3] = -kInf;
@@ -90,6 +96,7 @@ class Matrix {
     a[0][2] = a[2][1] = a[2][3] = x;
     a[1][0] = a[1][2] = a[3][1] = y;
   }
+
   Matrix operator*(Matrix &x) {
     Matrix ans;
     for (int i = 0; i < 4; i++) {
@@ -102,6 +109,7 @@ class Matrix {
     }
     return ans;
   }
+
   LL Max() {
     LL ans = -kInf;
     for (int i = 0; i < 4; i++) {
@@ -110,14 +118,6 @@ class Matrix {
       }
     }
     return ans;
-  }
-  void Print() {  // CHICK
-    for (int i = 0; i < 4; i++) {
-      for (int j = 0; j < 4; j++) {
-        cout << a[i][j] << " \n"[j == 3];
-      }
-    }
-    cout << '\n';
   }
 };
 class Seg {
@@ -169,23 +169,19 @@ class Seg {
     v[p].w = v[v[p].l].w * v[v[p].r].w;
   }
 
- public:
-  Matrix Ask(int o, int l, int r) {
-    if (l > r) {
-      return Matrix();
-    } else {
-      return Ask(s[o], 1, d[o], l, r);
-    }
+  LL Ask(int o, int l, int r) {
+    return l <= r ? Ask(s[o], 1, d[o], l, r).Max() : 0LL;
   }
 
+ public:
   void Init() {
     for (int i = 1; i <= n; i++) {
       Init(s[i], 1, d[i], i);
       int mid = d[i] >> 1;
-      w[i] = Ask(i, 1, mid).Max() - Ask(i, mid + 1, d[i]).Max();
+      w[i] = Ask(i, 1, mid) - Ask(i, mid + 1, d[i]);
       ans += w[i];
       if (d[i] & 1) {
-        LL _w = Ask(i, 1, mid + 1).Max() - Ask(i, mid + 2, d[i]).Max();
+        LL _w = Ask(i, 1, mid + 1) - Ask(i, mid + 2, d[i]);
         g[i] = _w - w[i], treap.Insert(g[i]);
       }
     }
@@ -195,10 +191,10 @@ class Seg {
     Change(s[o], 1, d[o], x, y);
     int mid = d[o] >> 1;
     ans -= w[o];
-    w[o] = Ask(o, 1, mid).Max() - Ask(o, mid + 1, d[o]).Max();
+    w[o] = Ask(o, 1, mid) - Ask(o, mid + 1, d[o]);
     ans += w[o];
     if (d[o] & 1) {
-      LL _w = Ask(o, 1, mid + 1).Max() - Ask(o, mid + 2, d[o]).Max();
+      LL _w = Ask(o, 1, mid + 1) - Ask(o, mid + 2, d[o]);
       treap.Erase(g[o]), g[o] = _w - w[o], treap.Insert(g[o]);
     }
   }
