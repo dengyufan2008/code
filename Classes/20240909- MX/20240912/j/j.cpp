@@ -29,7 +29,7 @@ LL Calc1() {
   if (n >= 8) {
     ans = Pow(ans, 128, 255);
   } else {
-    for (int i = 1; i <= n; i++) {
+    for (int i = 2; i <= n; i++) {
       ans = Pow(ans, i, 255);
     }
   }
@@ -43,10 +43,10 @@ LL Calc20() {
       d[t++] = i;
     }
   }
-  LL t = 1;
+  int t = 1;
   for (int s = 0; s < 1 << n; s++) {
     if (__builtin_popcount(s) == n >> 1) {
-      LL w = 0;
+      int w = 0;
       for (int i = 0; i < n; i++) {
         if (s >> i & 1) {
           w = (w - d[i] + 257) % 257;
@@ -57,16 +57,16 @@ LL Calc20() {
       t = t * w % 257;
     }
   }
-  for (int i = 1; i <= n >> 1; i++) {
+  for (int i = 2; i <= n >> 1; i++) {
     t = Pow(t, i * i, 257);
   }
   return n & 1 ? Pow(t, n + 1 >> 1, 257) : t;
 }
 
 LL Calc21() {
-  int mx = 0, m = n >> 1;
-  LL s = 0;
-  bitset<257> f[256], g[256];
+  int mx = 0, s = 0;
+  LL m = n >> 1;
+  bitset<257> f[512], g[512];
   for (int i = 1; i < 256; i++) {
     s = (s + 1LL * a[i] * i) % 257;
     if (a[i] > a[mx]) {
@@ -76,14 +76,10 @@ LL Calc21() {
   s = s * 129 % 257, f[0][0] = g[0][0] = 1;
   for (int i = 0; i < 256; i++) {
     if (i != mx) {
-      for (int j = 1; j <= n - a[mx]; j++) {
-        for (int k = 0; k <= a[i] && j + k <= n - a[mx]; k++) {
-          int w = i * k % 257;
-          if (w) {
-            g[j + k] |= f[j] << w | f[j] >> 257 - w;
-          } else {
-            g[j + k] |= f[j];
-          }
+      for (int j = 0; j <= a[i]; j++) {
+        for (int k = 0; j + k <= n - a[mx]; k++) {
+          int w = i * j % 257;
+          g[j + k] |= f[k] << w | f[k] >> 257 - w;
         }
       }
       for (int j = 0; j <= n - a[mx]; j++) {
