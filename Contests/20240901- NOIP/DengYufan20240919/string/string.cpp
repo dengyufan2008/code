@@ -22,13 +22,9 @@ void Manacher() {
   }
   t += '~';
   for (int i = 0, j, k = 0; i < m; i++) {
-    if (i < k) {
-      if (i + d[(j << 1) - i] < k) {
-        d[i] = d[(j << 1) - i];
-        continue;
-      }
-    } else {
-      k = i;
+    if (i < k && i + d[(j << 1) - i] < k) {
+      d[i] = d[(j << 1) - i];
+      continue;
     }
     for (j = i; k < m && k <= (j << 1) && t[k] == t[(j << 1) - k]; k++) {
     }
@@ -86,7 +82,8 @@ void BuildSam() {
 }
 
 LL CalcAns() {
-  int m = n << 1 | 1, d[kMaxN << 1];
+  int m = n << 1 | 1;
+  static int d[kMaxN << 1];
   LL ans = 0;
   string t = "";
   for (int i = 0; i < n; i++) {
@@ -94,13 +91,9 @@ LL CalcAns() {
   }
   t += '~';
   for (int i = 0, j, k = 0; i < m; i++) {
-    if (i < k) {
-      if (i + d[(j << 1) - i] < k) {
-        d[i] = d[(j << 1) - i];
-        continue;
-      }
-    } else {
-      k = i;
+    if (i < k && i + d[(j << 1) - i] < k) {
+      d[i] = d[(j << 1) - i];
+      continue;
     }
     for (j = i; k < m && k <= (j << 1) && t[k] == t[(j << 1) - k]; k++) {
     }
