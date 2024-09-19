@@ -75,6 +75,7 @@ class Treap {
     x.first = Merge(y.first, y.second);
     s = Merge(x.first, x.second);
   }
+
   LL Ask() { return v[s].s0; }
 } treap;
 class Matrix {
@@ -101,7 +102,6 @@ class Matrix {
     Matrix ans;
     for (int i = 0; i < 4; i++) {
       for (int j = 0; j < 4; j++) {
-        ans.a[i][j] = -kInf;
         for (int k = 0; k < 4; k++) {
           ans.a[i][j] = max(ans.a[i][j], a[i][k] + x.a[k][j]);
         }
