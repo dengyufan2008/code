@@ -95,9 +95,6 @@ void Solve1() {
 }
 
 bool C(int s) {
-  if (v[n].w >= v[1].w + 1LL * (s - 1) * k) {
-    return 0;
-  }
   while (!q.empty()) {
     q.pop();
   }
@@ -144,7 +141,7 @@ void Solve2() {
       }
     }
   }
-  int l = 0, r = ++s;
+  int l = max((v[n].w - v[1].w + k - 1) / k + 1, 0), r = ++s;
   while (l <= r) {
     int mid = l + r >> 1;
     if (C(mid)) {

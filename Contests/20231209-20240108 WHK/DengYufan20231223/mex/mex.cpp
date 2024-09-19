@@ -221,17 +221,14 @@ int main() {
   }
   seg1.Init(1, 1, n), seg2.Init(1, 1, n), seg0.Init(1, 1, n);
   for (int i = 1, j = 0; i <= n; i++) {
-    if (!q[i].empty()) {
-      seg2.Change(1, 1, n, i);
-      if (q[i].back().first > j) {
-        j = q[i].back().first;
-        seg1.Change(1, 1, n, i, 1);
-      }
+    if (!q[i].empty() && q[i].back().first > j) {
+      j = q[i].back().first;
+      seg1.Change(1, 1, n, i, 1);
     }
   }
   for (int i = n; i >= 0; i--) {
     for (int j : p[i]) {
-      seg1.Decrease(1, 1, n, j), seg0.Decrease(1, 1, n, j);
+      seg0.Decrease(1, 1, n, j), seg1.Decrease(1, 1, n, j);
     }
     for (int j = seg1.Ask(1, 1, n, i); j != kNull; j = seg1.Ask(1, 1, n, i)) {
       ans[q[j].back().second] = i, q[j].pop_back();
