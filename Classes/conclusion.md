@@ -197,8 +197,12 @@
   
   比如, 例题中的类自动机算法为 $s \leftarrow \max(s + a_i, i)$, $ans \leftarrow ans + s - (n + i - 1)$, $s \leftarrow \min(s, n + i - 1)$. [例](https://qoj.ac/problem/8820) & [解](https://www.luogu.com.cn/article/68ltezbd)
 
+# 20240910 [wxl 好题分享](https://www.luogu.com.cn/paste/oyuk6nk7)
+
 # 20240912 [梦熊题单](https://www.luogu.com.cn/paste/5oyp5wr8)
 
 - 当题目的模数是一个合数, 且与题中的某些常数有较大联系时, 不妨将其拆成若干互质数的乘积并使用 CRT. [例](https://qoj.ac/problem/4888)
 
 - 当题中给的操作有看似很合理的性质 (如本题每次都会选 $m$ 个) 时, 应当多思考其的正确性, 有可能会少考虑情况. [例](https://qoj.ac/problem/8683)
+
+# 20240918 [qyb 好题分享](https://www.luogu.com.cn/paste/6szkjlpz)
