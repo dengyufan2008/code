@@ -55,7 +55,9 @@ $n$ 个点边数为奇数的有标号无向连通图个数 $F_1(n)$ 和边数为
 
 [Sharing](https://www.luogu.com.cn/paste/frklj4he)
 
-![](https://luogu.wao3.cn/api/practice?id=250810&dark_mode=true)
+---
+
+![](https://moe.jitsu.top/img)
 
 # *DengYufan's Introduction*
 
@@ -100,4 +102,4 @@ $n$ 个点边数为奇数的有标号无向连通图个数 $F_1(n)$ 和边数为
 
 - [Fast Mul](https://www.luogu.com.cn/paste/bmjrtlws)
 
-## *Last Update : 2024.9.3*
+## *Last Update : 2024.9.20*
