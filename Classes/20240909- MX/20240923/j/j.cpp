@@ -1,44 +1,32 @@
-#include <algorithm>
 #include <fstream>
 #include <vector>
 
 using namespace std;
 
-ifstream cin("medrcy.in");
-ofstream cout("medrcy.out");
+ifstream cin("j.in");
+ofstream cout("j.out");
 
-const int kMaxN = 1001, kMaxM = 3001;
-int t, n, m, k;
-pair<int, int> a[kMaxM];
+const int kMaxN = 1001;
+int n, m, k;
+pair<int, int> p[kMaxN], a[kMaxN * kMaxN];
 class G {
-  int s, w, c[kMaxN], b[kMaxN];
-  bool d[kMaxN], t[kMaxN], ans[kMaxN];
+  int s, w, c[kMaxN];
+  bool d[kMaxN], b[kMaxN], t[kMaxN], ans[kMaxN];
   vector<int> l, e[kMaxN];
   vector<vector<int>> r;
 
-  int T(int x) {
-    if (b[x] == 1) {
+  int T(int x, bool u) {
+    if (b[x]) {
       return 0;
     }
     int o = b[x] = 1;
+    t[x] = u;
     for (int i : e[x]) {
       if (c[i]) {
-        o += T(i);
+        o += T(i, !u);
       }
     }
     return o;
-  }
-
-  void S(int x, int o) {
-    if (b[x] == 2) {
-      return;
-    }
-    t[x] |= o, b[x] = 2;
-    for (int i : e[x]) {
-      if (c[i]) {
-        S(i, o ^ 1);
-      }
-    }
   }
 
  public:
@@ -73,27 +61,19 @@ class G {
     }
     for (int i = 1; i <= n; i++) {
       if (!b[i] && c[i] == 1) {
-        int x = T(i);
-        o += x >> 1;
-        S(i, (x & 1 ^ 1) << 1);
+        o += T(i, 0) >> 1;
       }
     }
     for (int i = 1; i <= n; i++) {
       if (!b[i] && c[i] == 2) {
-        o += T(i) + 1 >> 1;
-        S(i, 2);
+        o += T(i, 0) + 1 >> 1;
       }
     }
-    if (o > w) {
-      return;
-    } else if (o < w) {
+    if (o < w) {
       w = o;
       for (int i = 1; i <= n; i++) {
-        ans[i] = 0;
+        ans[i] = t[i] || d[i];
       }
-    }
-    for (int i = 1; i <= n; i++) {
-      ans[i] |= t[i] || d[i];
     }
   }
 
@@ -147,22 +127,25 @@ class G {
     v.swap(l);
   }
 
-  void Print() {
-    if (w > k) {
-      cout << -1 << '\n';
-    } else {
-      int o = 0;
-      for (int i = 1; i <= n; i++) {
-        o += ans[i];
-      }
-      cout << w << ' ' << o << '\n';
-      for (int i = 1; i <= n; i++) {
-        if (ans[i]) {
-          cout << i << ' ';
-        }
-      }
-      cout << '\n';
+  bool Valid() { return w <= k; }
+
+  bool Print() {
+    int o = 0;
+    for (int i = 1; i <= n; i++) {
+      o += ans[i];
     }
+    for (int i = 1; i <= n && o < k; i++) {
+      if (!ans[i]) {
+        ans[i] = 1, o++;
+      }
+    }
+    for (int i = 1; i <= n; i++) {
+      if (ans[i]) {
+        cout << i << ' ';
+      }
+    }
+    cout << '\n';
+    return 0;
   }
 } g;
 
@@ -178,18 +161,40 @@ void S() {
   g.Delete2(x), S(), g.Undo2();
 }
 
+long long Dis(pair<int, int> x, pair<int, int> y) {
+  return 1LL * (x.first - y.first) * (x.first - y.first) +
+         1LL * (x.second - y.second) * (x.second - y.second);
+}
+
+bool C(int x, bool o) {
+  m = 0, g.Clear();
+  for (int i = 1; i <= n; i++) {
+    for (int j = i + 1; j <= n; j++) {
+      if (Dis(p[i], p[j]) > x) {
+        a[++m] = {i, j};
+      }
+    }
+  }
+  g.AddEdge(), S();
+  return o ? g.Print() : g.Valid();
+}
+
 int main() {
   cin.tie(0), cout.tie(0);
   ios::sync_with_stdio(0);
-  cin >> t;
-  while (t--) {
-    g.Clear();
-    cin >> n >> m >> k;
-    for (int i = 1; i <= m; i++) {
-      cin >> a[i].first >> a[i].second;
-    }
-    sort(a + 1, a + m + 1), m = unique(a + 1, a + m + 1) - a - 1;
-    g.AddEdge(), S(), g.Print();
+  cin >> n >> k;
+  for (int i = 1; i <= n; i++) {
+    cin >> p[i].first >> p[i].second;
   }
+  int l = 0, r = INT_MAX;
+  while (l <= r) {
+    int mid = l + r >> 1;
+    if (C(mid, 0)) {
+      r = mid - 1;
+    } else {
+      l = mid + 1;
+    }
+  }
+  C(l, 1);
   return 0;
 }
