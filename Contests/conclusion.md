@@ -2828,7 +2828,7 @@ $O(n^3)$ 被卡常力 (悲).
 
 并查集对应连边的做法曾经考过, 但忘记在哪一场了.
 
-## T4(seq) & [解](https://www.luogu.com/paste/3bbmxaso) [分类讨论]
+## T4(seq) & [解](https://www.luogu.com.cn/paste/3bbmxaso) [分类讨论]
 
 期望:36 实际:12 难度:5 用时:1h
 

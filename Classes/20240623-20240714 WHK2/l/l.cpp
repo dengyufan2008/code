@@ -2,8 +2,8 @@
 
 using namespace std;
 
-ifstream cin("k.in");
-ofstream cout("k.out");
+ifstream cin("l.in");
+ofstream cout("l.out");
 
 const int kMaxN = 3e5 + 1;
 int n, s, t, a[kMaxN], g[kMaxN];
