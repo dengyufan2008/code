@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <fstream>
 #include <vector>
 #define LL long long
@@ -7,10 +8,14 @@ using namespace std;
 ifstream cin("mex.in");
 ofstream cout("mex.out");
 
-const int kMaxN = 201, kMod = 998244353;
+const int kMaxN = 201, kMaxM = 20, kMod = 998244353;
+struct V {
+  LL f[kMaxN];
+  vector<int> e;
+} v[kMaxN];
 int n, c[kMaxN];
+LL f[1 << kMaxM], g[1 << kMaxM];
 LL fact[kMaxN], _fact[kMaxN];
-pair<int, int> e[kMaxN];
 
 LL Pow(LL x, int y = kMod - 2) {
   LL ans = 1;
@@ -27,115 +32,73 @@ LL C(int x, int y) {
   return fact[x] * _fact[y] % kMod * _fact[x - y] % kMod;
 }
 
-namespace Sub1 {
-const int kMaxN = 201;
-LL f[kMaxN];
-
-int main() {
-  for (int i = 0; i <= n; i++) {
-    for (int j = 0; j <= i; j++) {
-      LL w = C(i, j) * Pow(n - j + 1, n - 1) % kMod;
-      if (j & 1) {
-        f[i] = (f[i] - w + kMod) % kMod;
-      } else {
-        f[i] = (f[i] + w) % kMod;
-      }
-    }
-  }
-  for (int i = 0; i < n; i++) {
-    f[i] = (f[i] - f[i + 1] + kMod) % kMod;
-  }
-  for (int i = 0; i <= n; i++) {
-    cout << f[i] << '\n';
-  }
-  return 0;
-}
-}  // namespace Sub1
-
-namespace Sub2 {
-const int kMaxN = 201, kMaxM = 17;
-struct V {
-  LL f[1 << kMaxM];
-  vector<int> e;
-} v[kMaxN];
-int pop[1 << kMaxM];
-LL g[1 << kMaxM];
-
-void T(int f, int x) {
-  if (v[x].e.empty() || v[x].e.size() == 1 && v[x].e[0] == f) {
-    for (int i = 0; i <= n; i++) {
-      v[x].f[1 << min(i, kMaxM - 1)]++;
-    }
-    for (int i = 0; i < kMaxM; i++) {
-      for (int s = 0; s < 1 << kMaxM; s++) {
-        if (s >> i & 1) {
-          v[x].f[s] += v[x].f[s ^ 1 << i];
-        }
-      }
-    }
-    return;
-  }
+void Del(int fa, int x) {
+  static vector<int> e;
   for (int i : v[x].e) {
-    if (i != f) {
-      T(x, i);
+    if (i != fa && !v[i].e.empty()) {
+      e.push_back(i);
     }
   }
-  for (int s = 0; s < 1 << kMaxM; s++) {
-    g[s] = 1;
-  }
-  for (int i : v[x].e) {
-    if (i != f) {
-      for (int s = 0; s < 1 << kMaxM; s++) {
-        g[s] = g[s] * v[i].f[s] % kMod;
-      }
-    }
-  }
-  for (int i = kMaxM - 1; i >= 0; i--) {
-    for (int s = 0; s < 1 << i; s++) {
-      LL w = g[~(-1 << kMaxM) ^ s];
-      if (pop[s] & 1) {
-        v[x].f[1 << i] = (v[x].f[1 << i] - w + kMod) % kMod;
-      } else {
-        v[x].f[1 << i] = (v[x].f[1 << i] + w) % kMod;
-      }
-    }
-  }
-  for (int i = 1; i < kMaxM; i++) {
-    v[x].f[1 << i - 1] = (v[x].f[1 << i - 1] - v[x].f[1 << i] + kMod) % kMod;
-  }
-  for (int i = 0; i < kMaxM; i++) {
-    for (int s = 0; s < 1 << kMaxM; s++) {
-      if (s >> i & 1) {
-        v[x].f[s] = (v[x].f[s] + v[x].f[s ^ 1 << i]) % kMod;
-      }
-    }
-  }
+  v[x].e.swap(e), e.clear();
 }
 
-int main() {
-  for (int s = 1; s < 1 << kMaxM; s++) {
-    pop[s] = pop[s ^ (s & -s)] + 1;
+int CalcB(int x) {
+  fill(&c[0], &c[n], 0);
+  for (int i : v[x].e) {
+    c[v[i].e.size()]++;
   }
-  for (int i = 1; i < n; i++) {
-    v[e[i].first].e.push_back(e[i].second);
-    v[e[i].second].e.push_back(e[i].first);
-  }
-  T(0, 1);
-  if (n < kMaxM) {
-    for (int i = 0; i <= n; i++) {
-      cout << v[1].f[1 << i] << '\n';
-    }
-  } else {
-    for (int i = 0; i < kMaxM; i++) {
-      cout << v[1].f[1 << i] << '\n';
-    }
-    for (int i = kMaxM; i <= n; i++) {
-      cout << 0 << '\n';
+  int b = n - 1;
+  for (int i = n - 1; i >= 1; i--) {
+    c[i] += c[i + 1];
+    if (i + c[i] < b + c[b]) {
+      b = i;
     }
   }
-  return 0;
+  if (b + c[b] > kMaxM) {
+    cout << "shit " << x << '\n';
+    exit(0);
+  }
+  return b;
 }
-}  // namespace Sub2
+
+void T(int fa, int x) {
+  for (int i : v[x].e) {
+    if (i != fa) {
+      if (v[i].e.size() > 1) {
+        T(x, i);
+      } else {
+        v[i].e.clear();
+      }
+    }
+  }
+  Del(fa, x);
+  int b = CalcB(x), l = c[b], w = c[0] - c[1];
+  sort(v[x].e.begin(), v[x].e.end(), [](int i, int j) {
+    return v[i].e.size() > v[j].e.size();
+  });
+  f[0] = 1;
+  for (int s = 1; s < 1 << b; s++) {
+    f[s] = 0;
+  }
+  for (int o = l; o < v[x].e.size(); o++) {
+    int i = v[x].e[o];
+    for (int s = (1 << b) - 1; s >= 0; s--) {
+      v[i].f[0] = (v[i].f[0] - 1 + kMod) % kMod;
+      for (int j = 0; j <= v[i].e.size(); j++) {
+        f[s | 1 << j] = (f[s | 1 << j] + f[s] * v[i].f[j]) % kMod;
+      }
+    }
+  }
+  for (int s = 0; s < 1 << b; s++) {
+    g[0] = f[s];
+    for (int t = 1; t < 1 << l; t++) {
+      g[t] = 0;
+    }
+    for (int i = 0; i <= v[x].e.size(); i++) {
+      ;
+    }
+  }
+}
 
 int main() {
   cin.tie(0), cout.tie(0);
@@ -150,18 +113,16 @@ int main() {
   }
   cin >> n;
   for (int i = 1, x, y; i < n; i++) {
-    cin >> x >> y, e[i] = {x, y};
-    c[x]++, c[y]++;
+    cin >> x >> y;
+    v[x].e.push_back(y), v[y].e.push_back(x);
   }
   if (n == 1) {
-    for (int i = 0; i <= n; i++) {
-      cout << 1 << '\n';
-    }
+    cout << "1\n1\n";
     return 0;
-  } else if (c[1] == n - 1) {
-    return Sub1::main();
-  } else {
-    return Sub2::main();
+  }
+  T(0, 1);
+  for (int i = 0; i <= n; i++) {
+    cout << v[1].f[i] << '\n';
   }
   return 0;
 }
