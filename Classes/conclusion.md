@@ -220,3 +220,7 @@
 - 对于 删除若干元素 使得 剩下元素两两之间都需满足某个限制 的题目, 考虑将不满足限制的元素连边, 则成为最小点覆盖问题. [例](https://www.luogu.com.cn/problem/CF164D) & 20240323 T3
 
 - [杨表](https://www.luogu.com.cn/article/ft3tx54e) 相关知识点. [例](https://www.luogu.com.cn/problem/P3774)
+
+# 20240924 [hjc 好题分享](https://www.luogu.com.cn/paste/6w8amjif)
+
+# 20240929 [梦熊题单](https://www.luogu.com.cn/paste/od08eg6w)
