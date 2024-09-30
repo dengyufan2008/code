@@ -55,6 +55,7 @@ int main() {
     ans = (ans + w1 * w2) % kMod;
   }
   ans = (ans + fact[n - m]) * f[m] % kMod;
-  cout << ans << '\n';
+  // cout << ans << '\n';
+  cout << fact[n] * _fact[m] % kMod * f[m] % kMod << '\n';
   return 0;
 }

@@ -6,37 +6,32 @@ ifstream cin("c.in");
 ofstream cout("c.out");
 
 const int kMaxN = 1001, kInf = 1e9;
-int n, x, y, ans[2], a[2][kMaxN][kMaxN];
-int f[2][kMaxN][kMaxN], g[2][kMaxN][kMaxN];
+int n, x, y, a[kMaxN][kMaxN][2];
+int f[kMaxN][kMaxN][2];
 
-int Calc(bool o) {
+void Calc() {
   for (int i = 1; i <= n; i++) {
     for (int j = 1; j <= n; j++) {
       if (i == 1 && j == 1) {
-        f[o][i][j] = a[o][i][j], g[o][i][j] = a[o ^ 1][i][j];
+        f[i][j][0] = a[i][j][0], f[i][j][1] = a[i][j][1];
         continue;
       }
-      int f0 = i > 1 ? f[o][i - 1][j] + a[o][i][j] : kInf;
-      int f1 = j > 1 ? f[o][i][j - 1] + a[o][i][j] : kInf;
-      f[o][i][j] = min(min(f0, f1), kInf), g[o][i][j] = kInf;
-      if (f[o][i][j] == f0) {
-        g[o][i][j] = min(g[o][i][j], g[o][i - 1][j] + a[o ^ 1][i][j]);
-      }
-      if (f[o][i][j] == f1) {
-        g[o][i][j] = min(g[o][i][j], g[o][i][j - 1] + a[o ^ 1][i][j]);
-      }
+      static int f0, f1;
+      f0 = i > 1 ? f[i - 1][j][0] + a[i][j][0] : kInf;
+      f1 = j > 1 ? f[i][j - 1][0] + a[i][j][0] : kInf;
+      f[i][j][0] = min(min(f0, f1), kInf);
+      f0 = i > 1 ? f[i - 1][j][1] + a[i][j][1] : kInf;
+      f1 = j > 1 ? f[i][j - 1][1] + a[i][j][1] : kInf;
+      f[i][j][1] = min(min(f0, f1), kInf);
     }
   }
-  return min(f[o][n][n], g[o][n][n]);
 }
 
 void Print(int n, int m, bool o) {
   if (n > 1) {
-    if (f[o][n - 1][m] + a[o][n][m] == f[o][n][m]) {
-      if (g[o][n - 1][m] + a[o ^ 1][n][m] == g[o][n][m]) {
-        Print(n - 1, m, o), cout << 'D';
-        return;
-      }
+    if (f[n - 1][m][o] + a[n][m][o] == f[n][m][o]) {
+      Print(n - 1, m, o), cout << 'D';
+      return;
     }
   }
   if (m > 1) {
@@ -54,20 +49,20 @@ int main() {
       cin >> w;
       if (w) {
         for (; !(w % 2); w /= 2) {
-          a[0][i][j]++;
+          a[i][j][0]++;
         }
         for (; !(w % 5); w /= 5) {
-          a[1][i][j]++;
+          a[i][j][1]++;
         }
       } else {
-        x = i, y = j, a[0][i][j] = a[1][i][j] = kInf;
+        x = i, y = j, a[i][j][0] = a[i][j][1] = kInf;
       }
     }
   }
-  ans[0] = Calc(0), ans[1] = Calc(1);
-  if (!x || !min(ans[0], ans[1])) {
-    cout << min(ans[0], ans[1]) << '\n';
-    Print(n, n, ans[0] > ans[1]), cout << '\n';
+  Calc();
+  if (!x || !min(f[n][n][0], f[n][n][1])) {
+    cout << min(f[n][n][0], f[n][n][1]) << '\n';
+    Print(n, n, f[n][n][0] > f[n][n][1]), cout << '\n';
   } else {
     cout << 1 << '\n';
     cout << string(x - 1, 'D') << string(y - 1, 'R');
