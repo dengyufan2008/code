@@ -1,105 +1,75 @@
 #include <fstream>
-#include <vector>
-#define LL long long
 
 using namespace std;
 
 ifstream cin("a.in");
 ofstream cout("a.out");
 
-const int kMaxN = 1e5 + 1;
-struct E {
-  int x, y;
-  LL w;
-} e[kMaxN];
-struct V {
-  int h, l, r;
-  LL d;
-  vector<pair<int, LL>> e;
-} v[kMaxN];
-struct D {
-  LL mx, mn, l, r, lr, t;
-} d[kMaxN << 3];
-int n, m;
-LL k;
-vector<int> a;
+const int kMaxN = 1001, kMod = 1e9 + 7;
+int t, n, ans, a[kMaxN], d[kMaxN], w[kMaxN], f[kMaxN][kMaxN];
 
-void T(int f, int x) {
-  v[x].h = v[f].h + 1, v[x].l = v[x].r = a.size(), a.push_back(x);
-  for (auto i : v[x].e) {
-    if (i.first != f) {
-      v[i.first].d = v[x].d + i.second;
-      T(x, i.first);
-      v[x].r = a.size(), a.push_back(x);
-    }
+bool In(int x, int l, int r) {
+  if (l <= r) {
+    return x >= l && x <= r;
+  } else {
+    return x >= l || x <= r;
   }
 }
 
-void Pushup(int p) {
-  d[p].mx = max(d[p << 1].mx, d[p << 1 | 1].mx);
-  d[p].mn = min(d[p << 1].mn, d[p << 1 | 1].mn);
-  d[p].l = max(d[p << 1].l, d[p << 1 | 1].l);
-  d[p].l = max(d[p].l, d[p << 1].mx - (d[p << 1 | 1].mn << 1));
-  d[p].r = max(d[p << 1].r, d[p << 1 | 1].r);
-  d[p].r = max(d[p].r, d[p << 1 | 1].mx - (d[p << 1].mn << 1));
-  d[p].lr = max(d[p << 1].lr, d[p << 1 | 1].lr);
-  d[p].lr = max(d[p].lr, d[p << 1].mx + d[p << 1 | 1].r);
-  d[p].lr = max(d[p].lr, d[p << 1].l + d[p << 1 | 1].mx);
-}
-
-void Tag(int p, LL t) {
-  d[p].mx += t, d[p].mn += t, d[p].l -= t, d[p].r -= t, d[p].t += t;
-}
-
-void Pushdown(int p) {
-  Tag(p << 1, d[p].t), Tag(p << 1 | 1, d[p].t), d[p].t = 0;
-}
-
-void Init(int p, int l, int r) {
-  if (l == r) {
-    return Tag(p, v[a[l]].d);
+bool Valid(int x, int l, int r, bool o) {
+  if ((x <= (n + 1 >> 1)) ^ o) {
+    return (d[x] == 1 || !In(a[d[x] - 1], l, r)) &&
+           (d[x] == n || !In(a[d[x] + 1], l, r));
+  } else {
+    return (d[x] == 1 || In(a[d[x] - 1], l, r)) &&
+           (d[x] == n || In(a[d[x] + 1], l, r));
   }
-  int mid = l + r >> 1;
-  Init(p << 1, l, mid), Init(p << 1 | 1, mid + 1, r);
-  Pushup(p);
-}
-
-void Add(int p, int l, int r, int _l, int _r, LL w) {
-  if (l >= _l && r <= _r) {
-    return Tag(p, w);
-  }
-  Pushdown(p);
-  int mid = l + r >> 1;
-  if (mid >= _l) {
-    Add(p << 1, l, mid, _l, _r, w);
-  }
-  if (mid < _r) {
-    Add(p << 1 | 1, mid + 1, r, _l, _r, w);
-  }
-  Pushup(p);
 }
 
 int main() {
   cin.tie(0), cout.tie(0);
   ios::sync_with_stdio(0);
-  cin >> n >> m >> k;
-  for (int i = 1; i < n; i++) {
-    cin >> e[i].x >> e[i].y >> e[i].w;
-    v[e[i].x].e.push_back({e[i].y, e[i].w});
-    v[e[i].y].e.push_back({e[i].x, e[i].w});
-  }
-  a.resize(1), T(0, 1);
-  for (int i = 1; i < n; i++) {
-    v[e[i].x].h < v[e[i].y].h ? swap(e[i].x, e[i].y) : void();
-  }
-  Init(1, 1, (n << 1) - 1);
-  for (int i = 1, x; i <= m; i++) {
-    static long long w, ans = 0;
-    cin >> x >> w;
-    x = (x + ans) % (n - 1) + 1, w = (w + ans) % k;
-    Add(1, 1, (n << 1) - 1, v[e[x].x].l, v[e[x].x].r, w - e[x].w);
-    e[x].w = w;
-    cout << (ans = d[1].lr) << '\n';
+  cin >> t;
+  while (t--) {
+    cin >> n, ans = 0;
+    for (int i = 1; i <= n; i++) {
+      w[i] = 0, a[i] = i & 1 ? n - i + 2 >> 1 : n + i + 1 >> 1, d[a[i]] = i;
+    }
+    for (int i = 1, x; i <= n; i++) {
+      cin >> x, ~x && (w[x] = a[i]);
+    }
+    for (bool o : {0, 1}) {
+      for (int i = 1 + o; i <= n; i += 2) {
+        if (!w[1] || w[1] == a[i]) {
+          f[a[i]][a[i]] = 1;
+        }
+      }
+      for (int l = 2; l <= n; l++) {
+        for (int i = 1; i <= n; i++) {
+          int j = (i + l - 3) % n + 1;
+          int _i = (i - 2 + n) % n + 1;
+          int _j = j % n + 1;
+          if (f[i][j]) {
+            if (l < n) {
+              if ((!w[l] || w[l] == _i) && Valid(_i, i, j, o)) {
+                f[_i][j] = (f[_i][j] + f[i][j]) % kMod;
+              }
+              if ((!w[l] || w[l] == _j) && Valid(_j, i, j, o)) {
+                f[i][_j] = (f[i][_j] + f[i][j]) % kMod;
+              }
+            } else {
+              if (((_i > (n + 1 >> 1)) ^ o) && (!w[l] || w[l] == _i) && Valid(_i, i, j, o)) {
+                ans = (ans + f[i][j]) % kMod;
+              } else if (((_j > (n + 1 >> 1)) ^ o) && (!w[l] || w[l] == _j) && Valid(_j, i, j, o)) {
+                ans = (ans + f[i][j]) % kMod;
+              }
+            }
+            f[i][j] = 0;
+          }
+        }
+      }
+    }
+    cout << ans << '\n';
   }
   return 0;
 }
