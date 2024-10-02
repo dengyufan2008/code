@@ -2,8 +2,8 @@
 
 using namespace std;
 
-ifstream cin("a.in");
-ofstream cout("a.out");
+ifstream cin("b.in");
+ofstream cout("b.out");
 
 const int kMaxN = 1001, kMod = 1e9 + 7;
 int t, n, ans, a[kMaxN], d[kMaxN], w[kMaxN], f[kMaxN][kMaxN];
