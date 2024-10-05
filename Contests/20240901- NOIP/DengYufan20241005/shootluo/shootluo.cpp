@@ -9,10 +9,8 @@ ofstream cout("shootluo.out");
 
 const int kMaxN = 2e5 + 1;
 struct V {
-  int s;
   LL w, mx, ans;
   vector<int> e;
-  priority_queue<LL> q;
 } v[kMaxN];
 struct Q {
   int m;
@@ -61,37 +59,27 @@ struct Q {
 int n, r;
 LL w;
 
-void R(int f, int x) {
-  v[x].s = 1;
-  for (int &i : v[x].e) {
-    if (i != f) {
-      R(x, i), v[x].s += v[i].s, v[x].w += v[i].w, w += v[i].w;
-      if (v[x].e[0] == f || v[v[x].e[0]].s < v[i].s) {
-        swap(v[x].e[0], i);
-      }
-    }
-  }
-}
-
 void S(int f, int x) {
   if (v[x].e.size() == 1) {
-    v[x].mx = v[x].w, v[x].q.push(v[x].w);
+    v[x].mx = v[x].w;
     return;
   }
-  S(x, v[x].e[0]), v[x].q.swap(v[v[x].e[0]].q);
+  int mx = 0;
   for (int i : v[x].e) {
-    if (i != f && i != v[x].e[0]) {
-      S(x, i);
-      for (; !v[i].q.empty(); v[i].q.pop()) {
-        v[x].q.push(v[i].q.top());
+    if (i != f) {
+      S(x, i), v[x].w += v[i].w, w += v[i].w;
+      if (!mx || v[mx].mx < v[i].mx) {
+        q.Insert(v[mx].mx), mx = i;
+      } else {
+        q.Insert(v[i].mx);
       }
     }
   }
   if (f) {
-    auto w = v[x].q.top();
-    v[x].q.pop(), v[x].q.push(w + v[x].w);
+    v[x].mx = v[mx].mx + v[x].w;
+  } else {
+    v[x].mx = v[mx].mx, q.Insert(v[x].mx);
   }
-  v[x].mx = v[x].q.top();
 }
 
 void T(int f, int x, LL w, LL mx) {
@@ -140,11 +128,7 @@ int main() {
   }
   for (r = 1; v[r].e.size() == 1; r++) {
   }
-  R(0, r), S(0, r);
-  for (; !v[r].q.empty(); v[r].q.pop()) {
-    q.Insert(v[r].q.top());
-  }
-  T(0, r, w, 0);
+  S(0, r), T(0, r, w, 0);
   for (int i = 1; i <= n; i++) {
     cout << v[i].ans << '\n';
   }
