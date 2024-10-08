@@ -1,5 +1,4 @@
 // #define LOCAL
-// #define DEBUG
 
 #include <algorithm>
 #include <chrono>
@@ -89,14 +88,6 @@ void Ans(int x) {
   } else {
     cout << "Wrong Answer.\n";
   }
-#ifdef DEBUG
-  if (r2) {
-    cout << "Answer: " << r1 << ' ' << r2 << ".\n";
-  } else {
-    cout << "Answer: " << r1 << ".\n";
-  }
-  cout << "Output: " << x << ".\n";
-#endif
   exit(0);
 }
 }  // namespace Interactor
