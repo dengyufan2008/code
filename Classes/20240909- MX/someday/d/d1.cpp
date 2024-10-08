@@ -57,12 +57,8 @@ int main() {
               if ((!w[l] || w[l] == _j) && Valid(_j, i, j, o)) {
                 f[i][_j] = (f[i][_j] + f[i][j]) % kMod;
               }
-            } else {
-              if (((_i > (n + 1 >> 1)) ^ o) && (!w[l] || w[l] == _i) && Valid(_i, i, j, o)) {
-                ans = (ans + f[i][j]) % kMod;
-              } else if (((_j > (n + 1 >> 1)) ^ o) && (!w[l] || w[l] == _j) && Valid(_j, i, j, o)) {
-                ans = (ans + f[i][j]) % kMod;
-              }
+            } else if (((_i > (n + 1 >> 1)) ^ o) && (!w[l] || w[l] == _i) && Valid(_i, i, j, o)) {
+              ans = (ans + f[i][j]) % kMod;
             }
             f[i][j] = 0;
           }
