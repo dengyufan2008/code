@@ -24,27 +24,24 @@ void T(int f, int x) {
     if (y != f) {
       T(x, y);
       for (int i = v[x].s; i >= 1; i--) {
-        LL h = v[x].h[i];
-        for (int j = 1; j <= v[y].s; j++) {
-          Update(v[x].h[i + j], h + v[y].h[j] + w);
-          Update(v[x].h[i + j - 1], h + v[y].f[j]);
+        for (int j = v[y].s; j >= 1; j--) {
+          Update(v[x].h[i + j], v[x].h[i] + v[y].h[j] + w);
+          Update(v[x].h[i + j - 1], v[x].h[i] + v[y].f[j]);
           Update(v[x].h[i + j - 1], v[x].f[i] + v[y].h[j]);
           Update(v[x].h[i + j - 1], v[x].g[i] + v[y].g[j] + w);
         }
       }
       for (int i = v[x].s; i >= 1; i--) {
-        LL g = v[x].g[i];
-        for (int j = 1; j <= v[y].s; j++) {
-          Update(v[x].g[i + j], g + v[y].h[j] + w);
-          Update(v[x].g[i + j - 1], g + v[y].f[j]);
+        for (int j = v[y].s; j >= 1; j--) {
+          Update(v[x].g[i + j], v[x].g[i] + v[y].h[j] + w);
+          Update(v[x].g[i + j - 1], v[x].g[i] + v[y].f[j]);
           Update(v[x].g[i + j - 1], v[x].f[i] + v[y].g[j] + w);
         }
       }
       for (int i = v[x].s; i >= 1; i--) {
-        LL f = v[x].f[i];
-        for (int j = 1; j <= v[y].s; j++) {
-          Update(v[x].f[i + j], f + v[y].h[j] + w);
-          Update(v[x].f[i + j - 1], f + v[y].f[j]);
+        for (int j = v[y].s; j >= 1; j--) {
+          Update(v[x].f[i + j], v[x].f[i] + v[y].h[j] + w);
+          Update(v[x].f[i + j - 1], v[x].f[i] + v[y].f[j]);
         }
       }
       v[x].s += v[y].s;
