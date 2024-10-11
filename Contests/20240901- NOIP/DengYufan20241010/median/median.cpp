@@ -124,29 +124,8 @@ LL Ask(int mid, int x, int y) {
   return ask;
 }
 
-void Calc(int l, int r) {
-  static LL f[kMaxM + 1], g[kMaxM + 2], h[kMaxM + 2], d[kMaxM + 2];
-  int s1 = 0, s2 = 0;
-  for (int i = 1; i <= n; i++) {
-    if (a[i] != -1) {
-      s1 += a[i] >= l && a[i] <= r;
-      s2 += (a[i] > r) - (a[i] < l);
-    }
-  }
-  if (min(s1 + s2 + k - 1, s1 - s2 + k) < 0) {
-    return;
-  }
-  int x = s1 + s2 + k - 1 >> 1, y = s1 - s2 + k >> 1;
-  if (r - l + 1 <= k + 2) {
-    for (int i = l; i <= r; i++) {
-      ans = (ans + Ask(i, x, y)) % kMod;
-    }
-    return;
-  }
-  f[0] = Ask(l, x, y);
-  for (int i = 1; i <= k + 1; i++) {
-    f[i] = (f[i - 1] + Ask(i + l, x, y)) % kMod;
-  }
+void Interpolation(LL f[kMaxM + 1], LL d[kMaxM + 2]) {
+  static LL g[kMaxM + 2], h[kMaxM + 2];
   g[0] = 1, d[0] = 0;
   for (int i = 1; i <= k + 2; i++) {
     g[i] = 0, d[i] = 0;
@@ -171,6 +150,32 @@ void Calc(int l, int r) {
       d[j] = (d[j] + h[j] * _f) % kMod;
     }
   }
+}
+
+void Calc(int l, int r) {
+  static LL f[kMaxM + 1], d[kMaxM + 2];
+  int s1 = 0, s2 = 0;
+  for (int i = 1; i <= n; i++) {
+    if (a[i] != -1) {
+      s1 += a[i] >= l && a[i] <= r;
+      s2 += (a[i] > r) - (a[i] < l);
+    }
+  }
+  if (min(s1 + s2 + k - 1, s1 - s2 + k) < 0) {
+    return;
+  }
+  int x = s1 + s2 + k - 1 >> 1, y = s1 - s2 + k >> 1;
+  if (r - l + 1 <= k + 2) {
+    for (int i = l; i <= r; i++) {
+      ans = (ans + Ask(i, x, y)) % kMod;
+    }
+    return;
+  }
+  f[0] = Ask(l, x, y);
+  for (int i = 1; i <= k + 1; i++) {
+    f[i] = (f[i - 1] + Ask(i + l, x, y)) % kMod;
+  }
+  Interpolation(f, d);
   for (int j = 0; j <= k + 1; j++) {
     ans = (ans + Pow(r - l, j) * d[j]) % kMod;
   }
