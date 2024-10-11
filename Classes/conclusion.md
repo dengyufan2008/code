@@ -248,3 +248,9 @@
 - 对于一类字符串题目, 寻找性质时不要在 SAM 上找, 而应当在字符串上找并将其映射至 SAM 上. [例 (线性做法)](https://qoj.ac/problem/562)
 
 - 回文串需要考虑回文中心的每个可能出现的位置, 尤其是当回文串长度为偶数时. [例](https://www.luogu.com.cn/problem/P4324)
+
+# 20241001 [syc 好题分享](https://www.luogu.com.cn/paste/8dikkv6q)
+
+# 20241008 [梦熊题单](https://www.luogu.com.cn/paste/63oierme)
+
+水题单, 只有 c 还有点意思.
