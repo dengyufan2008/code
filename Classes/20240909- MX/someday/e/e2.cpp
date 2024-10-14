@@ -2,8 +2,8 @@
 
 using namespace std;
 
-ifstream cin("d2.in");
-ofstream cout("d2.out");
+ifstream cin("e2.in");
+ofstream cout("e2.out");
 
 int main() {
   cin.tie(0), cout.tie(0);
