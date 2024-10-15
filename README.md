@@ -23,6 +23,8 @@ $$d(ij) = \sum_{x|i}\sum_{y|j}[\gcd(x, y)=1]$$
 
 对于一类最优化问题, 若在没有限制的情况下直接排序即可得到最优方案, 但题目中给了一个树形拓扑序的限制, 则可以将相邻逆序对绑在一起. [例](https://acm.hdu.edu.cn/contest/problem?cid=1131&pid=1001) & [Account](https://www.luogu.com.cn/paste/o08ha6jb)
 
+在计数问题中, 离散化的方式为将 Dp 状态的值域一维缩减到 $O(n)$ 级别, 并禁止空集的转移. 20240818 T3 & [例](https://qoj.ac/problem/1084)
+
 $n$ 个点边数为奇数的有标号无向连通图个数 $F_1(n)$ 和边数为偶数 $F_0(n)$ 的差值为 $(-1)^n(n-1)!$. 归纳证明, 考虑 $n$ 连接的点数, 分 1 个和多个考虑, 发现多个对二者的贡献相等故舍去, 剩余部分自证不难.
 
 [一道数学题](https://www.luogu.com.cn/article/ueohh8lt)
@@ -102,4 +104,4 @@ $n$ 个点边数为奇数的有标号无向连通图个数 $F_1(n)$ 和边数为
 
 - [Fast Mul](https://www.luogu.com.cn/paste/bmjrtlws)
 
-## *Last Update : 2024.9.20*
+## *Last Update : 2024.10.14*
