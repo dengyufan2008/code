@@ -13,15 +13,11 @@ int main() {
   cin >> t;
   while (t--) {
     cin >> y >> n >> x >> h, y %= x;
-    if (y == 0) {
-      cout << "YES\n";
-      continue;
-    } else if (y * 2 < x && n < x / y) {
+    if (y == 0 || n < x / y) {
       cout << (h >= y ? "YES\n" : "NO\n");
       continue;
     }
-    a = 1, b = 0;
-    for (;;) {
+    for (a = 1, b = 0;;) {
       int w = x / y;
       if (n >= w * a) {
         x -= w * y, b += w * a, n -= w * a;
