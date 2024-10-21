@@ -5,11 +5,7 @@ using namespace std;
 ifstream cin("u.in");
 ofstream cout("u.out");
 
-int t, n, x, y, z, a, b, h;
-
-int Gcd(int x, int y) {
-  return y ? Gcd(y, x % y) : x;
-}
+int t, n, x, y, a, b, h;
 
 int main() {
   cin.tie(0), cout.tie(0);
@@ -24,11 +20,7 @@ int main() {
       cout << (h >= y ? "YES\n" : "NO\n");
       continue;
     }
-    a = 1, b = 0, z = Gcd(x, y);
-    if (n >= x / z) {
-      cout << (h >= z ? "YES\n" : "NO\n");
-      continue;
-    }
+    a = 1, b = 0;
     for (;;) {
       int w = x / y;
       if (n >= w * a) {
