@@ -60,7 +60,7 @@ int main() {
 }  // namespace Sub1
 
 namespace Sub2 {
-const int kMaxN = 2e5 + 1, kB = 900;
+const int kMaxN = 2e5 + 1, kB = 450;
 int b[kMaxN], c[kMaxN];
 unsigned s[kMaxN];
 vector<int> e[kMaxN];
@@ -81,20 +81,24 @@ int main() {
     }
   }
   sort(q + 1, q + k + 1, [](Q i, Q j) {
-    return b[i.x] == b[j.x] ? i.y < j.y : i.x < j.x;
+    if (b[i.x] == b[j.x]) {
+      return b[i.x] & 1 ? i.y < j.y : i.y > j.y;
+    } else {
+      return i.x < j.x;
+    }
   });
   for (int i = 1; i <= k; i++) {
-    static int l, r;
-    static unsigned w;
-    if (i == 1 || b[q[i].x] > b[q[i - 1].x]) {
-      l = q[i].x, r = l - 1, w = 0;
-      for (int j = 1; j <= n; j++) {
-        c[j] = 0;
-      }
-    }
+    static int l = 1, r = 0;
+    static unsigned w = 0;
     for (; r < q[i].y;) {
       r++;
       for (int j : e[r]) {
+        w += c[j], c[j]++;
+      }
+    }
+    for (; l > q[i].x;) {
+      l--;
+      for (int j : e[l]) {
         w += c[j], c[j]++;
       }
     }
@@ -104,11 +108,11 @@ int main() {
       }
       l++;
     }
-    for (; l > q[i].x;) {
-      l--;
-      for (int j : e[l]) {
-        w += c[j], c[j]++;
+    for (; r > q[i].y;) {
+      for (int j : e[r]) {
+        c[j]--, w -= c[j];
       }
+      r--;
     }
     ans[q[i].o] = w * 2 + s[q[i].y] - s[q[i].x - 1];
   }
