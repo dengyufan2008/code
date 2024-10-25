@@ -120,12 +120,12 @@ int main() {
 }  // namespace Sub2
 
 namespace Sub3 {
-const int kMaxN = 1e5 + 1, kMaxM = 7e7 + 1, kB = 350, kP = 3000;
+const int kMaxN = 1e5 + 1, kB = 350, kP = 3000;
 struct D {
-  int x, o;
+  int l, r, o;
 };
 int u, b[kMaxN], c[kMaxN], g[kMaxN];
-unsigned h[kMaxN], h0[kMaxN], h1[kMaxN], res[kMaxM], ans[kMaxN];
+unsigned h[kMaxN], h0[kMaxN], h1[kMaxN], res[kMaxN * 4], ans[kMaxN];
 vector<int> e[kMaxN], p[kMaxN];
 vector<D> d[kMaxN];
 
@@ -180,29 +180,21 @@ void Init() {
 void CalcQuery() {
   for (int i = 1; i <= k; i++) {
     static int l = 1, r = 0;
-    for (; r < q[i].y;) {
-      r++;
-      for (int j : e[r]) {
-        l > 1 ? d[l - 1].push_back({j, ++u}) : void();
-      }
+    if (r < q[i].y) {
+      l > 1 ? d[l - 1].push_back({r + 1, q[i].y, ++u}) : void();
+      r = q[i].y;
     }
-    for (; l > q[i].x;) {
-      l--;
-      for (int j : e[l]) {
-        d[r].push_back({j, ++u});
-      }
+    if (l > q[i].x) {
+      d[r].push_back({q[i].x, l - 1, ++u});
+      l = q[i].x;
     }
-    for (; l < q[i].x;) {
-      for (int j : e[l]) {
-        d[r].push_back({j, ++u});
-      }
-      l++;
+    if (l < q[i].x) {
+      d[r].push_back({l, q[i].x - 1, ++u});
+      l = q[i].x;
     }
-    for (; r > q[i].y;) {
-      for (int j : e[r]) {
-        l > 1 ? d[l - 1].push_back({j, ++u}) : void();
-      }
-      r--;
+    if (r > q[i].y) {
+      l > 1 ? d[l - 1].push_back({q[i].y + 1, r, ++u}) : void();
+      r = q[i].y;
     }
   }
 }
@@ -229,7 +221,11 @@ void CalcResult() {
       }
     }
     for (D j : d[i]) {
-      res[j.o] = Ask(j.x);
+      for (int k = j.l; k <= j.r; k++) {
+        for (int x : e[k]) {
+          res[j.o] += Ask(x);
+        }
+      }
     }
   }
 }
@@ -238,29 +234,29 @@ void CalcAns() {
   for (int i = 1; i <= k; i++) {
     static int l = 1, r = 0, o = 0;
     static unsigned w = 0;
-    for (; r < q[i].y;) {
-      r++, w += h[r] + h1[r - 1];
-      for (int j : e[r]) {
-        l > 1 ? w -= res[++o] : 0;
+    if (r < q[i].y) {
+      l > 1 ? w -= res[++o] : 0;
+      for (; r < q[i].y;) {
+        r++, w += h[r] + h1[r - 1];
       }
     }
-    for (; l > q[i].x;) {
-      l--, w += h[l] - h0[l];
-      for (int j : e[l]) {
-        w += res[++o];
+    if (l > q[i].x) {
+      w += res[++o];
+      for (; l > q[i].x;) {
+        l--, w += h[l] - h0[l];
       }
     }
-    for (; l < q[i].x;) {
-      for (int j : e[l]) {
-        w -= res[++o];
+    if (l < q[i].x) {
+      w -= res[++o];
+      for (; l < q[i].x;) {
+        w += h[l] + h1[l - 1], l++;
       }
-      w += h[l] + h1[l - 1], l++;
     }
-    for (; r > q[i].y;) {
-      for (int j : e[r]) {
-        l > 1 ? w += res[++o] : 0;
+    if (r > q[i].y) {
+      l > 1 ? w += res[++o] : 0;
+      for (; r > q[i].y;) {
+        w += h[r] - h0[r], r--;
       }
-      w += h[r] - h0[r], r--;
     }
     ans[q[i].o] = w * 2;
   }
