@@ -274,3 +274,5 @@
 # 20241022 [xh 好题分享](https://www.luogu.com.cn/paste/jyum3oqn)
 
 # 20241028 [dyf 好题分享](https://www.luogu.com.cn/paste/z9uxq8ts)
+
+# 20241029 [梦熊题单](https://www.luogu.com.cn/paste/09up24mt)
