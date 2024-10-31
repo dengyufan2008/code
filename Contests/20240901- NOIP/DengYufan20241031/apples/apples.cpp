@@ -10,6 +10,7 @@ ofstream cout("apples.out");
 const int kMaxN = 151, kMaxM = 4230144, kInf = 1e9;
 int n, m, a[kMaxN], b[kMaxN], c[kMaxN];
 int w[kMaxN][kMaxN], o[kMaxN], d[kMaxM], f[kMaxM], ans[kMaxN];
+vector<int> u;
 vector<vector<int>> l[kMaxN];
 
 void CalcD(int x, int s, int w) {
@@ -43,6 +44,11 @@ void Init() {
       c[v.size()]++, l[v.size()].push_back(v);
     }
   }
+  for (int i = 1; i <= n; i++) {
+    if (c[i]) {
+      u.push_back(i);
+    }
+  }
   m = o[0] = 1;
   for (int i = 1; i <= n; i++) {
     m = o[i] = o[i - 1] * (c[i] + 1);
@@ -65,7 +71,7 @@ void Init() {
 
 void Dp(int x, int s) {
   if (x == 0) {
-    for (int i = 1; i <= n; i++) {
+    for (int i : u) {
       if (b[i] < c[i]) {
         f[s + o[i - 1]] = min(f[s + o[i - 1]], max(f[s], w[i][d[s] + 1]));
       }
@@ -79,7 +85,7 @@ void Dp(int x, int s) {
 
 void CalcAns(int m) {
   static vector<int> v;
-  for (int i = 1; i <= n; i++) {
+  for (int i : u) {
     if (m / o[i - 1] % (c[i] + 1) > 0) {
       if (max(f[m - o[i - 1]], w[i][d[m] - i + 1]) == f[m]) {
         v.swap(l[i].back()), l[i].pop_back();
