@@ -1,3 +1,4 @@
+#include <ctime>
 #include <fstream>
 #include <vector>
 #define LL long long
@@ -13,7 +14,7 @@ struct D {
   LL s;
 } d[kMaxN * 20];
 struct V {
-  int minp, minp2, maxs, maxs2;
+  int minp, minp2, tminp, maxs, maxs2, tmaxs;
   int rp, rp2, tp, rs, rs2, ts;
   int tw, c;
 } v[kB];
@@ -102,11 +103,20 @@ int AskC(int p, int l, int r, int _l, int _r) {
 int AskW(int x) { return w[x] + v[x / kB].tw; }
 
 void Rebuild(int o) {
-  int l = o * kB, r = l + kB;
+  int l = o * kB, r = min(l + kB, n);
   Recovery(v[o].rp), Recovery(v[o].rp2);
   Recovery(v[o].rs), Recovery(v[o].rs2);
+  for (int i = l; i < r; i++) {
+    if (p[i] == v[o].minp) {
+      p[i] += v[o].tminp;
+    }
+    if (s[i] == v[o].maxs) {
+      s[i] -= v[o].tmaxs;
+    }
+  }
   v[o].rp = v[o].rp2 = v[o].tp = v[o].rs = v[o].rs2 = v[o].ts = v[o].c = 0;
   v[o].minp = v[o].minp2 = kInf, v[o].maxs = v[o].maxs2 = -kInf;
+  v[o].tminp = v[o].tmaxs = 0;
   for (int i = l; i < r; i++) {
     if (~w[i]) {
       v[o].c++;
@@ -146,35 +156,34 @@ void Rebuild(int o) {
   }
 }
 
-void CheckMaxP(int o, int x) {  // v[o].tw++
+void CheckMaxP(int o, int x) {
   if (v[o].minp == -kInf || v[o].minp2 <= x) {
-    int l = o * kB, r = l + kB;
+    int l = o * kB, r = min(l + kB, n);
     for (int i = l; i < r; i++) {
       p[i] = max(p[i], x);
     }
-    v[o].tw++, Rebuild(o);
-  } else if (v[o].minp < x) {
-    v[o].tp += AskW(x) - AskW(v[o].minp) - 1;
-    v[o].tw++;
-  } else {
-    v[o].tw++;
+    Rebuild(o);
+  } else if (v[o].minp + v[o].tminp < x) {
+    v[o].tp += AskW(x) - AskW(v[o].minp + v[o].tminp) - 1;
+    v[o].tminp = x - v[o].minp;
   }
 }
 
 void CheckMinS(int o, int x) {
   if (v[o].maxs == kInf || v[o].maxs2 >= x) {
-    int l = o * kB, r = l + kB;
+    int l = o * kB, r = min(l + kB, n);
     for (int i = l; i < r; i++) {
       s[i] = min(s[i], x);
     }
     Rebuild(o);
-  } else if (v[o].maxs > x) {
-    v[o].ts += AskW(v[o].maxs) - AskW(x);
+  } else if (v[o].maxs - v[o].tmaxs > x) {
+    v[o].ts += AskW(v[o].maxs - v[o].tmaxs) - AskW(x) - 1;
+    v[o].tmaxs = v[o].maxs - x;
   }
 }
 
 void Insert(int x) {
-  int o = x / kB, l = o * kB, r = l + kB, c = 0;
+  int o = x / kB, l = o * kB, r = min(l + kB, n), c = 0;
   for (int i = l; i < x; i++) {
     s[i] = min(s[i], x);
     ~w[i] && ++c && (w[i] += v[o].tw);
@@ -187,6 +196,9 @@ void Insert(int x) {
     c += v[i].c;
   }
   p[x] = -kInf, s[x] = kInf, w[x] = c, v[o].tw = 0;
+  for (int i = o + 1; i < m; i++) {
+    v[i].tw++;
+  }
   Rebuild(o);
   for (int i = 0; i < o; i++) {
     CheckMinS(i, x);
@@ -197,7 +209,7 @@ void Insert(int x) {
 }
 
 LL Query(int x) {
-  LL ans = -n - x + 1;
+  LL ans = 0;
   for (int i = 0; i < m; i++) {
     ans += AskS(v[i].rp, 1, n, 1, x + v[i].tp);
     ans -= 1LL * v[i].tp * AskC(v[i].rp, 1, n, 1, x + v[i].tp);
@@ -223,7 +235,7 @@ int main() {
   ios::sync_with_stdio(0);
   cin >> u;
   while (u--) {
-    cin >> n, m = n / kB;
+    cin >> n, m = (n - 1) / kB + 1;
     for (int i = 0, x; i < n; i++) {
       cin >> x, a[x - 1] = i;
     }
@@ -231,9 +243,10 @@ int main() {
     for (int i = 0, x; i < n; i++) {
       cin >> x, Insert(a[i]);
       for (int j = 0, y; j < x; j++) {
-        cin >> y, cout << Query(y) << '\n';
+        cin >> y, cout << Query(y) - i - y << '\n';
       }
     }
   }
+  cout << clock() << '\n';
   return 0;
 }
