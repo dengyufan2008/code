@@ -123,13 +123,31 @@ void Rebuild(int o) {
     }
   }
   for (int i = l; i < r; i++) {
-    Add(p[i] == v[o].minp ? v[o].rp : v[o].rp2, 1, n, AskW(i) - AskW(p[i]));
-    Add(s[i] == v[o].maxs ? v[o].rs : v[o].rs2, 1, n, AskW(s[i]) - AskW(i));
+    if (~w[i]) {
+      if (p[i] == v[o].minp) {
+        if (p[i] == -kInf) {
+          Add(v[o].rp, 1, n, n);
+        } else {
+          Add(v[o].rp, 1, n, AskW(i) - AskW(p[i]));
+        }
+      } else {
+        Add(v[o].rp2, 1, n, AskW(i) - AskW(p[i]));
+      }
+      if (s[i] == v[o].maxs) {
+        if (s[i] == kInf) {
+          Add(v[o].rs, 1, n, n);
+        } else {
+          Add(v[o].rs, 1, n, AskW(s[i]) - AskW(i));
+        }
+      } else {
+        Add(v[o].rs2, 1, n, AskW(s[i]) - AskW(i));
+      }
+    }
   }
 }
 
 void CheckMaxP(int o, int x) {  // v[o].tw++
-  if (v[o].minp2 <= x) {
+  if (v[o].minp == -kInf || v[o].minp2 <= x) {
     int l = o * kB, r = l + kB;
     for (int i = l; i < r; i++) {
       p[i] = max(p[i], x);
@@ -144,7 +162,7 @@ void CheckMaxP(int o, int x) {  // v[o].tw++
 }
 
 void CheckMinS(int o, int x) {
-  if (v[o].maxs2 >= x) {
+  if (v[o].maxs == kInf || v[o].maxs2 >= x) {
     int l = o * kB, r = l + kB;
     for (int i = l; i < r; i++) {
       s[i] = min(s[i], x);
@@ -183,13 +201,17 @@ LL Query(int x) {
   for (int i = 0; i < m; i++) {
     ans += AskS(v[i].rp, 1, n, 1, x + v[i].tp);
     ans -= 1LL * v[i].tp * AskC(v[i].rp, 1, n, 1, x + v[i].tp);
-    x + v[i].tp < n ? ans += 1LL * x * AskC(v[i].rp, 1, n, x + v[i].tp + 1, n) : 0;
+    if (x + v[i].tp < n) {
+      ans += 1LL * x * AskC(v[i].rp, 1, n, x + v[i].tp + 1, n);
+    }
     ans += AskS(v[i].rp2, 1, n, 1, x);
     x < n ? ans += 1LL * x * AskC(v[i].rp2, 1, n, x + 1, n) : 0;
 
     ans += AskS(v[i].rs, 1, n, 1, x + v[i].ts);
     ans -= 1LL * v[i].ts * AskC(v[i].rs, 1, n, 1, x + v[i].ts);
-    x + v[i].ts < n ? ans += 1LL * x * AskC(v[i].rs, 1, n, x + v[i].ts + 1, n) : 0;
+    if (x + v[i].ts < n) {
+      ans += 1LL * x * AskC(v[i].rs, 1, n, x + v[i].ts + 1, n);
+    }
     ans += AskS(v[i].rs2, 1, n, 1, x);
     x < n ? ans += 1LL * x * AskC(v[i].rs2, 1, n, x + 1, n) : 0;
   }
