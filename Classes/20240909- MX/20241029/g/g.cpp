@@ -1,6 +1,5 @@
-#include <ctime>
+#include <algorithm>
 #include <fstream>
-#include <vector>
 #define LL long long
 
 using namespace std;
@@ -10,192 +9,142 @@ ofstream cout("g.out");
 
 const int kMaxN = 3e5 + 1, kB = 550, kInf = 1e9;
 struct D {
-  int l, r, c;
-  LL s;
-} d[kMaxN * 20];
+  int t;
+  pair<int, LL> d[kB];
+  void Clear() { t = 0; }
+  void Insert(int x) { d[t++] = {x, 0}; }
+};
 struct V {
-  int minp, minp2, tminp, maxs, maxs2, tmaxs;
-  int rp, rp2, tp, rs, rs2, ts;
+  int minp, minp2, chkp, maxs, maxs2, chks;
   int tw, c;
-} v[kB];
-int u, n, m, k, a[kMaxN], p[kMaxN], s[kMaxN], w[kMaxN];
-vector<int> bin;
+  int p[kB], s[kB], w[kB];
+  int tp, ts;
+  D rp, rp2, rs, rs2;
+} v[kMaxN / kB + 1];
+int u, n, m, a[kMaxN];
 
 void Init() {
-  k = 0, bin.clear();
-  for (int i = 0; i < n; i++) {
-    w[i] = -1;
-  }
   for (int i = 0; i < m; i++) {
-    v[i].rp = v[i].rp2 = v[i].tp = 0;
-    v[i].rs = v[i].rs2 = v[i].ts = 0;
-    v[i].tw = v[i].c = 0;
-  }
-}
-
-int New() {
-  if (bin.empty()) {
-    return ++k;
-  } else {
-    int p = bin.back();
-    bin.pop_back();
-    return p;
-  }
-}
-
-void Recovery(int p) {
-  if (p) {
-    bin.push_back(p), Recovery(d[p].l), Recovery(d[p].r);
-  }
-}
-
-void Add(int &p, int l, int r, int x) {
-  if (!p) {
-    p = New(), d[p] = d[0];
-  }
-  if (l == r) {
-    d[p].c++, d[p].s += x;
-    return;
-  }
-  int mid = l + r >> 1;
-  if (mid >= x) {
-    Add(d[p].l, l, mid, x);
-  } else {
-    Add(d[p].r, mid + 1, r, x);
-  }
-  d[p].c = d[d[p].l].c + d[d[p].r].c;
-  d[p].s = d[d[p].l].s + d[d[p].r].s;
-}
-
-LL AskS(int p, int l, int r, int _l, int _r) {
-  if (!p) {
-    return 0;
-  } else if (l >= _l && r <= _r) {
-    return d[p].s;
-  }
-  int mid = l + r >> 1;
-  LL ans = 0;
-  if (mid >= _l) {
-    ans += AskS(d[p].l, l, mid, _l, _r);
-  }
-  if (mid < _r) {
-    ans += AskS(d[p].r, mid + 1, r, _l, _r);
-  }
-  return ans;
-}
-
-int AskC(int p, int l, int r, int _l, int _r) {
-  if (!p) {
-    return 0;
-  } else if (l >= _l && r <= _r) {
-    return d[p].c;
-  }
-  int mid = l + r >> 1, ans = 0;
-  if (mid >= _l) {
-    ans += AskC(d[p].l, l, mid, _l, _r);
-  }
-  if (mid < _r) {
-    ans += AskC(d[p].r, mid + 1, r, _l, _r);
-  }
-  return ans;
-}
-
-int AskW(int x) { return w[x] + v[x / kB].tw; }
-
-void Rebuild(int o) {
-  int l = o * kB, r = min(l + kB, n);
-  Recovery(v[o].rp), Recovery(v[o].rp2);
-  Recovery(v[o].rs), Recovery(v[o].rs2);
-  for (int i = l; i < r; i++) {
-    if (p[i] == v[o].minp) {
-      p[i] += v[o].tminp;
-    }
-    if (s[i] == v[o].maxs) {
-      s[i] -= v[o].tmaxs;
+    v[i].tw = v[i].c = v[i].tp = v[i].ts = 0;
+    v[i].rp.Clear(), v[i].rp2.Clear();
+    v[i].rs.Clear(), v[i].rs2.Clear();
+    for (int j = 0; j < kB; j++) {
+      v[i].w[j] = -1;
     }
   }
-  v[o].rp = v[o].rp2 = v[o].tp = v[o].rs = v[o].rs2 = v[o].ts = v[o].c = 0;
-  v[o].minp = v[o].minp2 = kInf, v[o].maxs = v[o].maxs2 = -kInf;
-  v[o].tminp = v[o].tmaxs = 0;
-  for (int i = l; i < r; i++) {
-    if (~w[i]) {
+}
+
+void Update(int o) {
+  v[o].tp = v[o].ts = 0;
+  v[o].rp.Clear(), v[o].rp2.Clear();
+  v[o].rs.Clear(), v[o].rs2.Clear();
+  for (int i = 0; i < kB; i++) {
+    if (v[o].p[i] == v[o].minp) {
+      v[o].p[i] = v[o].chkp;
+    }
+    if (v[o].s[i] == v[o].maxs) {
+      v[o].s[i] = v[o].chks;
+    }
+  }
+}
+
+void CalcPS(int o) {
+  v[o].minp = v[o].minp2 = kInf, v[o].maxs = v[o].maxs2 = -kInf, v[o].c = 0;
+  for (int i = 0; i < kB; i++) {
+    if (~v[o].w[i]) {
       v[o].c++;
-      if (v[o].minp > p[i]) {
-        v[o].minp2 = v[o].minp, v[o].minp = p[i];
-      } else if (v[o].minp < p[i]) {
-        v[o].minp2 = min(v[o].minp2, p[i]);
+      if (v[o].minp > v[o].p[i]) {
+        v[o].minp2 = v[o].minp, v[o].minp = v[o].p[i];
+      } else if (v[o].minp < v[o].p[i]) {
+        v[o].minp2 = min(v[o].minp2, v[o].p[i]);
       }
-      if (v[o].maxs < s[i]) {
-        v[o].maxs2 = v[o].maxs, v[o].maxs = s[i];
-      } else if (v[o].maxs > s[i]) {
-        v[o].maxs2 = max(v[o].maxs2, s[i]);
+      if (v[o].maxs < v[o].s[i]) {
+        v[o].maxs2 = v[o].maxs, v[o].maxs = v[o].s[i];
+      } else if (v[o].maxs > v[o].s[i]) {
+        v[o].maxs2 = max(v[o].maxs2, v[o].s[i]);
       }
     }
   }
-  for (int i = l; i < r; i++) {
-    if (~w[i]) {
-      if (p[i] == v[o].minp) {
-        if (p[i] == -kInf) {
-          Add(v[o].rp, 1, n, n);
-        } else {
-          Add(v[o].rp, 1, n, AskW(i) - AskW(p[i]));
-        }
-      } else {
-        Add(v[o].rp2, 1, n, AskW(i) - AskW(p[i]));
-      }
-      if (s[i] == v[o].maxs) {
-        if (s[i] == kInf) {
-          Add(v[o].rs, 1, n, n);
-        } else {
-          Add(v[o].rs, 1, n, AskW(s[i]) - AskW(i));
-        }
-      } else {
-        Add(v[o].rs2, 1, n, AskW(s[i]) - AskW(i));
-      }
-    }
+  v[o].chkp = v[o].minp, v[o].chks = v[o].maxs;
+}
+
+int AskW(int x) {
+  int o = x / kB;
+  return v[o].w[x - o * kB] + v[o].tw;
+}
+
+int AskW(int o, int x) { return v[o].w[x] + v[o].tw; }
+
+void Calc(D &d) {
+  d.d[0].second = d.d[0].first;
+  for (int i = 1; i < d.t; i++) {
+    d.d[i].second = d.d[i - 1].second + d.d[i].first;
   }
 }
+
+void CalcR(int o) {
+  for (int i = 0; i < kB; i++) {
+    if (~v[o].w[i]) {
+      if (v[o].p[i] == v[o].minp) {
+        v[o].rp.Insert(v[o].minp == -kInf ? n : AskW(o, i) - AskW(v[o].minp));
+      } else {
+        v[o].rp2.Insert(AskW(o, i) - AskW(v[o].p[i]));
+      }
+      if (v[o].s[i] == v[o].maxs) {
+        v[o].rs.Insert(v[o].maxs == kInf ? n : AskW(v[o].maxs) - AskW(o, i));
+      } else {
+        v[o].rs2.Insert(AskW(v[o].s[i]) - AskW(o, i));
+      }
+    }
+  }
+  reverse(v[o].rs.d, v[o].rs.d + v[o].rs.t);
+  sort(v[o].rp2.d, v[o].rp2.d + v[o].rp2.t);
+  sort(v[o].rs2.d, v[o].rs2.d + v[o].rs2.t);
+  Calc(v[o].rp), Calc(v[o].rp2), Calc(v[o].rs), Calc(v[o].rs2);
+}
+
+void Rebuild(int o) { Update(o), CalcPS(o), CalcR(o); }
 
 void CheckMaxP(int o, int x) {
-  if (v[o].minp == -kInf || v[o].minp2 <= x) {
+  if (v[o].chkp == -kInf || v[o].minp2 <= x) {
     int l = o * kB, r = min(l + kB, n);
-    for (int i = l; i < r; i++) {
-      p[i] = max(p[i], x);
+    for (int i = 0; i < kB; i++) {
+      v[o].p[i] = max(v[o].p[i], x);
     }
     Rebuild(o);
-  } else if (v[o].minp + v[o].tminp < x) {
-    v[o].tp += AskW(x) - AskW(v[o].minp + v[o].tminp) - 1;
-    v[o].tminp = x - v[o].minp;
+  } else if (v[o].chkp < x) {
+    v[o].tp += AskW(x) - AskW(v[o].chkp) - 1;
+    v[o].chkp = x;
   }
 }
 
 void CheckMinS(int o, int x) {
-  if (v[o].maxs == kInf || v[o].maxs2 >= x) {
+  if (v[o].chks == kInf || v[o].maxs2 >= x) {
     int l = o * kB, r = min(l + kB, n);
-    for (int i = l; i < r; i++) {
-      s[i] = min(s[i], x);
+    for (int i = 0; i < kB; i++) {
+      v[o].s[i] = min(v[o].s[i], x);
     }
     Rebuild(o);
-  } else if (v[o].maxs - v[o].tmaxs > x) {
-    v[o].ts += AskW(v[o].maxs - v[o].tmaxs) - AskW(x) - 1;
-    v[o].tmaxs = v[o].maxs - x;
+  } else if (v[o].chks > x) {
+    v[o].ts += AskW(v[o].chks) - AskW(x) - 1;
+    v[o].chks = x;
   }
 }
 
 void Insert(int x) {
-  int o = x / kB, l = o * kB, r = min(l + kB, n), c = 0;
-  for (int i = l; i < x; i++) {
-    s[i] = min(s[i], x);
-    ~w[i] && ++c && (w[i] += v[o].tw);
+  int o = x / kB, y = x - o * kB, c = 0;
+  for (int i = 0; i < y; i++) {
+    v[o].s[i] = min(v[o].s[i], x);
+    ~v[o].w[i] && ++c && (v[o].w[i] += v[o].tw);
   }
-  for (int i = x; i < r; i++) {
-    p[i] = max(p[i], x);
-    ~w[i] && ++w[i] && (w[i] += v[o].tw);
+  for (int i = y; i < kB; i++) {
+    v[o].p[i] = max(v[o].p[i], x);
+    ~v[o].w[i] && ++v[o].w[i] && (v[o].w[i] += v[o].tw);
   }
   for (int i = 0; i < o; i++) {
     c += v[i].c;
   }
-  p[x] = -kInf, s[x] = kInf, w[x] = c, v[o].tw = 0;
+  v[o].p[y] = -kInf, v[o].s[y] = kInf, v[o].w[y] = c, v[o].tw = 0;
   for (int i = o + 1; i < m; i++) {
     v[i].tw++;
   }
@@ -208,24 +157,27 @@ void Insert(int x) {
   }
 }
 
+LL AskS(D &d, int x) {
+  int p = lower_bound(d.d, d.d + d.t, make_pair(x + 1, 0LL)) - d.d;
+  return p ? d.d[p - 1].second : 0;
+}
+
+int AskC(D &d, int x) {
+  return lower_bound(d.d, d.d + d.t, make_pair(x + 1, 0LL)) - d.d;
+}
+
 LL Query(int x) {
   LL ans = 0;
   for (int i = 0; i < m; i++) {
-    ans += AskS(v[i].rp, 1, n, 1, x + v[i].tp);
-    ans -= 1LL * v[i].tp * AskC(v[i].rp, 1, n, 1, x + v[i].tp);
-    if (x + v[i].tp < n) {
-      ans += 1LL * x * AskC(v[i].rp, 1, n, x + v[i].tp + 1, n);
-    }
-    ans += AskS(v[i].rp2, 1, n, 1, x);
-    x < n ? ans += 1LL * x * AskC(v[i].rp2, 1, n, x + 1, n) : 0;
+    ans += AskS(v[i].rp, x + v[i].tp);
+    ans -= 1LL * (v[i].tp + x) * AskC(v[i].rp, x + v[i].tp);
+    ans += AskS(v[i].rp2, x);
+    ans += 1LL * x * (v[i].rp.t + v[i].rp2.t - AskC(v[i].rp2, x));
 
-    ans += AskS(v[i].rs, 1, n, 1, x + v[i].ts);
-    ans -= 1LL * v[i].ts * AskC(v[i].rs, 1, n, 1, x + v[i].ts);
-    if (x + v[i].ts < n) {
-      ans += 1LL * x * AskC(v[i].rs, 1, n, x + v[i].ts + 1, n);
-    }
-    ans += AskS(v[i].rs2, 1, n, 1, x);
-    x < n ? ans += 1LL * x * AskC(v[i].rs2, 1, n, x + 1, n) : 0;
+    ans += AskS(v[i].rs, x + v[i].ts);
+    ans -= 1LL * (v[i].ts + x) * AskC(v[i].rs, x + v[i].ts);
+    ans += AskS(v[i].rs2, x);
+    ans += 1LL * x * (v[i].rs.t + v[i].rs2.t - AskC(v[i].rs2, x));
   }
   return ans;
 }
@@ -247,6 +199,5 @@ int main() {
       }
     }
   }
-  cout << clock() << '\n';
   return 0;
 }
