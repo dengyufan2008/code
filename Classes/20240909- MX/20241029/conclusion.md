@@ -24,6 +24,10 @@
 
 - $\text{mex}$ 为集合内未出现的数的最小值, 则对于一类最小化问题, 可以用 自行决策取哪个数的技巧 来 Dp. [例](https://www.luogu.com.cn/problem/CF1981F)
 
+- 对于一类和排列的前缀最大值个数有关的题目, 考虑每次把最小的数插在哪里.
+  
+  对于一类和排列的前缀最大值个数与后缀最大值个数都有关的题目, 考虑全局最大值在哪里以将序列分开. [例](https://www.luogu.com.cn/problem/CF1988F)
+
 - 若每次操作至多只会新增一个 0, 且每次操作后 0 都会扩散至少 1 格, 则 0 的连续段数为 $O(\sqrt n)$. [例](https://qoj.ac/problem/9311)
 
 - 还有一道困难概率 Dp [题](https://www.luogu.com.cn/problem/CF1975I)
