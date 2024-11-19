@@ -416,3 +416,16 @@ $1 \le n \le 20$, $1 \le m \le 10^6$.
 对于半在线位与卷积 (即 $f_s \times g_t \rightarrow f_{s \cap t}, s \not \subseteq t$), 可以以 $\text{popcount}$ 为拓扑序, 从大往小地递推, 每次将 $\text{popcount} > i$ 的转移到 $\text{popcount} = i$ 的. 故需要做 $O(n)$ 次 $O(n2^n)$ 的 FWT, $O(n^22^n)$.
 
 故总时间复杂度 $O(n^22^n + m)$, 空间复杂度 $O(2^n)$.
+
+# 树上背包
+
+考虑一类树上背包问题, 结点 $x$ 的 Dp 数组长度为 $min(size_x, k) \space (k < n)$, 合并两棵子树为暴力卷积, 其复杂度为 $O(nk)$.
+
+<details><summary>Proof</summary>
+
+> 考虑 $x$ 的其中一个儿子 $i$, 其会与 $i$ 以前的所有儿子合并的结果来合并, 故复杂度为 $O(min(presize_i, k) \times min(size_i, k))$.
+> 
+> 考虑 $presize_i$ 与 $size_i$ 在 Dfn 序上对应的区间, 这两个区间一定是连续的. 考虑将 $k$ 的贡献放在 $presize_i$ 的后 $k$ 个点与 $size_i$ 的前 $k$ 个点上, 点对间两两产生贡献.
+> 
+> 则所有产生贡献的点对之间必定满足之间的距离 $< 2k$, 故一个点至多只会与 $4k$ 个点产生贡献. 复杂度 $O(nk)$.
+</details>
