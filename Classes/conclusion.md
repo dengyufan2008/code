@@ -330,3 +330,17 @@
 - 给定若干区间, 使得每个位置被覆盖至少 $a_i$ 次 这一问题是板的, 可以直接贪心. [例](https://www.luogu.com.cn/problem/AT_joisc2017_d) & 20241110 T1 tracy
 
 byd 在做完这两道题后这天考的两个 Trick 怎么一个想了 1h 一个直接不会.
+
+# 20241112 [fzx 好题分享](https://www.luogu.com.cn/paste/sw0eplz9)
+
+# 20241113 [梦熊题单](https://www.luogu.com.cn/paste/teuun37l)
+
+- 对于一类对转移有限制的题目, 可以考虑多设一个状态, 表示其中某些维已经转移, 某些维未转移, 并将非法的部分置 0 或极劣值. [例](https://qoj.ac/problem/7006)
+
+- 对于一类把 $S$ 变为 $T$ 的最优化问题, 若操作序列必须为给定的操作序列的一个区间, 则考虑对于最优方案的区间的后缀, 同时对 $S$ 和 $T$ 进行操作, 则选取的操作序列变为一个后缀. [例](https://www.luogu.com.cn/problem/CF1392G)
+
+- 对于一类计数问题, 若总量很庞大但限制很少, 考虑计算其满足限制的概率, 为了好算可以在保证不漏的情况下删去一些情况. [例](https://www.luogu.com.cn/problem/AT_agc023_e)
+
+i 不会啊
+
+# 20241119 [jjz 好题分享](https://www.luogu.com.cn/paste/kyb8w87m)
