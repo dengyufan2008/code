@@ -8,7 +8,7 @@ ifstream cin("e.in");
 ofstream cout("e.out");
 
 const int kMaxN = 1e7 + 1, kMaxM = 664579, kMod = 998244353;
-const int kB = 216, kP = 47;
+const int kB = 216, kP = 47, kQ = 3163;
 struct V {
   int x = -1, y = -1;  // x > y, prime[y] >= kB
   LL s;                // prime[i] < kB
@@ -21,27 +21,23 @@ pair<int, LL> u[kMaxM];
 bool b[kMaxN];
 
 class H {
-  int c;
   LL p[kP];
 
  public:
   void Clear() {
-    c = 0;
     for (int i = 0; i < kP; i++) {
       p[i] = 0;
     }
   }
 
   void Insert(LL x) {
-    if (c < kP) {
-      for (int i = kP - 1; i >= 0; i--) {
-        if (x >> i & 1) {
-          if (p[i]) {
-            x ^= p[i];
-          } else {
-            p[i] = x, c++;
-            return;
-          }
+    for (int i = kP - 1; i >= 0; i--) {
+      if (x >> i & 1) {
+        if (p[i]) {
+          x ^= p[i];
+        } else {
+          p[i] = x;
+          return;
         }
       }
     }
@@ -79,7 +75,7 @@ int main() {
       }
     }
   }
-  for (int i = 0; i < n; i++) {
+  for (int i = 0; i < kMaxM; i++) {
     if (prime[i] < kB) {
       for (LL j = prime[i]; j < kMaxN; j *= prime[i]) {
         for (int k = j; k < kMaxN; k += j) {
@@ -114,7 +110,7 @@ int main() {
   for (int i = 0; i < kMaxM; i++) {
     if (prime[i] >= kB) {
       int j = 0;
-      for (; j < n && 1LL * prime[i] * prime[j] < kMaxN; j++) {
+      for (; j < kMaxM && 1LL * prime[i] * prime[j] < kMaxN; j++) {
       }
       s[i].resize(j);
     }
@@ -122,6 +118,19 @@ int main() {
   cin >> o;
   while (o--) {
     cin >> l >> r, ans = 1, h.Clear();
+    if (r - l > kQ << 1) {
+      int c = r - l + 1;
+      for (int i = 0; i < kMaxM; i++) {
+        if ((l - 1) / prime[i] < r / prime[i]) {
+          c--;
+        }
+      }
+      for (int i = 1; i <= c; i++) {
+        ans = ans * 2 % kMod;
+      }
+      cout << ans << '\n';
+      continue;
+    }
     for (int i = 0; i < kMaxM; i++) {
       t[i] = -1, u[i] = {-1, -1};
       for (int j = 0; j < s[i].size(); j++) {
