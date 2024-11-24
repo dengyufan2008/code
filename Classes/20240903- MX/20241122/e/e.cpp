@@ -118,7 +118,7 @@ int main() {
   cin >> o;
   while (o--) {
     cin >> l >> r, ans = 1, h.Clear();
-    if (r - l > kQ << 1) {
+    if (r - l > kQ << 1) {  // 可以证明, 当区间长度 >2\sqrtV 时每个出现过的质因数都代表一个向量
       int c = r - l + 1;
       for (int i = 0; i < kMaxM; i++) {
         if ((l - 1) / prime[i] < r / prime[i]) {
