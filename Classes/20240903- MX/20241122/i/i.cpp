@@ -9,8 +9,8 @@ ofstream cout("i.out");
 const int kMaxN = 3e4 + 1, kMaxM = 15 + 1, kMod = 998244353, kInv2 = kMod + 1 >> 1;
 int n, m, q, a[kMaxN];
 LL f[kMaxM - 1][kMaxN][kMaxM];
-int fwt[kMaxM][kMaxM][kMaxM], inv[kMaxM];
-int trans[kMaxM][kMaxN][kMaxM][kMaxM];
+LL fwt[kMaxM][kMaxM][kMaxM], inv[kMaxM];
+LL trans[kMaxM][kMaxN][kMaxM];
 
 class Seg1 {  // Dp 数组
  public:
@@ -249,7 +249,7 @@ void Init() {  // O(m^4+nm^3)
   }
   inv[0] = fwt[0][0][0] = 1;  // 计算 2^{-i} 以及在长度为 2^i 时 f_j 对 fwt_k 贡献的系数
   for (int i = 1; i <= m; i++) {
-    inv[i] = 1LL * inv[i - 1] * kInv2 % kMod;
+    inv[i] = inv[i - 1] * kInv2 % kMod;
     for (int j = 0; j <= i; j++) {
       for (int k = 0; k <= i; k++) {
         for (int l = max(j + k - i, 0); l <= min(j, k); l++) {
@@ -263,23 +263,13 @@ void Init() {  // O(m^4+nm^3)
       }
     }
   }
-  trans[0][0][0][0] = 1;  // 计算 a_k 在经过 j 个 =i 的转移后对 a_l 贡献的系数
-  for (int i = 1; i <= m; i++) {
+  for (int i = 0; i <= m; i++) {  // 计算经过 j 个 =i 的转移后贡献的 fwt 数组
     for (int j = 0; j <= i; j++) {
-      trans[i][0][j][j] = 1;
+      trans[i][0][j] = 1;
     }
     for (int j = 1; j <= n; j++) {
       for (int k = 0; k <= i; k++) {
-        int *f = trans[i][j][k], *g = trans[i][j - 1][k];
-        for (int l = 0; l <= i; l++) {
-          if (l == 0) {
-            f[l] = 1LL * g[l + 1] * (i - l) % kMod;
-          } else if (l == i) {
-            f[l] = 1LL * g[l - 1] * l % kMod;
-          } else {
-            f[l] = (1LL * g[l - 1] * l + 1LL * g[l + 1] * (i - l)) % kMod;
-          }
-        }
+        trans[i][j][k] = trans[i][j - 1][k] * fwt[i][1][k] % kMod;
       }
     }
   }
@@ -314,6 +304,9 @@ void Dp() {  // O(nm^3)
             c += q - p - 1;  // 累计没有被上一层覆盖的转移数量
           }
         }
+        for (int j = 0; j <= i + 1; j++) {  // 计算没有被上一层覆盖的转移
+          h[j] = h[j] * trans[i + 1][c][j] % kMod;
+        }
         LL *g = f[i][l];
         for (int j = 0; j <= i + 1; j++) {  // 还原 fwt 数组
           g[j] = 0;
@@ -321,15 +314,6 @@ void Dp() {  // O(nm^3)
             g[j] = (g[j] + h[k] * fwt[i + 1][k][j]) % kMod;
           }
           g[j] = g[j] * inv[i + 1] % kMod;
-        }
-        for (int j = 0; j <= i + 1; j++) {  // 计算没有被上一层覆盖的转移
-          h[j] = 0;
-          for (int k = 0; k <= i + 1; k++) {
-            h[j] = (h[j] + g[k] * trans[i + 1][c][k][j]) % kMod;
-          }
-        }
-        for (int j = 0; j <= i + 1; j++) {
-          g[j] = h[j];
         }
         if (r == n + 1) {  // 之后没有限制, 需要将 f[s|1<<i] 累加入 f[s]
           for (int j = 0; j <= i; j++) {
@@ -366,6 +350,9 @@ void ReDp(int i, int l, int r) {  // O(m^2+m\logn)
   }
   Seg2::V v2 = seg2[i].Ask(l, r);
   int c = v2.s - v2.c + (a[l] == i) + (r < n && a[r] == i);  // 累计没有被上一层覆盖的转移数量
+  for (int j = 0; j <= i + 1; j++) {                         // 计算没有被上一层覆盖的转移
+    v1.f[j] = v1.f[j] * trans[i + 1][c][j] % kMod;
+  }
   LL *g = f[i][l];
   for (int j = 0; j <= i + 1; j++) {  // 还原 fwt 数组
     g[j] = 0;
@@ -374,22 +361,19 @@ void ReDp(int i, int l, int r) {  // O(m^2+m\logn)
     }
     g[j] = g[j] * inv[i + 1] % kMod;
   }
-  for (int j = 0; j <= i + 1; j++) {  // 计算没有被上一层覆盖的转移
-    h[j] = 0;
-    for (int k = 0; k <= i + 1; k++) {
-      h[j] = (h[j] + g[k] * trans[i + 1][c][k][j]) % kMod;
-    }
-  }
   if (r == n) {  // 之后没有限制, 需要将 f[s|1<<i] 累加入 f[s]
     for (int j = 0; j <= i; j++) {
-      h[j] = (h[j] + h[j + 1]) % kMod;
+      g[j] = (g[j] + g[j + 1]) % kMod;
     }
   }
   for (int j = 0; j <= i; j++) {  // 进行 fwt
-    g[j] = 0;
+    h[j] = 0;
     for (int k = 0; k <= i; k++) {
-      g[j] = (g[j] + h[k] * fwt[i][k][j]) % kMod;
+      h[j] = (h[j] + g[k] * fwt[i][k][j]) % kMod;
     }
+  }
+  for (int j = 0; j <= i; j++) {
+    g[j] = h[j];
   }
   g[i + 1] = 0, seg1[i].Update(l);
 }
