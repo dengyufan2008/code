@@ -1,3 +1,4 @@
+// https://loj.ac/p/6518, https://www.luogu.com.cn/problem/P6621
 #include <iostream>
 #include <vector>
 #define ULL unsigned long long
