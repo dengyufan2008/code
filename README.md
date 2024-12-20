@@ -108,6 +108,8 @@ $n$ 个点边数为奇数的有标号无向连通图个数 $F_1(n)$ 和边数为
 
 - [HLPP](https://www.luogu.com.cn/paste/1ltjkyl7)
 
+- [Primal Duel](https://www.luogu.com.cn/paste/s1nawmeh)
+
 - [Fast Mul](https://www.luogu.com.cn/paste/bmjrtlws)
 
 ## *Last Update : 2024.10.31*
