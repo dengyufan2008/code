@@ -33,6 +33,8 @@ $$d(ij) = \sum_{x|i}\sum_{y|j}[\gcd(x, y)=1]$$
 
 $n$ 个点边数为奇数的有标号无向连通图个数 $F_1(n)$ 和边数为偶数 $F_0(n)$ 的差值为 $(-1)^n(n-1)!$. 归纳证明, 考虑 $n$ 连接的点数, 分 1 个和多个考虑, 发现多个对二者的贡献相等故舍去, 剩余部分自证不难.
 
+最优化将序列划分成若干段的权值和问题中, 若一段的权值的计算方式与值域相关 (如与值域上连续的三个元素有关的某个函数), 则考虑 CDQ 分治优化 Dp. 例: Resources/建筑游戏.zip
+
 [一道数学题](https://www.luogu.com.cn/article/ueohh8lt)
 
 [又一道数学题](https://www.luogu.com.cn/article/7d3j944s)
@@ -112,6 +114,6 @@ $n$ 个点边数为奇数的有标号无向连通图个数 $F_1(n)$ 和边数为
 
 - [Fast Mul](https://www.luogu.com.cn/paste/bmjrtlws)
 
-## *Last Update : 2024.10.31*
+## *Last Update : 2025.1.3*
 
 > "对我来说, 你就是地球的中心."
