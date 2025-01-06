@@ -366,3 +366,158 @@ i 不会啊
 - 对于异或卷积有 $f'_S = \sum_T (-1)^{\mid S \cap T \mid} f_T$. [例](https://qoj.ac/problem/9438)
 
 k 不会啊
+
+# 20241127 [梦熊题单](https://www.luogu.com.cn/paste/re1kw5qc)
+
+d 我想假了啊
+
+g i 很好啊 我是容斥废物
+
+h 是大奋题啊
+
+j 很复杂不想写啊
+
+# 20241216 代码源 1
+
+https://www.luogu.com.cn/api/team/downloadFile/82i7o190
+
+# 20241218 代码源 2
+
+https://qoj.ac/contest/1872
+
+# 20241220 代码源 3
+
+CF2052K
+CF2052H
+CF2052C
+CF1930H
+CF1801E
+QOJ8922
+QOJ9798
+QOJ9800
+QOJ9809
+
+# 20241223 代码源 4
+
+P11343~11348
+
+# 20241225 代码源 5
+
+P11105-11107 P11109-11111
+
+# 20241230 代码源 6
+
+QOJ1257
+[ajo2024final](https://atcoder.jp/contests/ajo2024-final/tasks) A~E
+
+# 20250103 代码源 7
+
+AGC070 A-D CF2053G-I2
+
+# 20250106 代码源 8
+
+## 题 & 解
+
+比较套路的题：
+https://vjudge.net/problem/TopCoder-14588 dfs序计数。
+
+dp[S][u] 表示 u 为根，S 这个点集的 dfs 序。删去 S 之后分成若干个联通块，可以任意排列。
+
+DAG容斥：
+
+dp[S] 表示 S 这个点集定向之后是 DAG 的方案。考虑枚举源点的的一个子集，系数为 (-1)^ (点数-1)。
+
+acyclic orientation 等于 色多项式 P(x) (-1)^n P(-1)。应用：网格图 acyclic orientation
+
+https://codeforces.com/gym/102012/problem/L 可以至少做到 O(bell(m) poly(nm))
+
+https://atcoder.jp/contests/abc306/tasks/abc306_h DAG容斥
+
+定向，使得相等或者 DAG。类似枚举子集。
+
+https://uoj.ac/problem/37 强联通图计数，DAG容斥。 
+
+枚举点改成枚举 SCC 的子集即可。
+
+https://qoj.ac/contest/1543/problem/8325 DAG容斥
+
+先求出每个块的拓扑序。然后要求整体直接有拓扑序，类似前面的，枚举子集。
+
+直接做可能是 O(3^n * n^2) 的，其中一维可以用插值优化。
+
+https://acm.hdu.edu.cn/showproblem.php?pid=5330 简单的魔改高维前缀和
+
+dp[i][s1][s2][k] 表示和前 i 位为 s1 的所有串，后 s2 位的距离为 k 的方案数。
+
+https://atcoder.jp/contests/agc017/tasks/agc017_f 魔改高维前缀和。
+
+回顾前缀和，按某种顺序确定，这一位删或者不删。这样能保证每个点向子集恰好一条路径即可。
+
+这里可以考虑路径上每一格要不要翻转，这样可以做到 O(2^n * n)。或者也可以按题解说的从上往下决定每一位要不要翻。
+
+https://atcoder.jp/contests/agc024/tasks/agc024_f 魔改高维前缀和。
+
+状态设计成已经确定了 t 的前几位，s现在后面还有几位的方案。等比数列算一下应该是 O(2^n * n)
+
+https://qoj.ac/problem/2068 2^(n/2) 求一般图匹配的手法
+
+把 2i-1 和 2i 连一条边，整个图会变成若干个环和链。可以用 2^(n/2) * n^2 算出来。后面子集并，
+
+https://codeforces.com/contest/468/problem/E 2^pathwidth 的状压 dp 手法
+
+构造一个顺序状压，每次只需要统计压一下有边跨过这个位置的点的状态即可。这个最大的值叫做pathwidth。
+
+有如下的理论结果，可以理解成非常小常数的 2^O(n)：
+
+In any cubic graph, or more generally any graph with maximum vertex degree three, the pathwidth is at most n⁄6 + o(n), where n is the number of vertices in the graph. There exist cubic graphs with pathwidth 0.082n, but it is not known how to reduce this gap between this lower bound and the n⁄6 upper bound.
+
+咋克的近似做法：对于每一列，枚举额外增加的是哪一行，或是不选择额外增加的，然后状压哪些行已经被占用了。考虑优化。注意到如果一行在之后的列都不会用到了，那就可以不状压这行。注意到如果一行的元素很少，那我们去掉这一行就会很容易。于是每次找到元素数最少的行，并找到用到这行的列，先枚举这些被用到的列。这样跑得飞快，在 CF 上是最优解（截至 2021.11.4）。
+
+https://loj.ac/p/6719
+
+题解写了集合幂级数的 exp，ln。众所周知在 n<=18 的情况下，2^n * n^2 和 3^(n-1) 跑的差不多快，所以只要暴力就行了。
+
+考虑这么个过程，初始都是一些环和单点。然后考虑从 1 到 n，每个点把边上的块并起来。
+
+几个比较杂的题，不一定讲。
+
+https://codeforces.com/gym/102759/problem/C 定向，最小代价强联通图。处理手法比较神秘。
+
+每次从当前的 SCC 上面伸一条回自己的路径。然后对着这个过程压即可。
+
+https://atcoder.jp/contests/agc016/tasks/agc016_f 删源点。
+
+每次删去 sg = 0 的点之后，我们发现每个点的 sg 值恰好减一。（这个思路和求树 hackenbush 有点类似）
+
+https://qoj.ac/contest/1648/problem/8364 更加有手法的高维前缀和。
+
+https://acm.hdu.edu.cn/showproblem.php?pid=7470 十分魔怔的压状态方法。
+https://acm.hdu.edu.cn/showproblem.php?pid=7476
+https://uoj.ac/contest/43/problem/372
+https://codeforces.com/contest/1569/problem/F 杂题，想办法压状态
+https://loj.ac/p/6729 边双联通计数。和仙人掌有点类似。
+
+https://vjudge.net/problem/TopCoder-14299 直接偷 2^pathwidth 的做法即可。
+
+## 总结
+
+- 无向图给每条边定向使得形成 DAG 的方案数 = 用 -1 种颜色染色使得相邻点的颜色不同的方案数 $\times (-1)^{n}$, 其中 $n$ 为 无向图的点数. -1 种颜色可以理解为随便选则系数乘 -1, 排除掉一种则系数乘 -2, 以此类推; 或可理解为 $(\omega - 1)$ 种颜色, 其中 $\omega$ 大于所有自然数, 并忽略所有非常数项.
+
+  <details><summary>Proof</summary>
+
+  > 考虑后者的方案数. 设 $f(G, m)$ 表示将无向图 $G$ 用 $m$ 种颜色染色的方案数, 使得相邻点的颜色不同的方案数.
+  >
+  > 考虑一条边 $(x, y)$, 若不管这条边的限制, 则方案数为 $x$ 和 $y$ 颜色不同的方案数加上相同的方案数. 那么还需要把相同的方案数减去, 则直接将 $x$ 和 $y$ 合并成一个点即可. 故 $f(G, m) = f(G \setminus (x, y), m) - f(G', m)$, 其中 $G'$ 为合并 $x$ 和 $y$ 点之后的图. 边界条件为 $G$ 中一条边都没有, 方案数为 $m^{|G|}$.
+  >
+  > 考虑前者的方案数. 设 $g(G)$ 表示将无向图 $G$ 定向使得形成 DAG 的方案数.
+  >
+  > 考虑一条边 $(x, y)$, 若最后考虑这条边该如何定向, 则若 $x$ 与 $y$ 互相不可达有两种定向方式, 否则只有一种. 则可以变为删去这条边后的方案数 + 删去这条边后 $x$ 和 $y$ 互相不可达的方案数. 故 $g(G) = g(G \setminus (x, y)) + g(G')$, 其中 $G'$ 的定义同上. 边界条件同上, 方案数为 1.
+  >
+  > 不妨设 $f'(G, m) = f(G, m) \times (-1)^{|G|}$, 则 $f'$ 的边界条件方案数为 $(-m)^{|G|}$, 递推式为 $f'(G, m) = f'(G \setminus (x, y), m) + f'(G', m)$. 发现当 $m=-1$ 时 $f'$ 的边界条件与递推式与 $g$ 完全一致. 故 $g(G) = f(G, -1) \times (-1)^{|G|}$.
+  </details>
+
+- 求匹配方案数 (或别的需要记每个点的状态的问题) 时若图中边数较少, 则只需记后面还会用到的点, 可以大幅降低常数 (原来的 1% 左右). 其实差不多类似于一个每次枚举度数最大的点的状态然后把它删去的 Trick, 直到只剩环和链为止, 而且这个枚举度数最大的点的方法更优.
+
+- 计数无向图的仙人掌子图可以用 Floyd 思想, 每次把多个连通块用 i 号点合并, 初始状态是所有的单个环. 需要使用子集 Exp. 点双/边双子图同理.
+
+- SCC 可以划分为一个环然后每次加入一条端点在点集内, 其余点不在点集内的路径. 注意需要在路径的开头就钦定结尾是哪个点, 不然不知道有没有回来. 且会算重, 只能求解最优化问题.
