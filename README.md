@@ -35,6 +35,8 @@ $n$ 个点边数为奇数的有标号无向连通图个数 $F_1(n)$ 和边数为
 
 最优化将序列划分成若干段的权值和问题中, 若一段的权值的计算方式与值域相关 (如与值域上连续的三个元素有关的某个函数), 则考虑 CDQ 分治优化 Dp. 例: Resources/建筑游戏.zip
 
+对底栈的复杂度居然是均摊 $O(1)$ 的. [例](https://www.luogu.com.cn/problem/CF2026F)
+
 [一道数学题](https://www.luogu.com.cn/article/ueohh8lt)
 
 [又一道数学题](https://www.luogu.com.cn/article/7d3j944s)
