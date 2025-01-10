@@ -521,3 +521,12 @@ https://vjudge.net/problem/TopCoder-14299 直接偷 2^pathwidth 的做法即可�
 - 计数无向图的仙人掌子图可以用 Floyd 思想, 每次把多个连通块用 i 号点合并, 初始状态是所有的单个环. 需要使用子集 Exp. 点双/边双子图同理.
 
 - SCC 可以划分为一个环然后每次加入一条端点在点集内, 其余点不在点集内的路径. 注意需要在路径的开头就钦定结尾是哪个点, 不然不知道有没有回来. 且会算重, 只能求解最优化问题.
+
+# 20250108 代码源 9
+
+https://qoj.ac/contest/1890 CDEFL
+https://codeforces.com/contest/2057 FG
+
+# 20250110 代码源 10
+
+https://qoj.ac/category/341
