@@ -37,6 +37,8 @@ $n$ 个点边数为奇数的有标号无向连通图个数 $F_1(n)$ 和边数为
 
 对底栈的复杂度居然是均摊 $O(1)$ 的. [例](https://www.luogu.com.cn/problem/CF2026F)
 
+$O(\log n)$ 地用一个栈模拟队列: 考虑将对顶栈中的元素放在一个栈里, 设 pop 端的元素数量为 $t$, 则每次 pop 时找到 pop 端的前 $\text{lowbit}(t)$ 个元素, 将从这里到栈顶的每一个元素全都移出栈, 先加入刚刚被移出栈的 push 端元素, 再加入 pop 端元素. 若 $t=0$ 则将栈全部弹出并翻转后再插入, 则所有的 push 端元素变为 pop 端元素. 使用 $\text{lowbit}$ 可以看作将 pop 端元素二进制分组.
+
 [一道数学题](https://www.luogu.com.cn/article/ueohh8lt)
 
 [又一道数学题](https://www.luogu.com.cn/article/7d3j944s)
@@ -116,6 +118,6 @@ $n$ 个点边数为奇数的有标号无向连通图个数 $F_1(n)$ 和边数为
 
 - [Fast Mul](https://www.luogu.com.cn/paste/bmjrtlws)
 
-## *Last Update : 2025.1.3*
+## *Last Update : 2025.1.23*
 
 > "对我来说, 你就是地球的中心."
