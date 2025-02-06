@@ -530,3 +530,22 @@ https://codeforces.com/contest/2057 FG
 # 20250110 代码源 10
 
 https://qoj.ac/category/341
+
+# 20250206 代码源 11
+
+https://codeforces.com/problemset/problem/1423/M
+CF833B
+https://www.luogu.com.cn/problem/P3515
+QOJ9540
+
+LOJ6039
+QOJ9737
+https://codeforces.com/gym/102586/problem/B
+https://qoj.ac/contest/796/problem/2211
+https://atcoder.jp/contests/abc383/tasks/abc383_g
+
+https://codeforces.com/gym/103102/problem/A
+https://codeforces.com/problemset/problem/1787/H
+https://codeforces.com/contest/1534/problem/G
+https://qoj.ac/contest/1648/problem/8362
+https://codeforces.com/gym/104128/problem/H
