@@ -521,3 +521,17 @@ $$f_i = (i-1)(f_{i-2}+f_{i-1})$$
 其中 $f_0 = 1$, $f_1 = 0$.
 
 $O(n)$.
+
+# 线性空间交并互转
+
+以模 2 意义为例, 后文省略等价符号后的对 2 取模. 设线性空间的维度为 $d$. 对于一组线性基 $\mathcal P$, 考虑一组新的线性基 $\mathcal Q$, 满足对于一个向量 $\vec x$, $\vec x \in \mathcal P \Leftrightarrow \forall \vec y \in \mathcal Q, \vec x \cdot \vec y \equiv 0$.
+
+首先先将 $\mathcal P$ 消元成上三角矩阵. 称一行包含了一列当且仅当行列的交点为 1, 称一行的主元是这一行包含的列中编号最小的列. 由于是上三角矩阵, 显然每一行的主元互不相同.
+
+考虑将 $\mathcal P$ 视为一个高斯消元的矩阵, 限定了若干个未知数异或和为 0. 显然任意一组非主元的值可以唯一确定所有主元的值, 则解有 $2^{d - | \mathcal P |}$ 个. $\mathcal Q$ 应当包含且仅包含这些解, 故 $| \mathcal Q | = d - | \mathcal P |$.
+
+考虑如何构造任意一个合法的 $\mathcal Q$. 枚举每一个不是任何一行的主元的列, 钦定这一位为 1, 且所有包含了这一列的行的主元对应的位都为 1, 否则为 0, 则显然这样构造出的一个向量 $\vec y$ 满足 $\vec x \in \mathcal P \Rightarrow \vec x \cdot \vec y \in \{0, 2\} \Rightarrow \vec x \cdot \vec y \equiv 0$, 且构造出的 $d - | \mathcal P |$ 个向量线性无关 (每个向量编号最大的为 1 的位互不相同).
+
+现在我们得到了一个合法的 $\mathcal Q$, 显然将其消为上三角矩阵后便是唯一的 $\mathcal Q$. 故可得 $\mathcal P$ 与 $\mathcal Q$ 一一对应, 称这样的 $\mathcal Q$ 为 $\mathcal P$ 的正交变换.
+
+回到标题, 我们希望将线性空间的交转化为线性空间的并, 这样合并两个线性空间就只需线性基合并. 显然有 $\vec x \in \mathcal P_1 \land \vec x \in \mathcal P_2 \Leftrightarrow \forall \vec y \in \mathcal Q_1 \cup \mathcal Q_2, \vec x \cdot \vec y \equiv 0$. 故对于 $\mathcal P_1$ 和 $\mathcal P_2$ 取交等价于对 $\mathcal Q_1$ 和 $\mathcal Q_2$ 取并.
