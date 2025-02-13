@@ -59,6 +59,10 @@ $$
 
 $$\sum_{i=0}^{+\infty} {n+i \choose n} a^i = \frac{1}{(1-a)^{n+1}}.$$
 
+二分图最大匹配 = n - 最大独立集.
+
+对所有数 $a_i$ 变为 $\lfloor \frac{a_i+x}{2} \rfloor$ 的操作, 如果维护排序后的 $a_i$, 每次把所有相等的数合并则可以暴力做. 势能分析考虑 $\sum_i \lceil \log_2(a_i-a_{i-1}) \rceil$, 两项差每次会除以二上取整或下取整, 则差只要大于 1 取对数后就会减少 1, 差是 1 的连续段每次长度 $l$ 会变为 $\lceil \frac{l+1}{2} \rceil$, 则只要长度大于 2 就会减半, 小于等于 2 时只花费了 $O(1)$ 的代价就能让本段和右侧的段之间的势能减少. 故复杂度 $O(n \log V)$.
+
 [一道数学题](https://www.luogu.com.cn/article/ueohh8lt)
 
 [又一道数学题](https://www.luogu.com.cn/article/7d3j944s)
