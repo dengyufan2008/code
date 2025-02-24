@@ -65,6 +65,8 @@ $$\sum_{i=0}^{+\infty} {n+i \choose n} a^i = \frac{1}{(1-a)^{n+1}}.$$
 
 进行操作使方差最小考虑枚举平均数. [例](https://www.luogu.com.cn/problem/CF2029I)
 
+求序列 $a_i$ 与 $b_j$ 的加法笛卡尔积的前 $k$ 小, 可以考虑先排序两个序列, 将 $a_1 + b_1$ 加入不可重集, 随后每次取出一个最小值 $a_i + b_j$, 则将 $a_{i+1} + b_j$ 与 $a_i + b_{j+1}$ 加入优先队列. 需要去重. 本质上是维护平面直角坐标系中被 ban 掉的坐标的外包络.
+
 [一道数学题](https://www.luogu.com.cn/article/ueohh8lt)
 
 [又一道数学题](https://www.luogu.com.cn/article/7d3j944s)
@@ -144,6 +146,6 @@ $$\sum_{i=0}^{+\infty} {n+i \choose n} a^i = \frac{1}{(1-a)^{n+1}}.$$
 
 - [Fast Mul](https://www.luogu.com.cn/paste/bmjrtlws)
 
-## *Last Update : 2025.2.17*
+## *Last Update : 2025.2.24*
 
 > "对我来说, 你就是地球的中心."
