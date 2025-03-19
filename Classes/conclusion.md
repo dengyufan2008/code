@@ -797,3 +797,7 @@ O(n log^2 n)。
 
 - border 拼起来能对两边 border 都建立 kmp 失配树，然后做二维数点。也可以用 log 段等差数列的方法。
 - 求最长的 border 可以对模板串建 SA，然后去二分最大的 LCP。然后再 SA 上往前二分，找到最近的 = 这一段 LCP 的后缀。
+
+# 20250317-
+
+https://vjudge.net/article/8041
