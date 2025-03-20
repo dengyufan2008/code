@@ -18,7 +18,7 @@ int Gcd(int x, int y) { return y ? Gcd(y, x % y) : x; }
 void CalcConst() {
   u.push_back({0, 1});
   for (int i = 1; i <= kMaxN; i++) {
-    for (int j = 1; j <= kMaxM * i; j++) {
+    for (int j = 1; j < i; j++) {
       if (Gcd(i, j) == 1) {
         u.push_back({j, i});
       }
@@ -161,16 +161,26 @@ int main() {
       cout << -1 << '\n';
       continue;
     }
-    int l = 0, r = u.size() - 1;
+    int l = 0, r = kMaxM;
     while (l <= r) {
       int mid = l + r >> 1;
-      if (Check(u[mid].first, u[mid].second)) {
+      if (Check(mid, 1)) {
         l = mid + 1;
       } else {
         r = mid - 1;
       }
     }
-    cout << u[r].first << '/' << u[r].second << '\n';
+    int x = r;
+    l = 0, r = u.size() - 1;
+    while (l <= r) {
+      int mid = l + r >> 1;
+      if (Check(x * u[mid].second + u[mid].first, u[mid].second)) {
+        l = mid + 1;
+      } else {
+        r = mid - 1;
+      }
+    }
+    cout << x * u[r].second + u[r].first << '/' << u[r].second << '\n';
   }
   return 0;
 }
