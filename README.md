@@ -67,6 +67,8 @@ $$\sum_{i=0}^{+\infty} {n+i \choose n} a^i = \frac{1}{(1-a)^{n+1}}.$$
 
 求序列 $a_i$ 与 $b_j$ 的加法笛卡尔积的前 $k$ 小, 可以考虑先排序两个序列, 将 $a_1 + b_1$ 加入不可重集, 随后每次取出一个最小值 $a_i + b_j$, 则将 $a_{i+1} + b_j$ 与 $a_i + b_{j+1}$ 加入优先队列. 需要去重. 本质上是维护平面直角坐标系中被 ban 掉的坐标的外包络.
 
+$F^p(x) \equiv F(x^p) \pmod p$, 证明考虑将左式拆成 $p$ 个 $\sum$ 的形式, 若这 $p$ 个循环变量中有一对不同, 则重排的方案数为 $p$ 的倍数 (拆开组合数, 上面的 $p!$ 中的 $p$ 消不掉), 故只需考虑 $p$ 个循环变量全部相同.
+
 [一道数学题](https://www.luogu.com.cn/article/ueohh8lt)
 
 [又一道数学题](https://www.luogu.com.cn/article/7d3j944s)
@@ -146,6 +148,6 @@ $$\sum_{i=0}^{+\infty} {n+i \choose n} a^i = \frac{1}{(1-a)^{n+1}}.$$
 
 - [Fast Mul](https://www.luogu.com.cn/paste/bmjrtlws)
 
-## *Last Update : 2025.2.24*
+## *Last Update : 2025.3.24*
 
 > "对我来说, 你就是地球的中心."
