@@ -144,10 +144,12 @@ $F^p(x) \equiv F(x^p) \pmod p$, 证明考虑将左式拆成 $p$ 个 $\sum$ 的�
 
 - [HLPP](https://www.luogu.com.cn/paste/1ltjkyl7)
 
+- [EK](https://www.luogu.com.cn/paste/clkjej7u)
+
 - [Primal Duel](https://www.luogu.com.cn/paste/s1nawmeh)
 
 - [Fast Mul](https://www.luogu.com.cn/paste/bmjrtlws)
 
-## *Last Update : 2025.3.24*
+## *Last Update : 2025.3.27*
 
 > "对我来说, 你就是地球的中心."
