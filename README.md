@@ -69,6 +69,8 @@ $$\sum_{i=0}^{+\infty} {n+i \choose n} a^i = \frac{1}{(1-a)^{n+1}}.$$
 
 $F^p(x) \equiv F(x^p) \pmod p$, 证明考虑将左式拆成 $p$ 个 $\sum$ 的形式, 若这 $p$ 个循环变量中有一对不同, 则重排的方案数为 $p$ 的倍数 (拆开组合数, 上面的 $p!$ 中的 $p$ 消不掉), 故只需考虑 $p$ 个循环变量全部相同.
 
+给定树上三点则唯一确定了三条路径, 注意到只有它们的重心被三条路径经过奇数次, 而重心是三个点分别到另外两点路径的最近点, 对于一类树上求路径最近点权值的异或和问题好用. [例](https://atcoder.jp/contests/pakencamp-2024-day2/tasks/pakencamp_2024_day2_c?lang=en)
+
 [一道数学题](https://www.luogu.com.cn/article/ueohh8lt)
 
 [又一道数学题](https://www.luogu.com.cn/article/7d3j944s)
@@ -150,6 +152,6 @@ $F^p(x) \equiv F(x^p) \pmod p$, 证明考虑将左式拆成 $p$ 个 $\sum$ 的�
 
 - [Fast Mul](https://www.luogu.com.cn/paste/bmjrtlws)
 
-## *Last Update : 2025.3.27*
+## *Last Update : 2025.4.5*
 
 > "对我来说, 你就是地球的中心."
