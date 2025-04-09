@@ -1,4 +1,3 @@
-// https://qoj.ac/problem/6105
 #include <algorithm>
 #include <fstream>
 #include <vector>

@@ -1,4 +1,3 @@
-// https://www.luogu.com.cn/problem/P11407
 #include <cmath>
 #include <vector>
 
