@@ -71,6 +71,10 @@ $F^p(x) \equiv F(x^p) \pmod p$, 证明考虑将左式拆成 $p$ 个 $\sum$ 的�
 
 给定树上三点则唯一确定了三条路径, 注意到只有它们的重心被三条路径经过奇数次, 而重心是三个点分别到另外两点路径的最近点, 对于一类树上求路径最近点权值的异或和问题好用. [例](https://atcoder.jp/contests/pakencamp-2024-day2/tasks/pakencamp_2024_day2_c?lang=en)
 
+$n$ 错排的限制可以用 $n$ 个点的有向图来描述. 不完整的错排只有孤立点, 链, 非自环的环; 完整的错排只有非自环的环. [例](https://www.luogu.com.cn/problem/CF1085G)
+
+描述一个 $n$ 边形的剖分可以用栈. 将环平铺成链, 从 $1$ 到 $n$, 若加边 $(i, j) \space (i + 1 < j)$ 则在 $i$ 处弹栈到栈顶为 $j$ 为止, 加完边后把 $i$ 加入栈. 最后加入边 $(1, n)$, 显然它不能作为多边形的剖分, 故没有影响; 并且不把 $n$ 加入栈. 那么栈的限制为 1 始终不能弹出 (即大小始终非 0) 且最终只剩 1. [例](https://www.luogu.com.cn/problem/AT_agc065_d)
+
 [一道数学题](https://www.luogu.com.cn/article/ueohh8lt)
 
 [又一道数学题](https://www.luogu.com.cn/article/7d3j944s)
