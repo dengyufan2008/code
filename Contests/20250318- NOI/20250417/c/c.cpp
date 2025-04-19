@@ -1,4 +1,3 @@
-// https://qoj.ac/problem/3040
 #include <fstream>
 #include <queue>
 #define LL long long

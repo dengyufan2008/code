@@ -1,4 +1,3 @@
-// https://qoj.ac/problem/6673
 #include <algorithm>
 #include <fstream>
 #define LL long long
