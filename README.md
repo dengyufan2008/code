@@ -39,7 +39,7 @@ $n$ 个点边数为奇数的有标号无向连通图个数 $F_1(n)$ 和边数为
 
 $O(\log n)$ 地用一个栈模拟队列: 考虑将对顶栈中的元素放在一个栈里, 设 pop 端的元素数量为 $t$, 则每次 pop 时找到 pop 端的前 $\text{lowbit}(t)$ 个元素, 将从这里到栈顶的每一个元素全都移出栈, 先加入刚刚被移出栈的 push 端元素, 再加入 pop 端元素. 若 $t=0$ 则将栈全部弹出并翻转后再插入, 则所有的 push 端元素变为 pop 端元素. 使用 $\text{lowbit}$ 可以看作将 pop 端元素二进制分组.
 
-对于形如大量种类的括号序列是否合法的判定, 可以对每种括号赋一个随机的权值 $v$ 并生成矩阵
+对于形如大量种类的颜色匹配是否合法的判定, 可以对每种颜色赋一个随机的权值 $v$ 并生成矩阵
 
 $$
 A = \left[
@@ -51,7 +51,7 @@ v & 1
 \right]
 $$
 
-显然有 $A^2 = I$, 则只需判断整个序列的乘积是否为单位矩阵即可.
+显然有 $A^2 = I$, 则只需判断整个序列的乘积是否为单位矩阵即可. 注意到 $B * B^{-1} = B^{-1} * B = I$, 故无法使用这种方式判断括号匹配.
 
 树剖+线段树维护 SG 函数时, 线段树每个叶子只需记录 重儿子 SG 值为 $x$ 时本结点 SG 值为 $y$ 否则为 $z$ 即可, 而无需对重儿子每个可能的 SG 值分别记转移. 容易合并.
 
@@ -112,30 +112,16 @@ $n$ 错排的限制可以用 $n$ 个点的有向图来描述. 不完整的错排
 # *DengYufan's Introduction*
 
 ## *Accounts*
-- Luogu : dengyufan
-
-- USACO : dengyuf1
+- Luogu : 1795MiB
 
 - Codeforces : dengyufan
 
-- Atcoder : dengyufan2008
+- Atcoder : dengyufan2009
 
 - Github : dengyufan2008
 
 ## *Websites*
-- [Luogu](http://www.luogu.com.cn)
-
-- [USACO](https://train.usaco.org)
-
-- [Codeforces](https://codeforces.com)
-
-- [AtCoder](https://atcoder.jp)
-
-- [C++Info](https://zh.cppreference.com/w/%E9%A6%96%E9%A1%B5)
-
-- [Github](https://github.com)
-
-- [OI-Wiki](https://oiwiki.com)
+- [cppreference](https://zh.cppreference.com/w/%E9%A6%96%E9%A1%B5)
 
 ## *Code*
 - [Fast IO For Interger](https://www.luogu.com.cn/paste/a6g4tzxa)
@@ -156,6 +142,6 @@ $n$ 错排的限制可以用 $n$ 个点的有向图来描述. 不完整的错排
 
 - [Fast Mul](https://www.luogu.com.cn/paste/bmjrtlws)
 
-## *Last Update : 2025.4.5*
+## *Last Update : 2025.4.25*
 
 > "对我来说, 你就是地球的中心."
