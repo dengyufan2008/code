@@ -79,6 +79,10 @@ $n$ 错排的限制可以用 $n$ 个点的有向图来描述. 不完整的错排
 
 求最小曼哈顿生成树只需保留每个点的 8 向最小边即可. 证明考虑转切比雪夫距离.
 
+下降幂满足二项式定理, 即 $(x+y)^{\underline k} = \sum_{i=0}^k {k \choose i} x^{\underline i} y^{\underline {k-i}}$. 证明考虑范德蒙德卷积.
+
+$\bmod \space 2^{64}$ 的多项式题目可以考虑下降幂多项式, 只用保留前不超过 70 项.
+
 [一道数学题](https://www.luogu.com.cn/article/ueohh8lt)
 
 [又一道数学题](https://www.luogu.com.cn/article/7d3j944s)
