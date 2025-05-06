@@ -83,6 +83,12 @@ $n$ 错排的限制可以用 $n$ 个点的有向图来描述. 不完整的错排
 
 $\bmod \space 2^{64}$ 的多项式题目可以考虑下降幂多项式, 只用保留前不超过 70 项.
 
+对于一类问题, 若不考虑插入操作, 元素在操作序列上满足单调性, 那么有插入操作时可以考虑二进制分组. [例](https://loj.ac/p/3273)
+
+可持久化数据结构可以通过询问分块, 块长 ${q \over \log n}$, 重构 $O(\log n)$ 次来使空间不带 $\log$, 时间复杂度不变.
+
+树套树可以 pushup, 可持久化即可. [例](https://darkbzoj.cc/problem/3946) 兔队线段树本质上是每个结点维护了一个可持久化平衡树.
+
 [一道数学题](https://www.luogu.com.cn/article/ueohh8lt)
 
 [又一道数学题](https://www.luogu.com.cn/article/7d3j944s)
@@ -150,6 +156,6 @@ $\bmod \space 2^{64}$ 的多项式题目可以考虑下降幂多项式, 只用�
 
 - [Fast Mul](https://www.luogu.com.cn/paste/bmjrtlws)
 
-## *Last Update : 2025.5.2*
+## *Last Update : 2025.5.6*
 
 > "对我来说, 你就是地球的中心."
