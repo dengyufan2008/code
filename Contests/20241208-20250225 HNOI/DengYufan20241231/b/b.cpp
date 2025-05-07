@@ -45,7 +45,7 @@ int main() {
               if (l && !_l) {  // 当前恰好把应当加上贡献的都加完了
                 Update(ans[j], w * h % kMod * pw[n - i + 1]);
               }
-              if (i <= n && _r > 0) {            // w 代表的点未被 b_i 删去, 则可以转移
+              if (i <= n && _r > 0) {           // w 代表的点未被 b_i 删去, 则可以转移
                 for (int x = 1; x < _l; x++) {  // 枚举当前 a_i 的值
                   Update(g[j + 1][_l][_r][_w + x], h);
                 }
