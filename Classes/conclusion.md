@@ -837,3 +837,17 @@ CF1616G
 at_agc040_e
 
 UOJ919
+
+# 20250502 图论
+
+BZOJ4061
+
+P9527
+
+CF1307G
+
+CF51F
+
+AT_codefestival_2016_final_g
+
+P9531
