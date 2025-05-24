@@ -1,3 +1,4 @@
+// 可用带分段的兔队线段树维护, 但我懒
 #include <fstream>
 #include <vector>
 
