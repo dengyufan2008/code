@@ -5,7 +5,7 @@
 using namespace std;
 
 const LL kMaxN = 2e6 + 1;
-LL n, t, ans, a[kMaxN], b[kMaxN], pre[kMaxN], suf[kMaxN];
+LL n, t, ans, a[kMaxN], pre[kMaxN], suf[kMaxN];
 pair<LL, LL> q[kMaxN];
 
 LL Read() {
