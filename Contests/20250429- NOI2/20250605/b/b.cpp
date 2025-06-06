@@ -81,7 +81,7 @@ void Solve2() {
     cin >> x >> y >> z;
     d[x]++, d[y]++;
   }
-  LL ans = -f[p].b;
+  LL ans = (-f[p].b - p * f[0].b) % kMod;
   for (int i = 1; i <= n; i++) {
     ans = (ans + f[d[i]].b) % kMod;
   }
