@@ -692,3 +692,98 @@ $0 \le n, m \le 10^7$, $a, b \ge 1$.
 不难发现, 只要我们无限的对称 $S'$, $T'$, 和它们对称得到的一系列新点, 无限的延长这个式子, 就能得到正确答案. 即 $F(O, P) - F(O, S) - F(O, T) + F(O, S') + F(O, T') - F(O, S'') - F(O, T'') + F(O, S''') + F(O, T''') \dots$. 其中 $S''$, $T''$, $S'''$ 和 $T'''$ 的意义不言自明.
 
 注意到一个 $F(O, P)$ 可以通过 $O(n+m)$ 预处理阶乘后 $O(1)$ 求出, 考虑这个式子非 0 的项数. 注意到 $F$ 中第一项均为 $O$, 第二项均在直线 $x+y=n+m$ 上, 且分别考虑 $S$ 一簇点和 $T$ 一簇点, 其到 $y=x+ {b-a \over 2}$ 的距离单调递增, 而只有 $P_x, P_y \ge 0$ 的 $P$ 才非 0, 故至多有 $O(n+m)$ 个非 0 项. 两簇点的坐标都容易通过递推求出, 复杂度 $O(n+m)$.
+
+# 类欧几里得
+
+求
+
+$$\sum_{i=1}^n \lfloor {ai+b \over c} \rfloor.$$
+
+$1 \le n, a, b, c \le 10^{18}$, $0 \le a, b < c$.
+
+---
+
+思路万千不如考场手推的灵光一现. 设 $g = \lfloor {an + b \over c} \rfloor \le n$.
+
+$$
+\begin{aligned}
+Ans &= \sum_{i=1}^n \sum_{j=1}^g [\lfloor {ai+b \over c} \rfloor \ge j]
+\\
+&= \sum_{j=1}^g \sum_{i=1}^n [\lfloor {ai+b \over c} \rfloor \ge j]
+\end{aligned}
+$$
+
+有
+
+$$
+\begin{aligned}
+[\lfloor {ai+b \over c} \rfloor \ge j] &= [ai+b \ge cj]
+\\
+&= [i \ge \lceil {cj-b \over a} \rceil]
+\end{aligned}
+$$
+
+故
+
+$$
+Ans = \sum_{j=1}^g \sum_{i=1}^n [i \ge \lceil {cj-b \over a} \rceil]
+$$
+
+我们希望
+
+$$
+\sum_{i=1}^n [i \ge \lceil {cj-b \over a} \rceil] = n - \lceil {cj-b \over a} \rceil + 1
+$$
+
+则需要满足
+
+$$
+1 \le \lceil {cj-b \over a} \rceil \le n
+$$
+
+有
+
+$$
+\begin{aligned}
+[\lceil {cj-b \over a} \rceil \ge 1] &= [\lfloor {cj-b+a-1 \over a} \rfloor \ge 1]
+\\
+&= [cj-b+a-1 \ge a]
+\\
+&= [cj > b]
+\\
+\\
+[\lceil {cj-b \over a} \rceil \le n] &= [cj-b \le an]
+\\
+&= [j \le {an+b \over c}]
+\\
+&= [j \le \lfloor {an + b \over c} \rfloor = g]
+\end{aligned}
+$$
+
+后者显然满足, 前者只需满足 $b < c$ 即可. 故当 $b < c$ 时, 
+
+$$
+\begin{aligned}
+Ans &= \sum_{j=1}^g (n - \lceil {cj-b \over a} \rceil + 1)
+\\
+&= g(n+1) - \sum_{j=1}^g \lceil {cj-b \over a} \rceil
+\end{aligned}
+$$
+
+设 $c = ka+r$, 有
+
+$$
+\begin{aligned}
+Ans &= g(n+1) - \sum_{j=1}^g \lceil {kaj+rj-b \over a} \rceil
+\\
+&= g(n+1) - \sum_{j=1}^g (kj + \lceil {rj-b \over a} \rceil)
+\\
+&= g(n+1) - {g(g+1) \over 2}k - \sum_{j=1}^g \lceil {rj-b \over a} \rceil
+\\
+&= g(n+1) - {g(g+1) \over 2}k - \sum_{j=1}^g \lfloor {rj+(a-b-1) \over a} \rfloor
+\end{aligned}
+$$
+
+故将 $(a, c)$ 的问题 $O(1)$ 地转化为了 $(c \bmod a, a)$ 的问题, 且当 $a=0$ 时答案为 0, 故可以 $O(\log c)$ 解决.
+
+注意到两个小细节: $g(n+1)$ 有可能超过 ``long long`` 范围, 则答案需要使用 ``__int128_t``; 式子只有在 $b < c$ 时才成立, 故递归调用 $b' = a-b-1$ 前, 需要将 $b'$ 移动到 $[0, a)$ 范围, 同时给答案加上 $g$ 的某个整数倍即可.
