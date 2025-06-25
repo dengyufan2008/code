@@ -89,6 +89,8 @@ $\bmod \space 2^{64}$ 的多项式题目可以考虑下降幂多项式, 只用�
 
 树套树可以 pushup, 可持久化即可. [例](https://darkbzoj.cc/problem/3946) 兔队线段树本质上是每个结点维护了一个可持久化平衡树.
 
+强连通竞赛图中一定分别存在大小在 $[3, n]$ 内的简单环. 竞赛图强连通的充要条件为任意大小为 $m$ 的点集 (事实上只需考虑度数前 $m$ 小的点), 其在整张图的出度 (或入度) 之和大于 $m(m-1) \over 2$. [例](https://www.luogu.com.cn/problem/CF1268D)
+
 [一道数学题](https://www.luogu.com.cn/article/ueohh8lt)
 
 [又一道数学题](https://www.luogu.com.cn/article/7d3j944s)
@@ -156,6 +158,6 @@ $\bmod \space 2^{64}$ 的多项式题目可以考虑下降幂多项式, 只用�
 
 - [Fast Mul](https://www.luogu.com.cn/paste/bmjrtlws)
 
-## *Last Update : 2025.5.6*
+## *Last Update : 2025.6.25*
 
 > "对我来说, 你就是地球的中心."
