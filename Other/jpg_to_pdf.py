@@ -2,10 +2,10 @@ import img2pdf
 import os
 
 # 生成图像文件名列表
-images = [f"D:\\Files\\Desktop\\new_10\\new ({str(i)}).jpg" for i in range(1, 57)]
+images = [f"D:\\Files\\桌面\\tmp\\ ({str(i)}).jpg" for i in range(1, 23)]
 
 # 输出 PDF 文件名
-output_pdf = "D:\\Files\\Desktop\\new_10\\result.pdf"
+output_pdf = "D:\\Files\\桌面\\tmp\\result.pdf"
 
 # 确保所有图片都存在，可读
 for image in images:
