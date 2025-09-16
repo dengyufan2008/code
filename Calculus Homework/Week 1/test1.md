@@ -20,9 +20,7 @@ Proof. 考虑其逆否命题, 即 $m \neq 0 \land n \neq 0 \rightarrow m \cdot n
 
 由于 $m, n \neq 0$, 故令 $x, y$ 满足 $S(x)=m, S(y)=n$.
 
-$S(x) \cdot S(y)=(x+1) \cdot (y+1)=(x+1) \cdot y+(x+1)=(x+1) \cdot y+x+1$.
-
-由于 $[(x+1) \cdot y+x]$ 是自然数, 则 $1 \le S(x) \cdot S(y)$. 我们有 $0 < 1$, 故 $S(x) \cdot S(y) \neq 0$. $\blacksquare$
+$S(x) \cdot S(y)=(x+1) \cdot (y+1)=(x+1) \cdot y+(x+1)=(x+1) \cdot y+x+1=S((x+1) \cdot y+x) \neq 0$. $\blacksquare$
 
 ---
 
@@ -32,7 +30,7 @@ Proof. 设 $A = \{n | \forall k, k \neq 0 \land m \cdot k=n \cdot k \rightarrow 
 
 1. 先试证明 $0 \in A$.
 
-   $m \cdot k = 0 \cdot k \rightarrow m \cdot k = 0 \rightarrow m = 0 \lor k = 0$.
+   当 $n=0$ 时, $m \cdot k = n \cdot k \rightarrow m \cdot k = 0 \cdot k = 0 \rightarrow m = 0 \lor k = 0$.
 
    因为有 $k \neq 0$, 故 $m=0=n$.
 
