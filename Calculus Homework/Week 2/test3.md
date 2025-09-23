@@ -1,3 +1,7 @@
+本题会用到第四题所证结论.
+
+---
+
 Lemma 1. 设 $x_1, \cdots, x_n>-1$ 且 $x_ix_j \ge 0 \space (\forall i, j \in \set{1, 2, \cdots, n})$, 则 $(1+x_1) \cdots (1+x_n) \ge 1+(x_1+ \cdots + x_n)$. 其中不等式取等 iff $x_1, \cdots, x_n$ 中至多一个非零.
 
 Proof. 注意到, 交换 $x_i$ 和 $x_j$ 的值不影响不等式两侧各自的值, 且当 $x_n=0$ 时删去 $x_n$ 并令 $n \leftarrow n-1$ 不影响不等式两侧各自的值. 故下假设 $x_i \ne 0$, 不等式取等条件变为 $n \le 1$.
@@ -26,20 +30,24 @@ Proof. 将 $x_i=x$ 代入 Lemma 1 可得自然推论.
 
 Lemma 3. $\forall n \in \N^*$, $a, b>0$, 有 $ab^n \le (\frac{a+nb}{n+1})^{n+1}$, 且不等式取等 iff $a=b$.
 
-Proof. 不等式两侧同时除以 $a^{n+1}$, 得 $(\frac{b}{a})^n \le (\frac{n\frac{b}{a}+1}{n+1})^{n+1}$. 令 $x=n\frac{b}{a}>0$, 则不等式化为 $(\frac{x}{n})^n \le (\frac{x+1}{n+1})^{n+1}$ 即 $(\frac{x+1}{n+1})^\frac{n+1}{n} \ge \frac{x}{n}$.
+Proof. 取 $x_1=a$, $x_2=x_3=\cdots=x_{n+1}=b$, 有 $ab^n=x_1x_2 \cdots x_{n+1} \le (\frac{x_1+x_2+\cdots+x_{n+1}}{n+1})^{n+1}=(\frac{a+nb}{n+1})^{n+1}$, 且不等式取等当且仅当 $x_1=x_2=\cdots=x_{n+1}$, 即 $a=b$. $\blacksquare$
 
-有 $(\frac{x+1}{n+1})^\frac{n+1}{n} = (1+\frac{x-n}{n+1})^\frac{n+1}{n}$, 其中 $x>0$, $\frac{x-n}{n+1}>-1$, 根据 Lemma 2 得 $(\frac{x+1}{n+1})^\frac{n+1}{n} = (1+\frac{x-n}{n+1})^\frac{n+1}{n} \ge 1+ \frac{x-n}{n+1} \frac{n+1}{n} = \frac{x}{n}$.
+---
 
-显然 $\frac{n+1}{n} \notin \set{0, 1}$, 故不等式取等 iff $\frac{x-n}{n+1}=0$, 即 $x=n$, $a=b$ 时. $\blacksquare$
+引理. 若 $n > 1$ 且 $x > 0$, 则 $(1+x)^n > 1+nx$.
+
+Proof. 令 $y=nx>0$. 不等式化为 $1+y < (1+\frac{y}{n})^n$. 取 $a=1+y$, $b=1$, $n'=n-1$, 根据 Lemma 3 有 $1+y \le (\frac{y}{n}+1)^n$. 显然 $a \ne b$, 故不等式永不取等. $\blacksquare$
 
 ---
 
 Lemma 4. 数列 $\set{(1+ \frac{1}{n})^n}$ 单调递增, 且数列 $\set{(1+ \frac{1}{n})^{n+1}}$ 单调递减.
 
-Proof.
+Proof. 先证数列 $\set{(1+ \frac{1}{n})^n}$ 单调递增.
 
-1. 先证数列 $\set{(1+ \frac{1}{n})^n}$ 单调递增.
+也即对于 $n \in \N$, $(1+ \frac{1}{n})^n < (1+ \frac{1}{n+1})^{n+1}$, 不等式化为 $(1+ \frac{1}{n+1})^\frac{n+1}{n} > 1+ \frac{1}{n}$.
 
-   也即对于 $n \in \N$, $(1+ \frac{1}{n})^n < (1+ \frac{1}{n+1})^{n+1}$, 不等式化为 $(1+ \frac{1}{n+1})^\frac{n+1}{n} > 1+ \frac{1}{n}$.
+显然 $\frac{n+1}{n}>1$, $\frac{1}{n+1}>0$, 根据引理, $(1+ \frac{1}{n+1})^\frac{n+1}{n} > 1 + \frac{1}{n}$. $\blacksquare$
 
-   显然 $\frac{1}{n+1}>-1$, 根据 Lemma 2, 
+再证数列 $\set{(1+ \frac{1}{n})^{n+1}}$ 单调递减.
+
+也即对于 $n \in \N$, $(1+\frac{1}{n})^{n+1} > (1+\frac{1}{n+1})^{n+2}$, 不等式化为 $(1+\frac{1}{n})^\frac{n+1}{n+2} > 1+\frac{1}{n+1}$. 同样地根据引理, 有 $(1+\frac{1}{n})^\frac{n+1}{n+2} > 1+\frac{n+1}{n(n+2)}=1+\frac{n+1}{(n+1)^2-1}>1+\frac{n+1}{(n+1)^2}=1+\frac{1}{n+1}$. $\blacksquare$
