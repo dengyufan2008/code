@@ -675,9 +675,7 @@ a. True. b. True. c. False. d. True. e. True.
 
 ## P32 T1
 
-Compute $\vec u+\vec v$ and $\vec u-2\vec v$, when
-
-$$
+Compute $\vec u+\vec v$ and $\vec u-2\vec v$, when $
 \vec u=
 \left[
 \begin{matrix}
@@ -693,40 +691,33 @@ $$
 \\
 -1
 \end{matrix}
-\right].
-$$
+\right]
+$.
 
 ---
 
 We have
 
 $$
-\vec u+\vec v = 
-\left[
+\vec u+\vec v=\left[
 \begin{matrix}
 -1
 \\
 2
 \end{matrix}
-\right]
-+
-\left[
+\right]+\left[
 \begin{matrix}
 -3
 \\
 -1
 \end{matrix}
-\right]
-=
-\left[
+\right]=\left[
 \begin{matrix}
 -1 + -3
 \\
 2 + -1
 \end{matrix}
-\right]
-=
-\left[
+\right]=\left[
 \begin{matrix}
 -4
 \\
@@ -738,32 +729,25 @@ $$
 and
 
 $$
-\vec u-2\vec v=
-\left[
+\vec u-2\vec v=\left[
 \begin{matrix}
 -1
 \\
 2
 \end{matrix}
-\right]
--2
-\left[
+\right]-2\left[
 \begin{matrix}
 -3
 \\
 -1
 \end{matrix}
-\right]
-=
-\left[
+\right]=\left[
 \begin{matrix}
 -1 - 2(-3)
 \\
 2 - 2(-1)
 \end{matrix}
-\right]
-=
-\left[
+\right]=\left[
 \begin{matrix}
 5
 \\
@@ -777,32 +761,25 @@ $$
 Write a system of equations that is equivalent to the given vector equation
 
 $$
-x_1
-\left[
+x_1\left[
 \begin{matrix}
 3
 \\
 -2
 \end{matrix}
-\right]
-+x_2
-\left[
+\right]+x_2\left[
 \begin{matrix}
 7
 \\
 3
 \end{matrix}
-\right]
-+x_3
-\left[
+\right]+x_3\left[
 \begin{matrix}
 -2
 \\
 1
 \end{matrix}
-\right]
-=
-\left[
+\right]=\left[
 \begin{matrix}
 0
 \\
@@ -822,10 +799,7 @@ $$
 \\
 -2x_1 + 3x_2 + x_3
 \end{matrix}
-\right]
-=
-
-\left[
+\right]=\left[
 \begin{matrix}
 0
 \\
@@ -875,10 +849,7 @@ x_2 + 5x_3
 \\
 -x_1 + 3x_2 - 8x_3
 \end{matrix}
-\right]
-=
-
-\left[
+\right]=\left[
 \begin{matrix}
 0
 \\
@@ -901,9 +872,7 @@ x_1
 \\
 -1
 \end{matrix}
-\right]
-+ x_2
-\left[
+\right]+x_2\left[
 \begin{matrix}
 1
 \\
@@ -911,9 +880,7 @@ x_1
 \\
 3
 \end{matrix}
-\right]
-+ x_3
-\left[
+\right]+x_3\left[
 \begin{matrix}
 5
 \\
@@ -921,9 +888,7 @@ x_1
 \\
 -8
 \end{matrix}
-\right]
-=
-\left[
+\right]=\left[
 \begin{matrix}
 0
 \\
@@ -936,8 +901,7 @@ $$
 
 ## P32 T13
 
-Determine if
-$
+Determine if $
 \vec b = 
 \left[
 \begin{matrix}
@@ -948,9 +912,7 @@ $
 -3
 \end{matrix}
 \right]
-$
-is a linear combination of the vectors formed from the columns of the matrix
-$
+$ is a linear combination of the vectors formed from the columns of the matrix $
 A = \left[
 \begin{matrix}
 1 & -4 & 2
@@ -960,8 +922,7 @@ A = \left[
 -2 & 8 & -4
 \end{matrix}
 \right]
-$
-.
+$.
 
 ---
 
@@ -1005,9 +966,7 @@ x_1
 \\
 -2
 \end{matrix}
-\right]
-+ x_2
-\left[
+\right]+x_2\left[
 \begin{matrix}
 -4
 \\
@@ -1015,9 +974,7 @@ x_1
 \\
 8
 \end{matrix}
-\right]
-+ x_3
-\left[
+\right]+x_3\left[
 \begin{matrix}
 2
 \\
@@ -1025,9 +982,7 @@ x_1
 \\
 -4
 \end{matrix}
-\right]
-=
-\left[
+\right]=\left[
 \begin{matrix}
 3
 \\
@@ -1042,8 +997,7 @@ has no solution. So that $\vec b$ is not a linear combination of the vectors for
 
 ## P32 T15
 
-Let
-$
+Let $
 \vec{a_1} =
 \left[
 \begin{matrix}
@@ -1054,9 +1008,7 @@ $
 -1
 \end{matrix}
 \right]
-$
-,
-$
+$, $
 \vec{a_2} =
 \left[
 \begin{matrix}
@@ -1067,9 +1019,7 @@ $
 2
 \end{matrix}
 \right]
-$
-, and
-$
+$, and $
 \vec b =
 \left[
 \begin{matrix}
@@ -1080,8 +1030,7 @@ $
 h
 \end{matrix}
 \right]
-$
-. For what value of $h$ is $\vec b$ in the plane spanned by $\vec{a_1}$ and $\vec{a_2}$?
+$. For what value of $h$ is $\vec b$ in the plane spanned by $\vec{a_1}$ and $\vec{a_2}$?
 
 ---
 
@@ -1159,8 +1108,7 @@ So when $h-3=0$, that is $h=3$, the augmented matrix is consistent, then $\vec b
 
 ## P32 T21
 
-Let
-$
+Let $
 \vec u =
 \left[
 \begin{matrix}
@@ -1169,9 +1117,7 @@ $
 -1
 \end{matrix}
 \right]
-$
-and
-$
+$ and $
 \vec v =
 \left[
 \begin{matrix}
@@ -1180,9 +1126,7 @@ $
 1
 \end{matrix}
 \right]
-$
-, Proof
-$
+$, Proof $
 \left[
 \begin{matrix}
 h
@@ -1190,8 +1134,7 @@ h
 k
 \end{matrix}
 \right]
-$
-is in $\text{Span} \set{u, v}$ for all $h$ and $k$.
+$ is in $\text{Span} \set{u, v}$ for all $h$ and $k$.
 
 ---
 
@@ -1231,8 +1174,7 @@ $$
 \right].
 $$
 
-Obviously the augmented matrix is consistent, so
-$
+Obviously the augmented matrix is consistent, so $
 \left[
 \begin{matrix}
 h
@@ -1240,8 +1182,7 @@ h
 k
 \end{matrix}
 \right]
-$
-is in $\text{Span} \set{u, v}$ for all $h$ and $k$.
+$ is in $\text{Span} \set{u, v}$ for all $h$ and $k$.
 
 ## P34 T34
 
@@ -1364,25 +1305,19 @@ $$
 \\
 1
 \end{matrix}
-\right]
-&=
-\left[
+\right]&=\left[
 \begin{matrix}
 1
 \\
 3
 \end{matrix}
-\right]
-+ 2
-\left[
+\right]+2\left[
 \begin{matrix}
 3
 \\
 2
 \end{matrix}
-\right]
-+
-\left[
+\right]+\left[
 \begin{matrix}
 -4
 \\
@@ -1390,8 +1325,7 @@ $$
 \end{matrix}
 \right]
 \\
-&=
-\left[
+&=\left[
 \begin{matrix}
 3
 \\
@@ -1417,8 +1351,7 @@ x_1
 \\
 -4
 \end{matrix}
-\right]
-+ x_2
+\right]+x_2
 \left[
 \begin{matrix}
 -5
@@ -1429,8 +1362,7 @@ x_1
 \\
 1
 \end{matrix}
-\right]
-+ x_3
+\right]+x_3
 \left[
 \begin{matrix}
 7
@@ -1441,9 +1373,7 @@ x_1
 \\
 2
 \end{matrix}
-\right]
-=
-\left[
+\right]=\left[
 \begin{matrix}
 6
 \\
@@ -1473,9 +1403,7 @@ $$
 \\
 -4 & 1 & 2
 \end{matrix}
-\right]
-\vec x
-=
+\right] \vec x =
 \left[
 \begin{matrix}
 6
@@ -1516,9 +1444,7 @@ $$
 \\
 2x_2 + 4x_3
 \end{matrix}
-\right]
-=
-\left[
+\right] = \left[
 \begin{matrix}
 8
 \\
@@ -1538,24 +1464,20 @@ x_1
 0
 \end{matrix}
 \right]
-+ x_2
++x_2
 \left[
 \begin{matrix}
 1
 \\
 2
 \end{matrix}
-\right]
-+ x_3
-\left[
+\right]+x_3\left[
 \begin{matrix}
 -3
 \\
 4
 \end{matrix}
-\right]
-=
-\left[
+\right]=\left[
 \begin{matrix}
 8
 \\
@@ -1574,8 +1496,7 @@ $$
 0 & 2 & 4
 \end{matrix}
 \right]
-\vec x
-=
+\vec x =
 \left[
 \begin{matrix}
 8
@@ -1587,8 +1508,7 @@ $$
 
 ## P41 T22
 
-Let
-$
+Let $
 \vec{v_1} =
 \left[
 \begin{matrix}
@@ -1599,9 +1519,7 @@ $
 -3
 \end{matrix}
 \right]
-$
-,
-$
+$, $
 \vec{v_2} =
 \left[
 \begin{matrix}
@@ -1612,9 +1530,7 @@ $
 9
 \end{matrix}
 \right]
-$
-,
-$
+$, $
 \vec{v_3} =
 \left[
 \begin{matrix}
@@ -1625,8 +1541,7 @@ $
 6
 \end{matrix}
 \right]
-$
-. Does $\set{v_1, v_2, v_3}$ span $\R^3$? Why or why not?
+$. Does $\set{v_1, v_2, v_3}$ span $\R^3$? Why or why not?
 
 ---
 
