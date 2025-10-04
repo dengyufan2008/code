@@ -671,7 +671,7 @@ d. A general solution of a system is an explicit description of all solutions of
 
 e. Whenever a system has free variables, the solution set contains many solutions.
 
-a. True. b. True. c. False. d. True. e. True.
+a. True. b. True. c. False. d. True. e. False.
 
 ## P32 T1
 
@@ -1587,4 +1587,4 @@ e. If the columns of an $m \times n$ matrix $A$ span $\R^m$, then the equation $
 
 f. If $A$ is an $m \times n$ matrix and if the equation $A \vec x = \vec b$ is inconsistent for some $\vec b$ in $\R^m$, then $A$ cannot have a pivot in every row.
 
-a. False. b. True. c. True. e. True. f. True.
+a. False. b. True. c. False. e. True. f. True.
