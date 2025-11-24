@@ -59,8 +59,7 @@ f. If $B$ is a matrix obtained from a square matrix $A$ by adding $k$ times row 
 
 g. If $A \in M_{n \times n}(F)$ has rank $n$, then $\det(A) = 0$.
 
-h. The determinant of an upper triangular matrix equals the product
-of its diagonal entries.
+h. The determinant of an upper triangular matrix equals the product of its diagonal entries.
 
 a. False. b. True. c. True. d. True. e. False. f. False. g. False. h. True.
 
@@ -108,8 +107,7 @@ f. The determinant of a square matrix can be evaluated by cofactor expansion alo
 
 g. Every system of $n$ linear equations in $n$ unknowns can be solved by Cramer's rule.
 
-h. Let $Ax = b$ be the matrix form of a system of $n$ linear equations
-in $n$ unknowns, where $x = (x_1, x_2,\cdots,x_n)^t$. If $\det(A) \ne 0$ and if $M_k$ is the $n \times n$ matrix obtained from $A$ by replacing row $k$ of $A$ by $b^t$, then the unique solution of $Ax = b$ is $x_k = \frac{\det(M_k)}{\det(A)}$ for $k = 1, 2, \cdots, n$.
+h. Let $Ax = b$ be the matrix form of a system of $n$ linear equations in $n$ unknowns, where $x = (x_1, x_2,\cdots,x_n)^t$. If $\det(A) \ne 0$ and if $M_k$ is the $n \times n$ matrix obtained from $A$ by replacing row $k$ of $A$ by $b^t$, then the unique solution of $Ax = b$ is $x_k = \frac{\det(M_k)}{\det(A)}$ for $k = 1, 2, \cdots, n$.
 
 a. False. b. True. c. False. d. True. e. False. f. True. g. False. h. True.
 
