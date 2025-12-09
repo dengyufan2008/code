@@ -4,11 +4,9 @@ By Deng Yufan.
 
 ## P279 T1
 
-a. Any linear operator on an $n$-dimensional vector space that has
-fewer than $n$ distinct eigenvalues is not diagonalizable.
+a. Any linear operator on an $n$-dimensional vector space that has fewer than $n$ distinct eigenvalues is not diagonalizable.
 
-b. Two distinct eigenvectors corresponding to the same eigenvalue
-are always linearly dependent.
+b. Two distinct eigenvectors corresponding to the same eigenvalue are always linearly dependent.
 
 c. If $\lambda$ is an eigenvalue of a linear operator $T$, then each vector in $E_\lambda$ is an eigenvector of $T$.
 
