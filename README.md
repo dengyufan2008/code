@@ -125,9 +125,7 @@ $\bmod \space 2^{64}$ 的多项式题目可以考虑下降幂多项式, 只用�
 
 ![](https://moe.jitsu.top/img)
 
-# *DengYufan's Introduction*
-
-## *Accounts*
+## *Account*
 - Luogu : 1795MiB
 
 - Codeforces : dengyufan
@@ -135,9 +133,6 @@ $\bmod \space 2^{64}$ 的多项式题目可以考虑下降幂多项式, 只用�
 - Atcoder : dengyufan2009
 
 - Github : dengyufan2008
-
-## *Websites*
-- [cppreference](https://zh.cppreference.com/w/%E9%A6%96%E9%A1%B5)
 
 ## *Code*
 - [Fast IO For Interger](https://www.luogu.com.cn/paste/a6g4tzxa)
